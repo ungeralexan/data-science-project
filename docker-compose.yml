@@ -1,0 +1,12 @@
+services:
+  backend:
+    build: .project/backend
+    ports:
+      - "8000:8000"
+  frontend:
+    build: .project/frontend
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_API_BASE=http://localhost:8000
+      - VITE_WS_URL=ws://localhost:8000/ws/agui

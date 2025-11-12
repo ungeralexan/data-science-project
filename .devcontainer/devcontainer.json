@@ -1,0 +1,72 @@
+{
+	"name": "Data-Science-Project",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "22"
+		}
+	},
+	"forwardPorts": [
+		8000,
+		5173
+	],
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.languageServer": "Pylance",
+				"autopep8.path": [
+					"/usr/local/py-utils/bin/autopep8"
+				],
+				"pylint.path": [
+					"/usr/local/py-utils/bin/pylint"
+				]
+			},
+			"extensions": [
+				"ms-python.python",
+				"ms-toolsai.vscode-ai",
+				"ms-azuretools.vscode-azureappservice",
+				"ms-vscode.azurecli",
+				"ms-azuretools.vscode-azurestorage",
+				"streetsidesoftware.code-spell-checker",
+				"streetsidesoftware.code-spell-checker-german",
+				"eamodio.gitlens",
+				"ms-vsliveshare.vsliveshare",
+				"ms-python.vscode-pylance",
+				"ms-toolsai.jupyter",
+				"mechatroner.rainbow-csv",
+				"ms-mssql.mssql",
+				"ms-azuretools.vscode-cosmosdb",
+				"ms-azuretools.vscode-azurefunctions",
+				"gruntfuggly.todo-tree",
+				"visualstudioexptteam.vscodeintellicode",
+				"redhat.vscode-yaml",
+				"github.vscode-pull-request-github",
+				"ms-azuretools.vscode-containers",
+				"ms-kubernetes-tools.vscode-kubernetes-tools",
+				"mutantdino.resourcemonitor",
+				"christian-kohler.path-intellisense",
+				"bencoleman.armview",
+				"ms-azure-devops.azure-pipelines",
+				"njpwerner.autodocstring",
+				"github.copilot",
+				"github.copilot-chat",
+				"ms-python.autopep8",
+				"ms-python.pylint",
+				"ms-python.isort",
+				"ms-toolsai.datawrangler",
+				"redhat.vscode-xml",
+				"ms-azuretools.vscode-azurecontainerapps",
+				"openai.chatgpt",
+				"github.vscode-github-actions",
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"bradlc.vscode-tailwindcss"
+			]
+		}
+	},
+	"postCreateCommand": "cd project/backend && python -m pip install --upgrade pip wheel setuptools && pip install --user -r requirements.txt && cd ../project/frontend && npm install",
+	"remoteUser": "root"
+}

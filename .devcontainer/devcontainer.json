@@ -84,6 +84,6 @@
 		Command to run after the Dev Container is created.
 		It installs Python backend dependencies from requirements.txt and Node.js frontend dependencies.
 	*/
-	"postCreateCommand": "cd project/backend && python -m pip install --upgrade pip wheel setuptools && pip install --user -r requirements.txt && cd ../project/frontend && npm install",
+	"postCreateCommand": "cd project/backend && python -m pip install --upgrade pip wheel setuptools && pip install --user -r requirements.txt && cd ../frontend && npm install",
 	"remoteUser": "root"
 }

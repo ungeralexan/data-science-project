@@ -83,7 +83,6 @@ def extract_event_info_with_llm(email_text: str) -> dict:
 
     return json.loads(resp.text)
 
-
 def process_all_emails(folder_path):
     """
         This function processes all email text files in the specified folder,

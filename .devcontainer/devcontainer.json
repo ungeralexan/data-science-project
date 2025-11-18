@@ -1,22 +1,32 @@
 {
-	"name": "Data-Science-Project",
-	"build": {
+	"name": "Data-Science-Project", //Name of Dev Container
+
+	//Tells Dev Container to use Dockerfile in the .devcontainer folder
+	"build": {							
 		"dockerfile": "Dockerfile",
 		"context": ".."
 	},
+
+	//Install Node.js feature in Dev Container
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
 			"version": "22"
 		}
 	},
+
+	//Ports to be forwarded from Dev Container to local machine
 	"forwardPorts": [
-		8000,
-		5173
+		8000, //Backend FastAPI port
+		5173 //Frontend Vite port
 	],
+
+	//Mounts the project folder from local machine to Dev Container
 	"customizations": {
+		//VS Code settings and extensions for Dev Container
 		"vscode": {
+			//Settings to be applied in Dev Container
 			"settings": {
-				"python.languageServer": "Pylance",
+				"python.languageServer": "Pylance", //Use Pylance language server for Python
 				"autopep8.path": [
 					"/usr/local/py-utils/bin/autopep8"
 				],
@@ -24,49 +34,56 @@
 					"/usr/local/py-utils/bin/pylint"
 				]
 			},
+
+			//Extensions to be installed in Dev Container
 			"extensions": [
-				"ms-python.python",
-				"ms-toolsai.vscode-ai",
-				"ms-azuretools.vscode-azureappservice",
-				"ms-vscode.azurecli",
-				"ms-azuretools.vscode-azurestorage",
-				"streetsidesoftware.code-spell-checker",
-				"streetsidesoftware.code-spell-checker-german",
-				"eamodio.gitlens",
-				"ms-vsliveshare.vsliveshare",
-				"ms-python.vscode-pylance",
-				"ms-toolsai.jupyter",
-				"mechatroner.rainbow-csv",
-				"ms-mssql.mssql",
-				"ms-azuretools.vscode-cosmosdb",
-				"ms-azuretools.vscode-azurefunctions",
-				"gruntfuggly.todo-tree",
-				"visualstudioexptteam.vscodeintellicode",
-				"redhat.vscode-yaml",
-				"github.vscode-pull-request-github",
-				"ms-azuretools.vscode-containers",
-				"ms-kubernetes-tools.vscode-kubernetes-tools",
-				"mutantdino.resourcemonitor",
-				"christian-kohler.path-intellisense",
-				"bencoleman.armview",
-				"ms-azure-devops.azure-pipelines",
-				"njpwerner.autodocstring",
-				"github.copilot",
-				"github.copilot-chat",
-				"ms-python.autopep8",
-				"ms-python.pylint",
-				"ms-python.isort",
-				"ms-toolsai.datawrangler",
-				"redhat.vscode-xml",
-				"ms-azuretools.vscode-azurecontainerapps",
-				"openai.chatgpt",
-				"github.vscode-github-actions",
-				"dbaeumer.vscode-eslint",
-				"esbenp.prettier-vscode",
-				"bradlc.vscode-tailwindcss"
+				"ms-python.python", //Python support
+				"ms-toolsai.vscode-ai", //AI tools
+				"ms-azuretools.vscode-azureappservice", //Azure App Service
+				"ms-vscode.azurecli", //Azure CLI
+				"ms-azuretools.vscode-azurestorage", //Azure Storage
+				"streetsidesoftware.code-spell-checker", //Spell Checker
+				"streetsidesoftware.code-spell-checker-german", //German Spell Checker
+				"eamodio.gitlens", //GitLens for Git
+				"ms-vsliveshare.vsliveshare", //Live Share
+				"ms-python.vscode-pylance", //Pylance extension
+				"ms-toolsai.jupyter", //Jupyter Notebooks
+				"mechatroner.rainbow-csv", //Rainbow CSV
+				"ms-mssql.mssql", //SQL Server support
+				"ms-azuretools.vscode-cosmosdb", //Azure Cosmos DB
+				"ms-azuretools.vscode-azurefunctions", //Azure Functions
+				"gruntfuggly.todo-tree", //Todo Tree
+				"visualstudioexptteam.vscodeintellicode", //Intellicode
+				"redhat.vscode-yaml", //YAML support
+				"github.vscode-pull-request-github", //GitHub Pull Requests
+				"ms-azuretools.vscode-containers", //Docker support
+				"ms-kubernetes-tools.vscode-kubernetes-tools", //Kubernetes support
+				"mutantdino.resourcemonitor", //Resource Monitor
+				"christian-kohler.path-intellisense", //Path Intellisense
+				"bencoleman.armview", //ARM Template Viewer
+				"ms-azure-devops.azure-pipelines", //Azure Pipelines
+				"njpwerner.autodocstring", //Auto Docstring for Python
+				"github.copilot", //GitHub Copilot
+				"github.copilot-chat", //GitHub Copilot Chat
+				"ms-python.autopep8", //Autopep8 for Python
+				"ms-python.pylint", //Pylint for Python
+				"ms-python.isort", //Isort for Python
+				"ms-toolsai.datawrangler", //Data Wrangler
+				"redhat.vscode-xml", //XML support
+				"ms-azuretools.vscode-azurecontainerapps", //Azure Container Apps
+				"openai.chatgpt", //ChatGPT extension
+				"github.vscode-github-actions", //GitHub Actions
+				"dbaeumer.vscode-eslint", //ESLint support
+				"esbenp.prettier-vscode", //Prettier code formatter
+				"bradlc.vscode-tailwindcss" //Tailwind CSS support
 			]
 		}
 	},
+
+	/*
+		Command to run after the Dev Container is created.
+		It installs Python backend dependencies from requirements.txt and Node.js frontend dependencies.
+	*/
 	"postCreateCommand": "cd project/backend && python -m pip install --upgrade pip wheel setuptools && pip install --user -r requirements.txt && cd ../project/frontend && npm install",
 	"remoteUser": "root"
 }

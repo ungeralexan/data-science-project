@@ -1,3 +1,14 @@
+// src/pages/Events.tsx
+import { Typography } from 'antd';
+import EventList from '../components/EventList'; // ⬅️ adjust path if needed
+
+const { Title } = Typography;
+
 export default function Events() {
-    return <div>Events Page</div>;
+  return (
+    <div>
+      <Title level={2}>Events</Title>
+      <EventList />
+    </div>
+  );
 }

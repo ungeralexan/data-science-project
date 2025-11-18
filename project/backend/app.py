@@ -10,6 +10,7 @@ app = FastAPI()
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://193.196.53.179:5173",
 ]
 
 app.add_middleware(
@@ -29,7 +30,7 @@ class Event(BaseModel):
     end_date: str
     location: Optional[str] = None
     description: Optional[str] = None
-
+    image_key: Optional[str] = None
 
 FAKE_EVENTS: List[Event] = [
     Event(
@@ -38,7 +39,8 @@ FAKE_EVENTS: List[Event] = [
         start_date="2025-03-10T18:00:00",
         end_date="2025-03-10T20:00:00",
         location="Campus Building A",
-        description="This is a meetup for data science enthusiasts to discuss the latest trends in the field."
+        description="This is a meetup for data science enthusiasts to discuss the latest trends in the field.",
+        image_key = "data_science",
     ),
     Event(
         id=2,
@@ -46,7 +48,8 @@ FAKE_EVENTS: List[Event] = [
         start_date="2025-03-12T14:00:00",
         end_date="2025-03-12T16:00:00",
         location="Online",
-        description="A hands-on workshop to learn Python programming from scratch."
+        description="A hands-on workshop to learn Python programming from scratch.",
+        image_key = "workshop",
     ),
     Event(
         id=3,
@@ -54,7 +57,8 @@ FAKE_EVENTS: List[Event] = [
         start_date="2025-03-15T17:00:00",
         end_date="2025-03-15T18:30:00",
         location="Campus Building B, Room 204",
-        description="Guest speakers present real-world applications of AI and machine learning in modern healthcare."
+        description="Guest speakers present real-world applications of AI and machine learning in modern healthcare.",
+        image_key = "ai",
     ),
     Event(
         id=4,
@@ -62,7 +66,8 @@ FAKE_EVENTS: List[Event] = [
         start_date="2025-03-18T19:00:00",
         end_date="2025-03-18T21:00:00",
         location="Innovation Hub Auditorium",
-        description="Student teams pitch their startup ideas to a panel of mentors and potential investors."
+        description="Student teams pitch their startup ideas to a panel of mentors and potential investors.",
+        image_key = "startup",
     ),
     Event(
         id=5,
@@ -70,7 +75,8 @@ FAKE_EVENTS: List[Event] = [
         start_date="2025-03-20T16:00:00",
         end_date="2025-03-20T17:30:00",
         location="Online",
-        description="An introductory session on cloud platforms, deployment models, and core services."
+        description="An introductory session on cloud platforms, deployment models, and core services.",
+        image_key = "science",
     ),
     Event(
         id=6,
@@ -78,7 +84,8 @@ FAKE_EVENTS: List[Event] = [
         start_date="2025-03-22T13:00:00",
         end_date="2025-03-22T14:30:00",
         location="Career Center, Room 101",
-        description="Learn how to optimize your CV, LinkedIn, and elevator pitch before the upcoming career fair."
+        description="Learn how to optimize your CV, LinkedIn, and elevator pitch before the upcoming career fair.",
+        image_key = "careerfair",
     ),
     Event(
         id=7,
@@ -86,7 +93,8 @@ FAKE_EVENTS: List[Event] = [
         start_date="2025-03-24T18:30:00",
         end_date="2025-03-24T20:30:00",
         location="Campus Cafeteria",
-        description="An informal networking event to connect with fellow students, alumni, and industry partners."
+        description="An informal networking event to connect with fellow students, alumni, and industry partners.",
+        image_key = "networking"
     ),
     Event(
         id=8,
@@ -94,7 +102,8 @@ FAKE_EVENTS: List[Event] = [
         start_date="2025-03-26T17:00:00",
         end_date="2025-03-26T19:00:00",
         location="Library Study Room C",
-        description="Weekly study group to review ML concepts, solve exercises, and discuss research papers."
+        description="Weekly study group to review ML concepts, solve exercises, and discuss research papers.",
+        image_key = "machine_learning",
     ),
     Event(
         id=9,
@@ -102,7 +111,8 @@ FAKE_EVENTS: List[Event] = [
         start_date="2025-03-28T09:00:00",
         end_date="2025-03-28T10:00:00",
         location="Innovation Hub Lobby",
-        description="Opening session for the 24-hour campus hackathon, including team formation and rules overview."
+        description="Opening session for the 24-hour campus hackathon, including team formation and rules overview.",
+        image_key = "startup",
     ),
     Event(
         id=10,
@@ -110,7 +120,8 @@ FAKE_EVENTS: List[Event] = [
         start_date="2025-03-30T19:00:00",
         end_date="2025-03-30T22:00:00",
         location="Student Lounge",
-        description="Casual social gathering with music, snacks, and drinks to celebrate the end of the semester."
+        description="Casual social gathering with music, snacks, and drinks to celebrate the end of the semester.",
+        image_key = "party",
     ),
 ]
 

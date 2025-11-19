@@ -5,4 +5,5 @@ export type Event = {
   end_date: string;
   location?: string;
   description?: string;
+  image_key?: string;
 };

@@ -40,18 +40,23 @@
 /* Image placeholder */
 .event-card__image-placeholder {
   width: 100%;
-  padding-bottom: 60%; /* aspect ratio box */
-  background-color: #f0f0f0;
+  aspect-ratio: 3 / 2;       /* <<< uniform image size */
+  overflow: hidden;          /* crop overflow */
   border-radius: 6px;
   margin-bottom: 8px;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* If you later use a real image, reuse this class */
 .event-card__image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;         /* perfect crop, no distortion */
   border-radius: 6px;
+  display: block;
 }
 
 .event-card__title {

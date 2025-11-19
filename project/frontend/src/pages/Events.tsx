@@ -1,6 +1,6 @@
 // src/pages/Events.tsx
 import { Typography } from 'antd';
-import EventList from '../components/EventList'; // ⬅️ adjust path if needed
+import EventList from '../components/EventList';
 
 const { Title } = Typography;
 

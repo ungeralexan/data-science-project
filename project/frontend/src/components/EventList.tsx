@@ -1,5 +1,5 @@
 import { useEvents } from "../hooks/useEvents";
-import "./css/EventList.css"; // ⬅️ make sure the path is correct
+import "./css/EventList.css";
 
 // --- Image imports ---
 import daadImg from "../assets/stock_images/DAAD.png";
@@ -131,12 +131,12 @@ export default function EventList() {
                 <div className="event-card__image-placeholder">
                   <img
                     src={imageSrc}
-                    alt={event.event_title}
+                    alt={event.title}
                     className="event-card__image"
                   />
                 </div>
 
-                <div className="event-card__title">{event.event_title}</div>
+                <div className="event-card__title">{event.title}</div>
 
                 <div className="event-card__datetime">
                   {new Date(event.start_date).toLocaleString()} –{" "}

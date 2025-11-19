@@ -1,5 +1,6 @@
 a2a-sdk==0.3.7
 ag-ui-protocol==0.1.9
+apscheduler
 audioop-lts==0.2.2
 autopep8==2.3.2
 azure-cognitiveservices-speech==1.46.0

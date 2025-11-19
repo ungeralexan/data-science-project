@@ -1,15 +1,11 @@
 import json
-from typing import Optional, get_origin, get_args
 from pathlib import Path
 import pandas as pd
-
-from typing import Optional
-from pydantic import BaseModel, ValidationError
+from typing import List
 from google import genai
-import json
-import re
 
-SCHEMA = {
+# -------- JSON schema: multiple events --------
+EVENT_SCHEMA  = {
     "type": "OBJECT",
     "properties": {
         "Title": {"type": "STRING", "nullable": True},
@@ -30,22 +26,32 @@ SCHEMA = {
     ],
 }
 
+# The top-level schema is an ARRAY of those objects
+SCHEMA_MULTI = {
+    "type": "ARRAY",
+    "items": EVENT_SCHEMA,
+}
+
 
 def extract_event_info_with_llm(email_text: str) -> dict:
-    system_instruction = (
-        "You are a multilingual assistant that extracts event information from email texts according to a given schema. "
-        "Only extract if there is a clear event. Keep original date/time formats. If unsure, use null. "
-        "Return ONLY a single JSON object with exactly these keys and nothing else: "
-        "Title, Start_Date, End_Date, Start_Time, End_Time, Description, Location, Speaker, Organizer, Registration_Needed, URL. "
-        "Do NOT wrap in arrays or extra objects; do NOT add extra keys; do NOT use markdown fences. "
-        "If there is no clear event, return the same object with all fields set to null."
-    )
+    """
+    Uses Gemini to extract multiple events from a text containing multiple emails.
+    Returns a list of dicts (one per event).
+    """
 
-    user_prompt = f"""
+    system_instruction = """
 
-    Extract event information from the following email text.
+    You are a multilingual assistant that extracts event information from email texts according to a given schema. 
+    The emails may be in various languages including English and German. The text you receive contains multiple emails concatenated together.
 
-    Each event must contain the following fields:
+    The text format is as follows:
+
+    Each email starts with a line like "--------------- EMAIL: X Start ---------------"
+    followed by lines with "Subject: ..." and "From: ...", then a blank line, then the email body text,
+    and ends with a line like "--------------- EMAIL: X End ---------------".
+    
+    Only extract if there is a clear event. Keep original date/time formats. If unsure, use null. 
+    Return ONLY a single JSON object with exactly these keys and nothing else:
 
     - Title (String): The title or name of the event. 
     - Start_Date (String or null): The starting date of the event.
@@ -59,14 +65,21 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false.
     - URL (String or null): The URL for more information about the event if available.
 
-    E-Mail Text content:
+    Do NOT wrap in arrays or extra objects; do NOT add extra keys; do NOT use markdown fences.
+    If there is no clear event, don't return anything for this email
+
+    It it possible that one event happens over multiple days; In that case, save the dates and times in a list.
+    """
+
+    user_prompt = f"""
+
+    Extract event information from the following email text:
 
     {email_text}
     """
 
     contents = f"{system_instruction}\n\n{user_prompt}"
 
-    # read API key from your existing secrets.json
     with open("secrets.json", "r", encoding="utf-8") as f:
         secrets = json.load(f)
 
@@ -77,41 +90,35 @@ def extract_event_info_with_llm(email_text: str) -> dict:
         contents=contents,
         config={
             "response_mime_type": "application/json",
-            "response_schema": SCHEMA,  # <— schema derived from Pydantic
+            "response_schema": SCHEMA_MULTI,
         },
     )
 
+    # resp.text should be a JSON array string: [ {event1}, {event2}, ... ]
     return json.loads(resp.text)
 
-def process_all_emails(folder_path):
+def extract_events_from_all_emails(outdir: str = "data/temp_emails") -> List[dict]:
     """
         This function processes all email text files in the specified folder,
-        extracts event information using the LLM, and saves the results to an Excel file.
+        extracts event information using the LLM, and saves the results
     """
 
-    # List to store results
-    results = []
+    folder = Path(outdir)
+    all_emails_path = folder / "all_emails.txt"
 
-    # Iterate over all .txt files in the specified folder
-    for email_file in Path(folder_path).glob("*.txt"):
+    # 1) Read combined email text
+    combined_text = all_emails_path.read_text(encoding="utf-8", errors="strict")
 
-        print(f"Processing: {email_file.name}")
+    # 2) Extract events via LLM
+    events = extract_event_info_with_llm(combined_text)
 
-        # Read the email text content
-        email_text = email_file.read_text(encoding="utf-8", errors="strict")
+    # 3) Convert to DataFrame
+    df_results = pd.DataFrame(events)
 
-        # Add source file information
-        results.append(extract_event_info_with_llm(email_text))
+    # 4) Save to CSV (one row per event)
+    output_csv = folder / "extracted_event_info.csv"
+    df_results.to_csv(output_csv, index = False)
 
-    # Create a DataFrame from the results
-    df_results = pd.DataFrame(results)
+    print(f"Saved {len(df_results)} events to {output_csv}")
 
-    # Save the results to an Excel file
-    df_results.to_csv("extracted_event_info.csv", index=False)
-
-    print("Results saved!")
-
-    return df_results
-
-
-df = process_all_emails("emails_out")
+    return events

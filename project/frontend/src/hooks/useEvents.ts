@@ -8,7 +8,7 @@ export function useEvents() {
   const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/events");
+    const ws = new WebSocket("ws://193.196.53.179:8000/ws/events");
     socketRef.current = ws;
 
     ws.onopen = () => {

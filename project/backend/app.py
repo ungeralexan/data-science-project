@@ -10,6 +10,7 @@ app = FastAPI()
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://193.196.53.179:5173",
 ]
 
 app.add_middleware(
@@ -29,8 +30,6 @@ class Event(BaseModel):
     end_date: str
     location: Optional[str] = None
     description: Optional[str] = None
-    image_key: Optional[str] = None
-
 
 FAKE_EVENTS: List[Event] = [
     Event(

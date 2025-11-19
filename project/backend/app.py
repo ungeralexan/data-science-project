@@ -30,6 +30,7 @@ class Event(BaseModel):
     end_date: str
     location: Optional[str] = None
     description: Optional[str] = None
+    image_key: Optional[str] = None
 
 FAKE_EVENTS: List[Event] = [
     Event(

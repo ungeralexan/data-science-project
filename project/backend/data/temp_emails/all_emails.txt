@@ -1,4 +1,299 @@
 --------------- EMAIL: 1 Start ---------------
+Subject: Vorsicht Datenklau - Richtiges Verhalten bei Phishing-Mails
+From: postmaster@uni-tuebingen.de
+
+ 
+                       ZDV-Rundmail                             
+ 
+ 
+ English version below.
+ 
+ ========== deutsche Version ===============
+ 
+ Liebe Studierende, liebe Mitglieder der Universität,
+ 
+ leider versuchen immer wieder Angreifer unsere Accounts mit sogenanten
+ "Phishing-Mails" zu kompromittieren. Sie wollen dabei Passwörter
+ ergaunern ("Phishing" = Passwort fischen).
+ Diese Mails enthalten entweder einen Hyperlink zu einem Webformular,
+ in dem die Zugangsdaten abgefragt werden. Oder sie enthalten einen
+ bösartigen Anhang, der beim Öffnen nach dem Passwort fragt oder
+ Schadsoftware installiert.
+ 
+ Meistens bauen Phishing-Mails einen zeitlichen Druck auf. Es wird
+ behauptet, Ihr Account werde gelöscht oder gesperrt, wenn Sie nicht
+ sofort reagieren, eine Rechnung müsse bezahlt werden, E-Mails seien
+ zurückgehalten worden, oder Sie müssten Ihre Daten verifizieren, um
+ weiterhin E-Mails erhalten zu können. Das zielt darauf ab, dass Sie
+ unaufmerksam werden und schnell auf den Link klicken oder den Anhang
+ öffnen.
+ Manchmal ist der Absender gefälscht, so dass die Phishing-Mails so
+ aussehen, als kämen sie vom ZDV oder von einer Uni-Adresse. Manchmal
+ sieht das verlinkte Webformular aus wie eine vertraute Anmeldeseite,
+ obwohl es gefälscht ist.
+ Beispiele finden Sie auf unserer Webseite: https://uni-tuebingen.de/de/34392
+ 
+ Seien Sie deswegen bei derartigen Mails immer misstrauisch. Überlegen
+ Sie, ob der Inhalt plausibel erscheint. Schauen Sie sich die
+ Absenderadresse an. Schauen Sie sich den Hyperlink an, bevor Sie
+ klicken. Und fragen Sie im Zweifelsfall im ZDV (Hotline oder
+ postmaster@uni-tuebingen.de) nach.
+ 
+ Bitte verwenden Sie die Zugangsdaten für Ihren ZDV-Account nur auf
+ verschlüsselten Webseiten (https), bei denen der Servername auf
+ "uni-tuebingen.de" endet.
+ Bitte halten Sie Ihr Passwort stets geheim. Das ZDV fragt Sie niemals
+ nach Ihrem Passwort. Und benutzen Sie unterschiedlichen Passwörter für
+ unterschiedliche Dienste (Onlineshops, andere Mailprovider usw.).
+ Sollten Sie Ihr Passwort doch einmal preisgegeben haben, ändern Sie es
+ so schnell wie möglich unter: https://passwort.uni-tuebingen.de/.
+ 
+ Durch den Missbrauch eines Accounts kann unser gesamtes Mailsystem
+ beeinträchtigt werden. Wenn wir den Missbrauch eines Accounts
+ feststellen, wird dieser daher sofort gesperrt.
+ 
+ Weitere Informationen zum Thema Phishing und IT-Sicherheit finden Sie in 
+ unserem E-Learning-Angebot: https://uni-tuebingen.de/de/279033
+ 
+ Ihr Postmaster-Team
+ 
+ Hotline: 70250, beratung@zdv.uni-tuebingen.de
+ Benutzerverwaltung: 70220, antrag@zdv.uni-tuebingen.de
+ 
+ ========== english version ===============
+ 
+ Data theft – How to handle phishing emails
+ 
+ Dear students and members of the University,
+ 
+ unfortunately attackers continuously try to compromise our accounts
+ using so called "phishing mails". They aim at stealing passwords
+ ("phishing" = fishing for passwords).
+ These mails may contain a hyperlink to a web form asking you to
+ provide your credentials. Or they may contain a malicious attachment
+ which when opened asks for your password or installs malware.
+ 
+ In most cases phishing mails build up some time pressure. They pretend
+ that your account would be deleted or blocked if you do not act
+ immediately, that an invoice had to be paid, that mails would be held
+ back or that you need to verify your data to keep receiving mails. This
+ aims at you inattentively clicking on a link or opening an attachment.
+ Sometimes the sender is spoofed and looks like coming from ZDV or from
+ a university address. And sometimes the linked web form looks like a
+ familiar login page even if it's fake.
+ You'll find some examples on our webpage: https://uni-tuebingen.de/en/34392
+ 
+ So please be always cautious if you see this kind of messages. Ask
+ yourself if the information seems to make sense. Take a look at the
+ sender address. And take a look at the hyperlink before you click. If
+ you are unsure you can always ask our hotline or
+ postmaster@uni-tuebingen.de.
+ 
+ Please enter the credentials of your ZDV account only on secure
+ websites (https) where the servername ends in "uni-tuebingen.de".
+ Please always keep your password secret. We will never ask you for
+ your password. And do use different passwords for different services
+ (online-shops, other email providers etc.).
+ If you have divulged your password, please change it as soon as
+ possible at: https://passwort.uni-tuebingen.de
+ 
+ Abuse of an account can affect our entire mail system. Therefore in
+ case of an abuse we will block the account immediately.
+ 
+ You'll find additional information about phishing and it-security on our 
+ e-learning platform: https://uni-tuebingen.de/en/279033 
+ 
+ Your postmaster team
+ 
+ Hotline: 70250, beratung@zdv.uni-tuebingen.de
+ Benutzerverwaltung: 70220, antrag@zdv.uni-tuebingen.de
+ 
+ 
+ ------------------------------------------------------------------
+       Rundmails werden nur an Benutzer des ZDV versandt! 
+ 
+       Ein Archiv der ZDV-Rundmails finden Sie im WWW unter 
+       https://www.zdv.uni-tuebingen.de/das-zdv/archiv-rundmails/
+ 
+
+--------------- EMAIL: 1 End ---------------
+
+
+--------------- EMAIL: 2 Start ---------------
+Subject: [ILIAS] No exercise class tomorrow and changed room on Wednesday
+From: "ILIAS (Jaqueline Gut)" <ilias-system@ub.uni-tuebingen.de>
+
+Dear students, 
+
+there will be no exercise class tomorrow , as it was brought forward and already held last Thursday (instead of tomorrow’s usual slot).
+
+Additionally, please note that this week’s lecture on Wednesday will take place in Room 0.04 Seminarraum 1 (Nauklerstr. 35).
+
+Have a great week! 
+
+Best,
+Jacqueline 
+
+
+Wählen Sie den folgenden Link, um auf den Kursinhalt zuzugreifen:
+
+https://ovidius.uni-tuebingen.de/ilias3/goto.php/crs/5282877
+
+
+
+
+--------------- EMAIL: 2 End ---------------
+
+
+--------------- EMAIL: 3 Start ---------------
+Subject: Welcome to LSEG Workspace
+From: Refinitiv <customerzone@refinitiv.com>
+
+FXALL
+
+Welcome to LSEG Workspace
+Dear Maurice,
+Thank you for choosing LSEG Workspace. You are now just a few clicks away from accessing world-class coverage of financial news, analysis, data and charts.
+
+ 
+
+Your sign in details
+
+User ID: 
+maurice.schmetzer@student.uni-tuebingen.de
+
+Follow the on-screen instructions, these will include setting your password.
+If the link does not work, please paste this URL into a browser: https://workspace.refinitiv.com/ftl/?goto=https%3A%2F%2Fwww.refinitiv.com%2Fen%2Fproducts%2Frefinitiv-workspace%2Fdownload-workspace&ftl=1861303383&locale=en-US
+
+ 
+
+ 
+Web access
+Access LSEG Workspace via a browser from any computer. 
+
+http://workspace.refinitiv.com/web
+
+ 
+
+ 
+
+ 
+Support and Training
+For support, please contact us or visit MyAccount to view product, data and exchange information, find answers and track queries. Register with MyAccount.
+For training, please visit the Customer Learning Centre or contact training@lseg.com.
+ 
+Kind Regards,
+LSEG
+
+NOTE: This email is sent to you by Customer Administration, please DO NOT reply to this email address.
+
+ 
+
+ 
+
+ 
+© 2025 London Stock Exchange Group plc. All rights reserved.LSEG10 Paternoster Square, London, EC4M 7LS, United Kingdom
+Please visit: LSEG for more information.
+
+privacy statement 
+
+This e-mail is for the sole use of the intended recipient and contains information that may be privileged and/or confidential. If you are not an intended recipient, please notify the sender by return e-mail and delete this e-mail and any attachments. Certain required legal entity disclosures can be accessed on our website.
+
+ 
+
+Note: The information contained in the email is private and confidential. Please note that calls with Customer Support may be recorded for compliance purpose.
+
+LSEG Privacy Statement: To find out more about how we may collect, use and share your personal information please read our privacy statement - https://www.lseg.com/en/policies/privacy-and-cookie-statement
+--------------- EMAIL: 3 End ---------------
+
+
+--------------- EMAIL: 4 Start ---------------
+Subject: Studienteilnehmer ab 45 Jahren für Studie zur Hörwahrnehmung gesucht
+From: wenbo.wang@student.uni-tuebingen.de
+
+ ***********************************************************************
+ * Die Hochschulleitung hat dem Versand dieser Rundmail zugestimmt.    *
+ * Die inhaltliche Verantwortung liegt bei der Absenderin/dem Absender *
+ ***********************************************************************
+ ***English version below***
+ 
+ Liebe Interessierte,
+ 
+ Im Rahmen eines Forschungsprojekts in der Arbeitsgruppe Dynamic Cognition am
+ Max-Planck-Institut für Biologische Kybernetik führen wir derzeit ein 
+ Experiment zur Wahrnehmung von Tönen durch und suchen dafür Teilnehmer*innen
+ ab 45 Jahren (sehr gerne auch älter).
+ 
+ Eckdaten:
+  - Dauer: ca. 2,5 Stunden (flexible Terminvereinbarung)
+  - Ort: Max-Planck-Institut für Biologische Kybernetik, 
+ Max-Planck-Ring 11,72076 Tübingen
+  - Vergütung: 20 € pro Stunde
+ 
+ Voraussetzungen
+  - Sie sind mindestens 45 Jahre alt
+  - Sie haben keine diagnostizierten psychischen oder neurologischen
+ Erkrankungen
+  - Sie haben normale Hör- und Sehfähigkeit (Brille etc. ist kein Problem)
+  - Sie nehmen keine Medikamente, die das Nervensystem beeinflussen
+ 
+ Vielen Dank für Ihr Interesse und bei Rückfragen stehen ich jederzeit zur 
+ Verfügung.
+ Alle im Rahmen dieser Studie erhobenen persönlichen Daten werden anonymisiert 
+ und nicht an Dritte weitergegeben. Die Teilnahme ist freiwillig und kann 
+ jederzeit ohne Angabe von Gründen beendet werden.
+ 
+ Herzliche Grüße
+ Wenbo Wang
+ 
+ ***English version***
+ 
+ Dear participants,
+ 
+ As part of a research project in the Dynamic Cognition group at the Max 
+ Planck Institute for Biological Cybernetics, we are conducting an experiment 
+ on the perception of sounds and are currently looking for participants 
+ aged 45 and above.
+ 
+ Key Information:
+  - Duration: approx. 2.5 hours (flexible scheduling)
+  - Location: Max Planck Institute for Biological Cybernetics, Max-Planck-Ring
+ 11, 72076 Tübingen
+  - Compensation: €20 per hour
+ 
+ Requirements:
+  - You are at least 45 years old
+  - You have no diagnosed psychiatric or neurological disorders
+  - You have normal hearing and vision (glasses etc. are fine)
+  - You are not currently taking any medication that affects the nervous system
+ 
+ If you are interested or would like to learn more about the study, please
+ feel free to contact me via email or phone. We can then arrange an appointment 
+ and discuss the details.
+ 
+ * All personal data collected for this study will be anonymized and will 
+ not be shared with third parties. Participation is voluntary and can be 
+ terminated at any time without giving a reason.
+ 
+ Kind regards,
+ Wenbo Wang
+ ___________________________________
+ Wenbo Wang
+ Max Planck Institute for Biological Cybernetics
+ Max-Planck-Ring 11
+ 72076 Tübingen
+ Principal Investigator:
+ Dr. Assaf Breska
+ Max Planck Institute for Biological Cybernetics
+ Under the aegis of:
+ Prof. Peter Dayan
+ Computational Neuroscience, Department of Computer Science
+ University of Tübingen
+
+--------------- EMAIL: 4 End ---------------
+
+
+--------------- EMAIL: 5 Start ---------------
 Subject: Walk&Talk – gemeinsam spazieren, quatschen, Leute treffen
 From: sgmbetabalance@ifs.uni-tuebingen.de
 
@@ -84,10 +379,10 @@ From: sgmbetabalance@ifs.uni-tuebingen.de
  https://uni-tuebingen.de/de/183172
  
 
---------------- EMAIL: 1 End ---------------
+--------------- EMAIL: 5 End ---------------
 
 
---------------- EMAIL: 2 Start ---------------
+--------------- EMAIL: 6 Start ---------------
 Subject: KORREKTUR zum Datum der Eröffnung „Kunst / Macht“ 
 From: sekretariat@museum.uni-tuebingen.de
 
@@ -182,10 +477,10 @@ From: sekretariat@museum.uni-tuebingen.de
  
  
 
---------------- EMAIL: 2 End ---------------
+--------------- EMAIL: 6 End ---------------
 
 
---------------- EMAIL: 3 Start ---------------
+--------------- EMAIL: 7 Start ---------------
 Subject: [ILIAS] Neuer Beitrag im Forum "Practical class - Forum for Discussion" (Kurs " S411 Advanced Time Series Analysis in Economics and Finance 2025/26 (Password: #VECM2526)") zum Thema "Zoom Link"
 From: Noreply Ilias Universität Tübingen <ilias-system@ub.uni-tuebingen.de>
 
@@ -220,10 +515,10 @@ Diese E-Mail wurde von der ILIAS-Installation pr02, https://ovidius.uni-tuebinge
 * * * * *
 https://ovidius.uni-tuebingen.de/ilias3
 
---------------- EMAIL: 3 End ---------------
+--------------- EMAIL: 7 End ---------------
 
 
---------------- EMAIL: 4 Start ---------------
+--------------- EMAIL: 8 Start ---------------
 Subject: [ILIAS] Neuer Beitrag im Forum "Practical class - Forum for Discussion" (Kurs " S411 Advanced Time Series Analysis in Economics and Finance 2025/26 (Password: #VECM2526)") zum Thema "Zoom Link"
 From: Noreply Ilias Universität Tübingen <ilias-system@ub.uni-tuebingen.de>
 
@@ -253,10 +548,10 @@ Diese E-Mail wurde von der ILIAS-Installation pr02, https://ovidius.uni-tuebinge
 * * * * *
 https://ovidius.uni-tuebingen.de/ilias3
 
---------------- EMAIL: 4 End ---------------
+--------------- EMAIL: 8 End ---------------
 
 
---------------- EMAIL: 5 Start ---------------
+--------------- EMAIL: 9 Start ---------------
 Subject: Studienteilnehmer:innen für Bachelorstudie über YouTube-Thumbnails gesucht
 From: maria.ostrovskich@student.uni-tuebingen.de
 
@@ -309,10 +604,10 @@ From: maria.ostrovskich@student.uni-tuebingen.de
  72074 Tübingen
  nils.borchers@uni-tuebingen.de 
 
---------------- EMAIL: 5 End ---------------
+--------------- EMAIL: 9 End ---------------
 
 
---------------- EMAIL: 6 Start ---------------
+--------------- EMAIL: 10 Start ---------------
 Subject: Amtliche Bekanntmachungen Nr. 21
 From: redaktion.amtliche-bekanntmachungen@uni-tuebingen.de
 
@@ -339,10 +634,10 @@ From: redaktion.amtliche-bekanntmachungen@uni-tuebingen.de
  Ihre Redaktion Amtliche Bekanntmachungen
  
 
---------------- EMAIL: 6 End ---------------
+--------------- EMAIL: 10 End ---------------
 
 
---------------- EMAIL: 7 Start ---------------
+--------------- EMAIL: 11 Start ---------------
 Subject: Teilnahme an kurzer Online-Studie zu Produktanzeigen (ca. 3-5 Minuten)
 From: nicole.meier@student.uni-tuebingen.de
 
@@ -424,10 +719,10 @@ From: nicole.meier@student.uni-tuebingen.de
   +49 7071 29-76979
  stefan.mayer@uni-tuebingen.de
 
---------------- EMAIL: 7 End ---------------
+--------------- EMAIL: 11 End ---------------
 
 
---------------- EMAIL: 8 Start ---------------
+--------------- EMAIL: 12 Start ---------------
 Subject: [ILIAS-UB-Tue] Ihr ILIAS-Konto wird bald gelöscht
 From: Noreply ILIAS Universität Tübingen <ilias-system@ub.uni-tuebingen.de>
 
@@ -438,10 +733,10 @@ Hallo Maurice Schmetzer,
 https://lms-ubinfo.uni-tuebingen.de/ilias3
 
 
---------------- EMAIL: 8 End ---------------
+--------------- EMAIL: 12 End ---------------
 
 
---------------- EMAIL: 9 Start ---------------
+--------------- EMAIL: 13 Start ---------------
 Subject: Spinnenfund an der Universität / Spiders found at the University
 From: arbeitsschutz@uni-tuebingen.de
 
@@ -579,10 +874,10 @@ From: arbeitsschutz@uni-tuebingen.de
  Dr. Andreas Rothfuß 
  Executive Vice-President
 
---------------- EMAIL: 9 End ---------------
+--------------- EMAIL: 13 End ---------------
 
 
---------------- EMAIL: 10 Start ---------------
+--------------- EMAIL: 14 Start ---------------
 Subject: Proband:innen (m/w/d, 18-35) für MRT-Studie gesucht – 2 Termine, 185€ - 265€ 
 From: thananya.charoenpattarawut@student.uni-tuebingen.de
 
@@ -667,4 +962,30 @@ From: thananya.charoenpattarawut@student.uni-tuebingen.de
  72076 Tübingen
  
 
---------------- EMAIL: 10 End ---------------
+--------------- EMAIL: 14 End ---------------
+
+
+--------------- EMAIL: 15 Start ---------------
+Subject: Abgabedatum Masterarbeit
+From: "Münsinger, Ann-Kathrin" <ann-kathrin.muensinger@uni-tuebingen.de>
+
+Sehr geehrter Herr Schmetzer,
+
+anbei sende ich Ihnen Ihr Abgabedatum zur Masterarbeit.
+
+
+Mit freundlichen Grüßen
+
+Ann-Kathrin Münsinger
+Dezernat IV-2
+Zentrales Prüfungsamt der Universität Tübingen
+Wirtschafts- und Sozialwissenschaftliche Fächer und Theologien
+Wilhelmstr. 19
+72074 Tübingen
+Telefon 07071 29-78211
+Persönliche Sprechstunde:  nach vorheriger Terminvereinbarung: Di  13-15 Uhr
+https://uni-tuebingen.de/de/120435
+
+
+
+--------------- EMAIL: 15 End ---------------

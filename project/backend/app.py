@@ -1,6 +1,6 @@
-from pydantic import BaseModel
-from typing import List, Optional
+from typing import Optional
 import json
+from pydantic import BaseModel
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,26 +8,32 @@ from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from data.database.database_events import init_db, SessionLocal, EventORM
-from services.event_pipeline import run_email_to_db_pipeline
+from data.database.database_events import init_db, SessionLocal, EventORM  # pylint: disable=import-error
+from services.event_pipeline import run_email_to_db_pipeline  # pylint: disable=import-error
 
+#----- FastAPI app and scheduler -----
 app = FastAPI()
 
+# Initialize scheduler
 scheduler = AsyncIOScheduler(timezone="Europe/Berlin")
 
-# Allows Vite dev server to talk to the backend
+# ---- CORS settings -----
+
+# Allowed origins for CORS requests (from frontend)
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://193.196.53.179:5173",
 ]
 
+# Add CORS (Cross-Origin Resource Sharing) middleware
+# Middleware is needed to allow frontend (running on different origin) to access backend API
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    CORSMiddleware, # Middleware class for handling CORS requests
+    allow_origins=origins, # Allowed origins for CORS requests (from frontend)
+    allow_credentials=True, # Allow cookies, authorization headers, etc.
+    allow_methods=["*"], # Allow all HTTP methods
+    allow_headers=["*"], # Allow all headers
 )
 
 # ----- Data model ----
@@ -49,9 +55,10 @@ class Event(BaseModel):
     url: Optional[str] = None
     image_key: Optional[str] = None
 
+# ---- Utility functions -----
 def orm_to_pydantic(event: EventORM) -> Event:
     """
-    Converts an EventORM instance to a Pydantic Event model.
+    Converts an EventORM (SQLAlchemy ORM model) instance to a Pydantic Event model.
     """
     return Event(
         id = event.id,
@@ -69,29 +76,37 @@ def orm_to_pydantic(event: EventORM) -> Event:
         image_key = event.image_key,
     )
 
+# ----- Startup and shutdown events -----
 @app.on_event("startup")
-async def startup_event():
+async def startup_event(): 
+
+    # Startup tasks
     print("Starting up the backend server...")
 
     #1) Initialize the database
     init_db()
 
     #2) Run pipeline once at startup to fetch initial emails
-    print("Running initial email to DB pipeline...")
-    run_email_to_db_pipeline()
+    try:
+        print("Running initial email to DB pipeline...")
+        run_email_to_db_pipeline()
+    except Exception as e: # pylint: disable=broad-except
+        print(f"Error during initial pipeline run: {e}")
 
-    #3) Schedule periodic email downloads
+    #3) Schedule periodic email downloads and processing
     scheduler.add_job(
         run_email_to_db_pipeline,
-        trigger = CronTrigger(hour="*/1"),  # every hour
-        kwargs = {"limit": 10},
+        trigger = CronTrigger(hour="*/3"),  # every 3 hours
+        kwargs = {"limit": 15}, # process up to 15 emails each run
         id="email_pipeline_job",
         replace_existing = True,
     )
 
+    #4) Start the scheduler
     scheduler.start()
     print("Scheduler started, email download job scheduled.")
 
+# ----- Shutdown tasks -----
 @app.on_event("shutdown")
 async def shutdown_event():
     print("Shutting down the backend server...")
@@ -103,20 +118,27 @@ async def shutdown_event():
 async def websocket_events(websocket: WebSocket):
     """
     Protocol:
-      - client connects
-      - client sends text "get_events"
-      - server responds with JSON list of events (from DB)
+        Client sends: "get_events"
+        Server responds with: JSON array of event objects
     """
+
+    # Accept the WebSocket connection
     await websocket.accept()
+
+    # Listen for messages from the client
     try:
-        while True:
-            message = await websocket.receive_text()
+        while True: # Infinite loop to keep the connection open
+            message = await websocket.receive_text() # Wait for a message from the client
 
+            # Handle "get_events" message
             if message == "get_events":
-                with SessionLocal() as db:
-                    rows = db.query(EventORM).all()
-                    events_payload = [orm_to_pydantic(event).model_dump() for event in rows]
+                with SessionLocal() as db: # Create a new database session
+                    rows = db.query(EventORM).all() # Query all events from the database
+                    events_payload = [orm_to_pydantic(event).model_dump() for event in rows] # Convert ORM objects to Pydantic models and then to dicts
 
+                # Send the events data back to the client as JSON
                 await websocket.send_text(json.dumps(events_payload))
+
+    # Handle WebSocket disconnection
     except WebSocketDisconnect:
-        pass
+        pass # Client disconnected, exit the loop

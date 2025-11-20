@@ -6,6 +6,36 @@ import Profile from './pages/Profile';
 import Events from './pages/Events';
 import Settings from './pages/Settings';
 
+/*
+  App.tsx serves as the main layout component for the application, defining the structure
+  and routing for different pages.
+
+  <Layout>:
+    Layout is a component from Ant Design that provides a flexible and responsive layout structure.
+    It helps in organizing the content into different sections like header, footer, and content area.
+  
+  <Layout.Header>:
+    Layout.Header is a specific section of the Layout component that represents the top header area.
+    It contains navigation elements, branding, or other important information.
+  
+  <Layout.Content>:
+    Layout.Content is another section of the Layout component that represents the main content area.
+    This is where the primary content of each page is displayed based on the current route.
+  
+  <Routes> and <Route>:
+    Routes is a component from React Router that manages the routing of the application.
+    It contains multiple Route components, each defining a specific path and the corresponding component
+    to render when that path is accessed.
+
+  The layout of the frontend application is as follows:
+    
+    App.tsx
+      ├── Layout.Header (contains NavBar)
+      └── Layout.Content (renders different pages based on routing)
+          ├── Profile (at path "/")
+          ├── Events (at path "/events")
+          └── Settings (at path "/settings")
+*/
 export default function App() {
   return (
     <Layout>

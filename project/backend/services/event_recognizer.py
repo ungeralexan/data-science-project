@@ -1,10 +1,9 @@
 import json
-from pathlib import Path
-import pandas as pd
-from typing import List
 from google import genai
 
-# -------- JSON schema: multiple events --------
+# -------- LLM Event Extraction Settings --------
+
+# Schema for a single event object
 EVENT_SCHEMA  = {
     "type": "OBJECT",
     "properties": {
@@ -26,19 +25,20 @@ EVENT_SCHEMA  = {
     ],
 }
 
-# The top-level schema is an ARRAY of those objects
+# Schema for multiple event objects (array of EVENT_SCHEMA)
 SCHEMA_MULTI = {
     "type": "ARRAY",
     "items": EVENT_SCHEMA,
 }
 
-
+#-------- LLM Event Extraction Function --------
 def extract_event_info_with_llm(email_text: str) -> dict:
     """
     Uses Gemini to extract multiple events from a text containing multiple emails.
     Returns a list of dicts (one per event).
     """
 
+    # System instructions
     system_instruction = """
 
     You are a multilingual assistant that extracts event information from email texts according to a given schema. 
@@ -50,7 +50,8 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     followed by lines with "Subject: ..." and "From: ...", then a blank line, then the email body text,
     and ends with a line like "--------------- EMAIL: X End ---------------".
     
-    Only extract if there is a clear event. Keep original date/time formats. If unsure, use null. 
+    Only extract if there is a clear event. An event is a scheduled occurrence. It is NOT a invitation to participate in a study, survey, or non-event activity.
+    Change the time and date formats to match MM/DD/YYYY and HH:MM AM/PM. If unsure, use null. 
     Return ONLY a single JSON object with exactly these keys and nothing else:
 
     - Title (String): The title or name of the event. 
@@ -71,6 +72,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     It it possible that one event happens over multiple days; In that case, save the dates and times in a list.
     """
 
+    # User prompt with the email text
     user_prompt = f"""
 
     Extract event information from the following email text:
@@ -78,13 +80,17 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     {email_text}
     """
 
+    # Combine system instruction and user prompt
     contents = f"{system_instruction}\n\n{user_prompt}"
 
+    # Load Gemini API key from secrets.json
     with open("secrets.json", "r", encoding="utf-8") as f:
         secrets = json.load(f)
 
+    # Create Gemini client
     client = genai.Client(api_key=secrets["GEMINI_API_KEY"])
 
+    # Make the LLM call to generate content with the specified schema
     resp = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=contents,
@@ -94,31 +100,5 @@ def extract_event_info_with_llm(email_text: str) -> dict:
         },
     )
 
-    # resp.text should be a JSON array string: [ {event1}, {event2}, ... ]
+    # Parse and return the JSON response in the format of a list of dicts (Exp: [{"Title": "...", "Start_Date": "...", ...}, {...}, ...])
     return json.loads(resp.text)
-
-def extract_events_from_all_emails(outdir: str = "data/temp_emails") -> List[dict]:
-    """
-        This function processes all email text files in the specified folder,
-        extracts event information using the LLM, and saves the results
-    """
-
-    folder = Path(outdir)
-    all_emails_path = folder / "all_emails.txt"
-
-    # 1) Read combined email text
-    combined_text = all_emails_path.read_text(encoding="utf-8", errors="strict")
-
-    # 2) Extract events via LLM
-    events = extract_event_info_with_llm(combined_text)
-
-    # 3) Convert to DataFrame
-    df_results = pd.DataFrame(events)
-
-    # 4) Save to CSV (one row per event)
-    output_csv = folder / "extracted_event_info.csv"
-    df_results.to_csv(output_csv, index = False)
-
-    print(f"Saved {len(df_results)} events to {output_csv}")
-
-    return events

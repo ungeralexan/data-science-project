@@ -1,3 +1,4 @@
+// This is the Event type definition used throughout the frontend application.
 export type Event = {
   id: number;
   title: string;

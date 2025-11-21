@@ -102,7 +102,7 @@ def insert_non_duplicate_events(db: Session, events_raw: List[dict]) -> None:
             organizer = event.get("Organizer"),
             registration_needed = event.get("Registration_Needed"),
             url = event.get("URL"),
-            image_key = None,
+            image_key = event.get("Image_Key"),
         )
 
         # Add new row to session

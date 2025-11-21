@@ -18,12 +18,26 @@ EVENT_SCHEMA  = {
         "Organizer": {"type": "STRING", "nullable": True},
         "Registration_Needed": {"type": "BOOLEAN", "nullable": True},
         "URL": {"type": "STRING", "nullable": True},
+        "Image_Key": {"type": "STRING", "nullable": True},
     },
     "required": [
         "Title", "Start_Date", "End_Date", "Start_Time", "End_Time",
-        "Description", "Location", "Speaker", "Organizer", "Registration_Needed", "URL"
+        "Description", "Location", "Speaker", "Organizer", "Registration_Needed", "URL", "Image_Key",
     ],
 }
+
+IMAGE_KEYS = [
+    "daad", "cultural_exchange", "machine_learning", "sports_course", "ai",
+    "data_science", "max_plank", "startup", "application_workshop", "debate",
+    "museum", "student_organisation", "art_workshop", "erasmus", "networking",
+    "sustainability", "blood_donation", "festival_tuebingen", "open_day",
+    "theatre", "buddy", "film_screening", "orchestra", "tournament",
+    "careerfair", "finance_event", "orientation_week", "training", "city_tour",
+    "german_course", "party", "volunteering", "climate", "hike_trip",
+    "reading", "workshop", "workshop_png", "colloquium", "info_session",
+    "research_fair", "company_talk", "language_course", "science", "science_png",
+    "concert_event", "lecture_talk", "consulting_event", "library", "science_fair",
+]
 
 # Schema for multiple event objects (array of EVENT_SCHEMA)
 SCHEMA_MULTI = {
@@ -31,15 +45,20 @@ SCHEMA_MULTI = {
     "items": EVENT_SCHEMA,
 }
 
+image_keys_str = ", ".join(f'"{k}"' for k in IMAGE_KEYS)
+
 #-------- LLM Event Extraction Function --------
 def extract_event_info_with_llm(email_text: str) -> dict:
     """
     Uses Gemini to extract multiple events from a text containing multiple emails.
     Returns a list of dicts (one per event).
     """
-
+    # HARD FILTER: Only process Rundmails
+    if "rundmail" not in email_text.lower():
+        return []   # skip non-Rundmail emails entirely
+    
     # System instructions
-    system_instruction = """
+    system_instruction = f"""
 
     You are a multilingual assistant that extracts event information from email texts according to a given schema. 
     The emails may be in various languages including English and German. The text you receive contains multiple emails concatenated together.
@@ -65,6 +84,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Organizer (String or null): The organizer of the event if available.
     - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false.
     - URL (String or null): The URL for more information about the event if available.
+    - Image_Key (String or null): Choose one of the following image keys to represent the event: [ {image_keys_str} ].
 
     Do NOT wrap in arrays or extra objects; do NOT add extra keys; do NOT use markdown fences.
     If there is no clear event, don't return anything for this email

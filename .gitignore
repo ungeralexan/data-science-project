@@ -1,20 +1,36 @@
 # Python
-__pycache__/
+**/__pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.pyd
+*.$py.class
 .venv/
+venv/
 env/
 *.env
+*.env.*
+!example.env
 
 # FastAPI / Uvicorn logs
 *.log
+*.pid
+*.sock
 
 # VSCode
 .vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+.ipynb_checkpoints/
 
 # OS files
 .DS_Store
+
+*.db
+*.sqlite
+*.sqlite3
 
 # Node / React
 frontend/node_modules/
@@ -23,15 +39,15 @@ frontend/build/
 frontend/dist/
 **/node_modules/
 
-# Python cache inside subfolders
-*/__pycache__/
-
 # Docker
 *.pid
 *.sock
 
 # Jupyter
 .ipynb_checkpoints/
+
+# ignore temporary email data
+project/backend/data/temp_emails/
 
 # Local environment files
 .env.local

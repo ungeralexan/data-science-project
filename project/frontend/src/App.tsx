@@ -5,6 +5,7 @@ import NavBar from './components/NavBar'
 import Profile from './pages/Profile';
 import Events from './pages/Events';
 import Settings from './pages/Settings';
+import EventDetail from "./pages/EventDetail";
 
 /*
   App.tsx serves as the main layout component for the application, defining the structure
@@ -64,6 +65,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Profile />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/events/:id" element={<EventDetail />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </Layout.Content>

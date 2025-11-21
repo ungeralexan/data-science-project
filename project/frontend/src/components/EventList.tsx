@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useEvents } from "../hooks/useEvents";
 import type { SortOption } from "./EventSortButton";
 import EventImage from "./EventImage";
+import { useNavigate } from "react-router-dom";
 
 import "./css/EventList.css";
 
@@ -37,6 +38,7 @@ export default function EventList({ sortOption }: EventListProps) {
   // Fetch events and error state using the custom useEvents hook
   const { events, error } = useEvents();
 
+  const navigate = useNavigate();
   // Helper function to parse date strings into timestamps
   const parseDate = (dateStr?: string | null) => {
     if (!dateStr) return NaN; // Handle null or undefined
@@ -223,7 +225,11 @@ export default function EventList({ sortOption }: EventListProps) {
 
             */
             return (
-              <div key={event.id} className="event-card">
+              <div 
+              key={event.id} 
+              className="event-card" onClick={() => navigate(`/events/${event.id}`)}
+              role="button"
+              tabIndex={0}>
                 <div className="event-card-image-wrapper">
                   <EventImage
                     imageKey={event.image_key}
@@ -241,12 +247,6 @@ export default function EventList({ sortOption }: EventListProps) {
 
                 {event.location && (
                   <div className="event-card-location">{event.location}</div>
-                )}
-
-                {event.description && (
-                  <div className="event-card-description">
-                    {event.description}
-                  </div>
                 )}
               </div>
             );

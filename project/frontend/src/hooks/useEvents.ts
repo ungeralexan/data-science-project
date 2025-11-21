@@ -35,8 +35,9 @@ export function useEvents() {
 
   // Establish WebSocket connection on component mount
   useEffect(() => {
-    //const ws = new WebSocket("ws://193.196.53.179:8000/ws/events");
-    const ws = new WebSocket("ws://localhost:8000/ws/events");
+    const host = window.location.hostname || "localhost";
+    const wsUrl = `ws://${host}:8000/ws/events`;
+    const ws = new WebSocket(wsUrl);
     socketRef.current = ws; // Store WebSocket instance in ref
 
     // WebSocket open event handler

@@ -1,1 +1,43 @@
-data-science-project/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+*.env
+
+# FastAPI / Uvicorn logs
+*.log
+
+# VSCode
+.vscode/
+
+# OS files
+.DS_Store
+
+# Node / React
+frontend/node_modules/
+frontend/.next/
+frontend/build/
+frontend/dist/
+**/node_modules/
+
+# Python cache inside subfolders
+*/__pycache__/
+
+# Docker
+*.pid
+*.sock
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local environment files
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# ignore secrets.json
+**/secrets.json

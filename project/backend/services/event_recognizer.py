@@ -26,6 +26,7 @@ EVENT_SCHEMA  = {
     ],
 }
 
+# List of valid image keys
 IMAGE_KEYS = [
     "daad", "cultural_exchange", "machine_learning", "sports_course", "ai",
     "data_science", "max_plank", "startup", "application_workshop", "debate",
@@ -53,9 +54,6 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     Uses Gemini to extract multiple events from a text containing multiple emails.
     Returns a list of dicts (one per event).
     """
-    # HARD FILTER: Only process Rundmails
-    if "rundmail" not in email_text.lower():
-        return []   # skip non-Rundmail emails entirely
     
     # System instructions
     system_instruction = f"""

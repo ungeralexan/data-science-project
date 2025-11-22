@@ -1,0 +1,116 @@
+/* ----------- Page Wrapper -----------*/
+
+/* Overall page wrapper */
+.event-detail {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* ----------- Back Button -----------*/
+
+/* Back link */
+.event-detail-back {
+  padding-left: 0;
+  margin-bottom: 16px;
+}
+
+/* ----------- Image -----------*/
+
+/* Card layout for image + meta info */
+.event-detail-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  background: #fafafa;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Image wrapper: fixed ratio + overflow hidden */
+.event-detail-image-wrapper {
+  flex: 0 0 320px;
+  max-width: 40%;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* The actual image: same size for all events */
+.event-detail-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* ----------- Title, Time, Location Content -----------*/
+
+/* Right-hand side content */
+.event-detail-content {
+  flex: 1;
+}
+
+/* Title tweaks */
+.event-detail-title {
+  margin-bottom: 8px !important; /*!important means this style overrides other conflicting styles */
+}
+
+/* Meta info (date, time, location) */
+.event-detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.95rem;
+}
+
+.event-detail-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.event-detail-separator {
+  opacity: 0.6;
+}
+
+/* ----------- Description -----------*/
+
+.event-detail-description {
+  margin-top: 24px;
+}
+
+.event-detail-description-title {
+  margin-bottom: 8px !important;
+}
+
+.event-detail-description-text {
+  white-space: pre-line;
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+/* ----------- Calendar Button -----------*/
+
+/* Custom styling for the calendar button */
+.event-detail-calendar-button {
+  border-radius: 999px; /* fully rounded corners */     
+  font-weight: 600; /* Bold */
+  background: #1677ff;
+  border: none;
+}
+
+/* ----------- Mobile -----------*/
+
+/* Mobile: stack image above content */
+@media (max-width: 768px) {
+  .event-detail-layout {
+    flex-direction: column;
+  }
+
+  .event-detail-image-wrapper {
+    max-width: 100%;
+    width: 100%;
+  }
+}

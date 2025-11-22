@@ -87,26 +87,28 @@ def download_latest_emails(limit: int = 10) -> None:
         sender = em.get("from") or ""
         body = text or "[no text body]"
 
-        # ---- save per-email .txt file ----
-        per_email_path = os.path.join(OUTDIR, f"msg_{i:04d}.txt")
+        # ---- filter for "Rundmail" emails ----
+        if "rundmail" in body.lower():
+            # ---- save per-email .txt file ----
+            per_email_path = os.path.join(OUTDIR, f"msg_{i:04d}.txt")
 
-        # write to file including Subject and From headers for context
-        with open(per_email_path, "w", encoding="utf-8") as per_email_file:
-            per_email_file.write(f"Subject: {subject}\n")
-            per_email_file.write(f"From: {sender}\n\n")
-            per_email_file.write(body + "\n")
+            # write to file including Subject and From headers for context
+            with open(per_email_path, "w", encoding="utf-8") as per_email_file:
+                per_email_file.write(f"Subject: {subject}\n")
+                per_email_file.write(f"From: {sender}\n\n")
+                per_email_file.write(body + "\n")
 
-        # ---- prepare combined string for LLM to process ----
-        email_block = (
-            f"--------------- EMAIL: {i} Start ---------------\n"
-            f"Subject: {subject}\n"
-            f"From: {sender}\n\n"
-            f"{body}\n"
-            f"--------------- EMAIL: {i} End ---------------\n"
-        )
+            # ---- prepare combined string for LLM to process ----
+            email_block = (
+                f"--------------- EMAIL: {i} Start ---------------\n"
+                f"Subject: {subject}\n"
+                f"From: {sender}\n\n"
+                f"{body}\n"
+                f"--------------- EMAIL: {i} End ---------------\n"
+            )
 
-        # Append this email block to the list
-        combined_chunks.append(email_block)
+            # Append this email block to the list
+            combined_chunks.append(email_block)
 
     # ---- logout from the email server ----
     M.logout()

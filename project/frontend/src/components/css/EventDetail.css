@@ -7,6 +7,17 @@
   padding: 24px 16px 40px;
 }
 
+/* Card layout for image + meta info */
+.event-detail-layout {
+  display: flex; /* Flexbox for side-by-side layout */
+  gap: 24px; /* Space between image and content */
+  align-items: flex-start; /* Align items to the top */
+  background: #fafafa; /*Slightly darker background for contrast */
+  border-radius: 16px; /* Rounded corners */
+  padding: 20px; /* Inner padding */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+}
+
 /* ----------- Back Button -----------*/
 
 /* Back link */
@@ -16,17 +27,6 @@
 }
 
 /* ----------- Image -----------*/
-
-/* Card layout for image + meta info */
-.event-detail-layout {
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-  background: #fafafa;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-}
 
 /* Image wrapper: fixed ratio + overflow hidden */
 .event-detail-image-wrapper {

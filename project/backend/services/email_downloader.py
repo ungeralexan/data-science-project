@@ -88,7 +88,7 @@ def download_latest_emails(limit: int = 10) -> None:
         body = text or "[no text body]"
 
         # ---- filter for "Rundmail" emails ----
-        if "rundmail" in body.lower():
+        if ("rundmail" in body_low) or ("wiwinews" in body_low):
             # ---- save per-email .txt file ----
             per_email_path = os.path.join(OUTDIR, f"msg_{i:04d}.txt")
 

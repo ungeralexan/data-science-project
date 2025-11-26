@@ -4,52 +4,53 @@ import React from "react";
 import daadImg from "../assets/stock_images/DAAD.png";
 import culturalExchangeImg from "../assets/stock_images/cultural_exchange.jpg";
 import machineLearningImg from "../assets/stock_images/machine_learning.jpg";
-import sportsCourseImg from "../assets/stock_images/sports_course.jpg";
+import sportsCourseImg from "../assets/stock_images/sports_course.png";
 import aiImg from "../assets/stock_images/ai.jpg";
 import dataScienceImg from "../assets/stock_images/data_science.jpg";
 import maxPlankImg from "../assets/stock_images/max_plank.png";
-import startupImg from "../assets/stock_images/startup.jpg";
+import startupImg from "../assets/stock_images/startup.png";
 import applicationWorkshopImg from "../assets/stock_images/application_workshop.png";
-import debateImg from "../assets/stock_images/debate.jpg";
-import museumImg from "../assets/stock_images/museum.jpg";
+import debateImg from "../assets/stock_images/debate.png";
+import museumImg from "../assets/stock_images/museum.png";
 import studentOrganisationImg from "../assets/stock_images/student_organisation.jpg";
 import artWorkshopImg from "../assets/stock_images/art_workshop.jpg";
-import erasmusImg from "../assets/stock_images/erasmus.jpg";
+import erasmusImg from "../assets/stock_images/erasmus.png";
 import networkingImg from "../assets/stock_images/networking.jpg";
-import sustainabilityImg from "../assets/stock_images/sustainability.jpg";
+import sustainabilityImg from "../assets/stock_images/sustainability.png";
 import bloodDonationImg from "../assets/stock_images/blood_donation.png";
 import festivalTuebingenImg from "../assets/stock_images/festival_tuebingen.jpg";
 import openDayImg from "../assets/stock_images/open_day.jpg";
 import theatreImg from "../assets/stock_images/theatre.jpg";
-import buddyImg from "../assets/stock_images/buddy.jpg";
-import filmScreeningImg from "../assets/stock_images/film_screening.jpg";
-import orchestraImg from "../assets/stock_images/orchestra.jpg";
+import buddyImg from "../assets/stock_images/buddy.png";
+import filmScreeningImg from "../assets/stock_images/film_screening.png";
+import orchestraImg from "../assets/stock_images/orchestra.png";
 import tournamentImg from "../assets/stock_images/tournament.jpg";
 import careerfairImg from "../assets/stock_images/careerfair.avif";
-import financeEventImg from "../assets/stock_images/finance_event.jpg";
-import orientationWeekImg from "../assets/stock_images/orientation_week.jpg";
+import financeEventImg from "../assets/stock_images/finance_event.png";
+import orientationWeekImg from "../assets/stock_images/orientation_week.png";
 import trainingImg from "../assets/stock_images/training.jpg";
 import cityTourImg from "../assets/stock_images/city_tour.jpg";
-import germanCourseImg from "../assets/stock_images/german_course.jpg";
-import partyImg from "../assets/stock_images/party.jpg";
+import germanCourseImg from "../assets/stock_images/german_course.png";
+import partyImg from "../assets/stock_images/party.png";
 import volunteeringImg from "../assets/stock_images/volunteering.jpg";
-import climateImg from "../assets/stock_images/climate.jpg";
+import climateImg from "../assets/stock_images/climate.png";
 import hikeTripImg from "../assets/stock_images/hike_trip.jpg";
-import readingImg from "../assets/stock_images/reading.jpg";
-import workshopJpgImg from "../assets/stock_images/workshop.jpg";
-import workshopPngImg from "../assets/stock_images/workshop.png";
+import readingImg from "../assets/stock_images/reading.png";
+import workshopImg from "../assets/stock_images/workshop.png";
 import colloquiumImg from "../assets/stock_images/colloquium.jpg";
-import infoSessionImg from "../assets/stock_images/info_session.jpg";
+import infoSessionImg from "../assets/stock_images/info_session.png";
 import researchFairImg from "../assets/stock_images/research_fair.jpg";
 import companyTalkImg from "../assets/stock_images/company_talk.jpg";
-import languageCourseImg from "../assets/stock_images/language_course.jpg";
-import scienceJpgImg from "../assets/stock_images/science.jpg";
-import sciencePngImg from "../assets/stock_images/science.png";
+import languageCourseImg from "../assets/stock_images/language_course.png";
+import scienceImg from "../assets/stock_images/science.png";
 import concertEventImg from "../assets/stock_images/concert_event.jpg";
 import lectureTalkImg from "../assets/stock_images/lecture_talk.jpg";
 import consultingEventImg from "../assets/stock_images/consulting event.jpg";
-import libraryImg from "../assets/stock_images/library.jpg";
-import scienceFairImg from "../assets/stock_images/science_fair.jpg";
+import libraryImg from "../assets/stock_images/library.png";
+import scienceFairImg from "../assets/stock_images/science_fair.png";
+
+/*
+    eventImageMap:
 
 /*
     eventImageMap:
@@ -106,15 +107,15 @@ const eventImageMap: Record<string, string> = {
   climate: climateImg,
   hike_trip: hikeTripImg,
   reading: readingImg,
-  workshop: workshopJpgImg,
-  workshop_png: workshopPngImg,
+  workshop: workshopImg,
+  workshop_png: workshopImg,      // both keys use the same file
   colloquium: colloquiumImg,
   info_session: infoSessionImg,
   research_fair: researchFairImg,
   company_talk: companyTalkImg,
   language_course: languageCourseImg,
-  science: scienceJpgImg,
-  science_png: sciencePngImg,
+  science: scienceImg,
+  science_png: scienceImg,        // both keys use the same file
   concert_event: concertEventImg,
   lecture_talk: lectureTalkImg,
   consulting_event: consultingEventImg,

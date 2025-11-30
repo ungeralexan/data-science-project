@@ -31,6 +31,44 @@ We use a **central project Gmail inbox** as the single source of truth for all e
 
 
 
+## 10. Repository Structure
+
+Below is an overview of the current repository layout and the purpose of each directory.
+
+```text
+data-science-project/
+├─ data/
+│  ├─ temp_emails/                # Temporary storage for downloaded emails (all_emails.txt, msg_*.txt)
+│  ├─ database/
+│  │   └─ database_events.py      # SQLAlchemy ORM models (EventORM) and DB setup
+│  └─ __pycache__/                # Python cache files
+│
+├─ backend/
+│  ├─ services/
+│  │   ├─ email_downloader.py     # IMAP logic to download emails (Gmail/ZDV support)
+│  │   ├─ event_pipeline.py       # Full pipeline: download → extract → deduplicate → store
+│  │   ├─ event_recognizer.py     # LLM-based event extraction from email text
+│  │   ├─ event_duplicator.py     # Deduplication logic using LLM comparison
+│  │   └─ __init__.py
+│  │
+│  ├─ app.py                      # (Planned) FastAPI backend entrypoint
+│  ├─ Dockerfile                  # Backend Docker configuration
+│  └─ requirements.txt            # Python dependencies
+│
+├─ frontend/
+│  ├─ src/                        # Frontend source code (React/Vite)
+│  ├─ index.html                  # Frontend HTML entrypoint
+│  ├─ package.json                # Frontend dependencies
+│  ├─ vite.config.ts              # Vite configuration
+│  ├─ tsconfig.json               # Typescript config
+│  ├─ Dockerfile                  # Frontend Docker setup
+│  └─ README.md                   # Frontend-specific documentation
+│
+├─ docker-compose.yml             # Combined backend/frontend container setup
+├─ .gitignore
+└─ README.md                      # Main project documentation (this file)
+
+
 
 
 

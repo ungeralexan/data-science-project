@@ -36,13 +36,7 @@ We use a **central project Gmail inbox** as the single source of truth for all e
 Below is an overview of the current repository layout and the purpose of each directory.
 
 ```text
-data-science-project/
-├─ data/
-│  ├─ temp_emails/                # Temporary storage for downloaded emails (all_emails.txt, msg_*.txt)
-│  ├─ database/
-│  │   └─ database_events.py      # SQLAlchemy ORM models (EventORM) and DB setup
-│  └─ __pycache__/                # Python cache files
-│
+data-science-project/project
 ├─ backend/
 │  ├─ services/
 │  │   ├─ email_downloader.py     # IMAP logic to download emails (Gmail/ZDV support)

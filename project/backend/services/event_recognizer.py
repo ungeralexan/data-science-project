@@ -68,7 +68,11 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     and ends with a line like "--------------- EMAIL: X End ---------------".
     
     Only extract if there is a clear event. An event is a scheduled occurrence. It is NOT a invitation to participate in a study, survey, or non-event activity.
-    Change the time and date formats to match MM/DD/YYYY and HH:MM AM/PM. If unsure, use null. 
+    Change the time and date formats to match MM/DD/YYYY and HH:MM AM/PM. If unsure, use null.
+    When reading emails, pay special attention to lines starting with:
+    - "Datum:" (date)
+    - "Uhrzeit:" (time)
+    - "Ort:" (location) 
     Return ONLY a single JSON object with exactly these keys and nothing else:
 
     - Title (String): The title or name of the event. 

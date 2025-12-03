@@ -76,7 +76,7 @@ export function useEvents() {
     return () => {
       ws.close();
     };
-  }, []);
+  }, []); // Empty dependency array ensures this effect runs only once on mount
 
   // Return the current events, connection status, and error state
   return { events, isConnected, error };

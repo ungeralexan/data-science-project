@@ -50,23 +50,13 @@ import libraryImg from "../assets/stock_images/library.png";
 import scienceFairImg from "../assets/stock_images/science_fair.png";
 
 /*
-    eventImageMap:
+  This file defines the EventImage component, which displays an image for an event based on a provided image key.
 
-/*
-    eventImageMap:
-        eventImageMap is a TypeScript Record that maps string keys to string values representing image paths.
-    
-    defaultImage:
-        defaultImage is a string that holds the path to the default image used when no matching key is found in the eventImageMap.
-    
-    EventImageProps:
-        EventImageProps is a TypeScript interface that defines the props for the EventImage component.
-        It includes an optional imageKey, a title, and an optional className for styling.
-    
-    EventImage:
-        EventImage is a React functional component that displays an event image based on the provided imageKey.
-        If the imageKey matches a key in the eventImageMap, it uses the corresponding image; 
-        otherwise, it falls back to the default image.
+  EventImage Component:
+    The EventImage component takes in an imageKey, title, and optional className as props.
+    It uses the imageKey to look up the corresponding image from a predefined mapping of keys to images.
+    If the imageKey is not found, it defaults to a standard image.
+    The component then renders an img element with the selected image source, alt text, and any provided CSS class.
 */
 
 

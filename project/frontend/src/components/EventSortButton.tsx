@@ -3,19 +3,19 @@ import React from "react";
 import "./css/EventList.css"; // reuse same CSS file for controls styling
 
 /*
+  EventSortControls.tsx defines a React component that provides sorting controls for the event list.
+  It allows users to select different sorting options such as title, date, and time in ascending or descending order.
+
   SortOption:
-    SortOption is a TypeScript type that defines the possible sorting options for events.
-    It is a union type, meaning it can be one of several specified string literals.
-
+    SortOption is a TypeScript type that defines the possible sorting options available for events.
+  
   EventSortControlsProps:
-    EventSortControlsProps is a TypeScript interface that defines the props for the EventSortControls component.
-    It includes the current sort option and a callback function to handle changes to the sort option.
-    A callback function is a function that is passed as an argument to another function and is executed after some operation is completed.
-    Here , it is used to notify the parent component when the user selects a different sort option.
-
+    EventSortControlsProps is a TypeScript interface that defines the props accepted by the EventSortControls component.
+    It includes the current sortOption and an onChange function to handle changes in the selected sorting option.
+  
   EventSortControls:
-    EventSortControls is a React functional component that renders a dropdown menu for selecting event sorting options.
-    It takes in the current sort option and a change handler as props, and calls the change handler when a new option is selected.
+    EventSortControls is a React functional component that renders a dropdown menu for selecting the sorting option.
+    It uses the sortOption prop to set the current selection and calls the onChange prop when the user selects a different option.
 */
 
 // Define the possible sorting options for events

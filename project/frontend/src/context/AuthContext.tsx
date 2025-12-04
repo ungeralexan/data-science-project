@@ -1,0 +1,251 @@
+// src/context/AuthContext.tsx
+import { useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import type { User, LoginRequest, RegisterRequest, UpdateUserRequest, AuthResponse } from '../types/User';
+import { AuthContext } from './AuthContextType';
+import type { AuthContextType } from './AuthContextType';
+import { API_BASE_URL } from '../config';
+
+/*
+    In this file, we implement the AuthProvider component that uses React Context
+    to manage authentication state across the application.
+
+    Included Functions:
+
+    - fetchCurrentUser: Validates the token and fetches user info on app startup.
+    - login: Authenticates the user and stores the token and user info.
+    - register: Registers a new user and stores the token and user info.
+    - logout: Clears the authentication state.
+    - updateUser: Updates user profile information.
+    - deleteAccount: Deletes the user account.
+
+    The AuthProvider wraps the application and provides authentication context
+    to all child components, allowing them to access user authentication state
+    and functions.
+
+    <---- localStorage ---->
+
+    We use localStorage to persist the authentication token across page reloads.
+    This allows users to remain logged in even if they refresh the browser.
+    The token is stored in client-side data storage.
+
+    Key localStorage methods used:
+
+    localStorage.setItem(key, value): Stores a value under the specified key.
+    localStorage.getItem(key): Retrieves the value for the specified key.
+    localStorage.removeItem(key): Removes the specified key and its value.
+    const value = localStorage.getItem('key'): Retrieves the value stored under 'key'.
+*/
+
+// Token storage key
+const TOKEN_KEY = 'auth_token';
+
+// A ReactNode can be anything (Strings, numbers, arrays, null, ....) 
+// Children are the nested components inside AuthProvider (Routes, Pages, etc)
+interface AuthProviderProps {
+    children: ReactNode;
+}
+
+export function AuthProvider({ children }: AuthProviderProps) {
+
+    // STATE - user, token, loading (What we need to track for authentication)
+    const [user, setUser] = useState<User | null>(null);
+    const [token, setToken] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // ------- Startup -------
+
+    // useEffect runs after the component is added to the DOM
+    // checks for existing token in localStorage on mount
+    useEffect(() => {
+
+        // Check localStorage for existing token
+        const storedToken = localStorage.getItem(TOKEN_KEY);
+
+        if (storedToken) {
+
+            // Set token state from localStorage
+            setToken(storedToken);
+            // Validate token and get user info
+            fetchCurrentUser(storedToken);
+        } else {
+            setIsLoading(false);
+        }
+    }, []);
+
+    // ------- Auth Functions -------
+
+    // Validate current user info using the stored token
+    // async function allows us to use await inside it
+    
+    const fetchCurrentUser = async (authToken: string) => {
+        try {
+
+            // Call the backend to get user info
+            // fetch is browser built-in function to make HTTP requests
+            const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+                method: 'GET',
+                // We manually have to set the Authorization header to include the token
+                // Otherwise, the backend won't know it. 
+                headers: {'Authorization': `Bearer ${authToken}`,},
+            });
+
+            // If the response is OK, parse the user data
+            if (response.ok) {
+
+                // Response Format = User from User.ts
+                const userData: User = await response.json();
+
+                setUser(userData);
+                setToken(authToken);
+
+            // If response not ok, clear invalid token
+            } else {
+                // Token is invalid or expired
+                localStorage.removeItem(TOKEN_KEY);
+                setToken(null);
+                setUser(null);
+            }
+        } catch (error) {
+            console.error('Error fetching current user:', error);
+            localStorage.removeItem(TOKEN_KEY);
+            setToken(null);
+            setUser(null);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Login function - authenticates user and stores token and user info
+    const login = async (data: LoginRequest): Promise<void> => {
+
+        // Call the backend login endpoint and pass the login data
+        const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+            method: 'POST', //Sending data
+            headers: {
+                'Content-Type': 'application/json', //Tell backend we are sending JSON
+            },
+
+            body: JSON.stringify(data), // Convert data to JSON string
+        });
+
+        // If login fails, throw an error
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Login failed');
+        }
+
+        // If login successful, parse the auth response as type AuthResponse
+        const authResponse: AuthResponse = await response.json();
+
+        // Store the token in localStorage and update state
+        localStorage.setItem(TOKEN_KEY, authResponse.access_token);
+
+        setToken(authResponse.access_token);
+        setUser(authResponse.user);
+    };
+
+    // Register function - creates new user and stores token and user info
+    const register = async (data: RegisterRequest): Promise<void> => {
+        const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Registration failed');
+        }
+
+        const authResponse: AuthResponse = await response.json();
+
+        localStorage.setItem(TOKEN_KEY, authResponse.access_token);
+
+        setToken(authResponse.access_token);
+        setUser(authResponse.user);
+    };
+
+    // Logout function - clears token and user info
+    const logout = () => {
+        localStorage.removeItem(TOKEN_KEY);
+        setToken(null);
+        setUser(null);
+    };
+
+    // Update user profile information
+    const updateUser = async (data: UpdateUserRequest): Promise<void> => {
+        if (!token) {
+            throw new Error('Not authenticated');
+        }
+
+        const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Update failed');
+        }
+
+        const updatedUser: User = await response.json();
+        setUser(updatedUser);
+    };
+
+    // Delete user account
+    const deleteAccount = async (): Promise<void> => {
+        if (!token) {
+            throw new Error('Not authenticated');
+        }
+
+        const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Delete failed');
+        }
+
+        // Clear local state after successful deletion
+        localStorage.removeItem(TOKEN_KEY);
+        setToken(null);
+        setUser(null);
+    };
+
+    // ------- Context Value -------
+
+    // value = AuthContextType object to provide to children components
+    const value: AuthContextType = {
+        user,
+        token,
+        isAuthenticated: !!user && !!token,
+        isLoading,
+        login,
+        register,
+        logout,
+        updateUser,
+        deleteAccount,
+    };
+
+    // ------- Render -------
+
+    // Provide the AuthContext to child components with AuthContext.Provider
+    // That way they can access the auth state and functions.
+    return (
+        <AuthContext.Provider value={value}>
+            {children} {/* Render nested components (Routes, Pages, etc) */}
+        </AuthContext.Provider>
+    );
+}

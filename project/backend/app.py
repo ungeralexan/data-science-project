@@ -10,6 +10,7 @@ from apscheduler.triggers.cron import CronTrigger
 
 from data.database.database_events import init_db, SessionLocal, EventORM  # pylint: disable=import-error
 from services.event_pipeline import run_email_to_db_pipeline  # pylint: disable=import-error
+from auth import auth_router  # pylint: disable=import-error
 
 #----- FastAPI app and scheduler -----
 app = FastAPI()
@@ -36,6 +37,9 @@ app.add_middleware(
     allow_headers=["*"], # Allow all headers
 )
 
+# ----- Include routers -----
+app.include_router(auth_router)
+
 # ----- Data model ----
 class Event(BaseModel):
     """
@@ -54,6 +58,7 @@ class Event(BaseModel):
     registration_needed: Optional[str] = None
     url: Optional[str] = None
     image_key: Optional[str] = None
+
 
 # ---- Utility functions -----
 def orm_to_pydantic(event: EventORM) -> Event:
@@ -75,6 +80,7 @@ def orm_to_pydantic(event: EventORM) -> Event:
         url = event.url,
         image_key = event.image_key,
     )
+
 
 # ----- Startup and shutdown events -----
 @app.on_event("startup")
@@ -112,6 +118,7 @@ async def shutdown_event():
     print("Shutting down the backend server...")
     scheduler.shutdown()
     print("Scheduler shut down.")
+
 
 # ----- WebSocket endpoint -----
 @app.websocket("/ws/events")

@@ -19,6 +19,7 @@ Cython==3.1.4
 debugpy==1.8.17
 decorator==5.2.1
 docker==7.1.0
+email-validator==2.1.0
 fastapi==0.117.1
 fastapi-azure-auth==5.2.0
 google-genai==1.39.1
@@ -51,6 +52,7 @@ plotly==6.3.0
 polars==1.33.1
 psutil==7.1.0
 pydub==0.25.1
+PyJWT==2.8.0
 pyodbc==5.2.0
 pyperclip==1.11.0
 pylint==3.3.8

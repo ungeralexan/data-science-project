@@ -1,12 +1,15 @@
 // components/NavBar.tsx
-import { Menu } from 'antd';
+import { Menu, Button, Space } from 'antd';
 import type { MenuProps } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   UserOutlined,
   CalendarOutlined,
   SettingOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
+import { useAuth } from '../hooks/useAuth';
+import './css/NavBar.css';
 
 /*
   Define the navigation items for the NavBar.
@@ -30,15 +33,24 @@ import {
     UserOutlined, CalendarOutlined, and SettingOutlined are icon components from Ant Design that represent
     user profile, calendar/events, and settings respectively.
 
-
+  useAuth:
+    useAuth is a custom hook that provides access to the authentication context, including user info
+    and logout functionality.
 */
-const items: MenuProps['items'] = [
+
+// Navigation items for authenticated users
+const authenticatedItems: MenuProps['items'] = [
   { key: '/',        icon: <UserOutlined />,    label: <Link to="/">Profile</Link> },
   { key: '/events',  icon: <CalendarOutlined />,label: <Link to="/events">Events</Link> },
   { key: '/settings',icon: <SettingOutlined />, label: <Link to="/settings">Settings</Link> },
 ];
 
+// Navigation items for unauthenticated users (empty - they see login/register buttons)
+const unauthenticatedItems: MenuProps['items'] = [];
+
 export default function NavBar() {
+  const { isAuthenticated, logout, user } = useAuth();
+  const navigate = useNavigate();
 
   /*
     Get the current URL path to determine which menu item should be highlighted as selected.
@@ -51,6 +63,11 @@ export default function NavBar() {
   const rootPath = '/' + pathname.split('/')[1];
   const selected = rootPath === '//' ? '/' : rootPath;
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   /*
     Render the navigation bar with menu items and highlight the selected item based on the current URL.
 
@@ -61,12 +78,41 @@ export default function NavBar() {
     style: This property customizes the menu's appearance to remove the bottom border and make it flush with the header.
   */
   return (
-    <Menu
-      mode="horizontal"
-      theme="light"
-      items={items}
-      selectedKeys={[selected]}
-      style={{ borderBottom: 'none', background: 'transparent' }}
-    />
+    <div className="navbar-container">
+      <Menu
+        mode="horizontal"
+        theme="light"
+
+        // Menu items are chosen based on authentication status
+        items={isAuthenticated ? authenticatedItems : unauthenticatedItems}
+        selectedKeys={[selected]}
+        className="navbar-menu"
+      />
+      
+      {/* if authenticated, show greeting and logout button */}
+      {isAuthenticated ? (
+        <Space>
+          <span className="navbar-greeting">
+            Hi, {user?.first_name}
+          </span>
+          <Button 
+            icon={<LogoutOutlined />} 
+            onClick={handleLogout}
+            type="text"
+          >
+            Logout
+          </Button>
+        </Space>
+      ) : (
+        <Space>
+          <Link to="/login">
+            <Button type="text">Sign In</Button>
+          </Link>
+          <Link to="/register">
+            <Button type="primary">Sign Up</Button>
+          </Link>
+        </Space>
+      )}
+    </div>
   );
 }

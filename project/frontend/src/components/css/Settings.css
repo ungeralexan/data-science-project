@@ -1,0 +1,22 @@
+/* Settings.css - Styles for the Settings page */
+
+/* Settings page container */
+.settings-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Full width space container */
+.settings-space-full-width {
+    width: 100%;
+}
+
+/* Danger zone card border */
+.settings-danger-card {
+    border-color: #ff4d4f;
+}
+
+/* Danger zone divider */
+.settings-danger-divider {
+    margin: 12px 0;
+}

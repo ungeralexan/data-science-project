@@ -1,0 +1,31 @@
+/* Events.css - Styles for the Events page */
+
+.events-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.events-page-header {
+  margin-bottom: 24px;
+}
+
+.events-page-title {
+  margin-bottom: 8px !important;
+  font-size: 28px !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 576px) {
+  .events-page {
+    padding: 0 8px;
+  }
+  
+  .events-page-header {
+    margin-bottom: 16px;
+  }
+  
+  .events-page-title {
+    font-size: 24px !important;
+  }
+}

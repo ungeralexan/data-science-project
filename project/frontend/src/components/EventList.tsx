@@ -37,8 +37,8 @@ export default function EventList({ sortOption }: EventListProps) {
 
   // Fetch events and error state using the custom useEvents hook
   const { events, error } = useEvents();
-
   const navigate = useNavigate();
+
   // Helper function to parse date strings into timestamps
   const parseDate = (dateStr?: string | null) => {
     if (!dateStr) return NaN; // Handle null or undefined

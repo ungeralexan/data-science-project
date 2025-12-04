@@ -5,6 +5,7 @@ import EventList from '../components/EventList';
 
 import EventSortControls from "../components/EventSortButton";
 import type { SortOption } from "../components/EventSortButton";
+import "../components/css/Events.css";
 
 /*
   Events.tsx is the main page component for displaying a list of events. It includes sorting functionality
@@ -36,12 +37,16 @@ export default function Events() {
 
   // Render the Events page with title, sorting controls, and event list
   return (
-    <div>
-      <Title level={2}>Events</Title>
+    <div className="events-page">
+      <div className="events-page-header">
+        <Title level={2} className="events-page-title">Events</Title>
+      </div>
+
       <EventSortControls
         sortOption={sortOption}
         onChange={setSortOption}
       />
+      
       <EventList sortOption={sortOption} />
     </div>
   );

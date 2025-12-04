@@ -1,0 +1,21 @@
+/* NavBar.css - Styles for the navigation bar */
+
+/* NavBar container */
+.navbar-container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Menu styling */
+.navbar-menu {
+    border-bottom: none;
+    background: transparent;
+    flex: 1;
+}
+
+/* User greeting text */
+.navbar-greeting {
+    color: #666;
+}

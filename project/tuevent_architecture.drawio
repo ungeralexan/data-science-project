@@ -1,0 +1,742 @@
+<mxfile host="65bd71144e">
+    <diagram id="QU4z8uhpkmPFsxJ6umoC" name="Page-1">
+        <mxGraphModel dx="1199" dy="649" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="10000" pageHeight="5000" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="112" value="" style="endArrow=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#C73500;strokeWidth=2;fillColor=#fa6800;" parent="1" source="84" target="15" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1929.94" y="1800" as="sourcePoint"/>
+                        <mxPoint x="2142.94" y="1250" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2140" y="1400"/>
+                            <mxPoint x="2218" y="1400"/>
+                            <mxPoint x="2218" y="1270"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="80" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;dashed=1;strokeWidth=3;strokeColor=#b85450;fillStyle=auto;glass=0;fillOpacity=35;" parent="1" vertex="1">
+                    <mxGeometry x="2750" y="1140" width="1000" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;dashed=1;strokeWidth=3;strokeColor=#82b366;fillStyle=auto;glass=0;fillOpacity=35;" parent="1" vertex="1">
+                    <mxGeometry x="1650" y="1140" width="1090" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="&lt;b&gt;main.tsx&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Sets up the React app by wrapping the App component with necessary providers for routing and theming &amp;amp; rendering it to the Dom.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="2055" y="450" width="230" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="&lt;b&gt;App.tsx&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;App.tsx is the main layout component, defining the structure and routing for different pages. The following routes are defined:&lt;/div&gt;&lt;div&gt;&lt;ul&gt;&lt;li style=&quot;text-align: left;&quot;&gt;/login (Public)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;/register (Public)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;/forgot-password (Public)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;/reset-password (Public)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;/events (Protected)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;/events/:id (Protected)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;/settings (Protected)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;/ (Protected)&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="2050" y="650" width="240" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="3" target="4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2300" y="940" as="sourcePoint"/>
+                        <mxPoint x="2350" y="890" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6" value="&lt;b&gt;AuthContext.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;This file implements the AuthProvider component that uses React Context to manage authentication state throught the app.&amp;nbsp;&lt;/div&gt;&lt;div&gt;The acces token is saved in broser via localStorage.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;table align=&quot;center&quot; style=&quot;border: 1px solid rgb(0, 0, 0); border-collapse: collapse;&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Function&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Purpose&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Request endpoint &lt;br&gt;in Backend called&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Response structure &lt;br&gt;from Backend&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;fetchCurrentUser()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Sends GET request to backend with authToken&lt;br&gt;to validate the current user.&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/api/auth/me&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;User from &lt;span style=&quot;background-color: rgb(255, 255, 102);&quot;&gt;User.ts&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;login()&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;Sends POST request to backend with&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;LoginRequest data structure from &lt;/span&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: rgb(255, 255, 102);&quot;&gt;User.ts&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/api/auth/login&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;AuthResponse from &lt;span style=&quot;background-color: rgb(255, 255, 102);&quot;&gt;User.ts&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;register()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Sends POST request to backend with &lt;br&gt;RegisterRequest data structure from &lt;span style=&quot;background-color: rgb(255, 255, 102);&quot;&gt;User.ts&lt;/span&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/api/auth/register&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;AuthReponse from &lt;span style=&quot;background-color: rgb(255, 255, 102);&quot;&gt;User.ts&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;logout()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Clears token and user info from localStorage&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/api/auth/me&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;updateUser()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Sends PUT request to backend with &lt;br&gt;UpdateUserRequest from User.ts to update &lt;br&gt;user data.&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/api/auth/me&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63);&quot;&gt;User from&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); background-color: rgb(255, 255, 102);&quot;&gt;User.ts&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;deleteAccount()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Sends DELETE request to backend to&lt;br&gt;remove user data&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/api/auth/me&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="740" y="1420" width="720" height="330" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="&lt;b&gt;ProtectedRoute.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Component to check if user is authenticated. If he is authenticated, the children components are rendered, otherwise he is redirected to /login page&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="2880" y="1160" width="300" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="134" value="" style="edgeStyle=none;html=1;" parent="1" source="8" target="16" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="&lt;b&gt;NavBar.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Loads items in nav bar based on authentication status&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="2650" y="1160" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="&lt;b&gt;Profile.tsx&amp;nbsp;&lt;/b&gt;&lt;div&gt;(/)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="2850" y="1330" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="&lt;b&gt;Events.tsx&lt;/b&gt;&lt;div&gt;(/events)&lt;br&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Renders Sort Control Button &amp;amp; Event List&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="3310" y="1330" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="&lt;b&gt;Settings.tsx&amp;nbsp;&lt;/b&gt;&lt;div&gt;(/settings)&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;User can change login credentials &amp;amp; define interests&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="3080" y="1330" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="&lt;b&gt;EventDetail.tsx&lt;/b&gt;&lt;div&gt;(&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;/events:id)&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Renders specific event&lt;/div&gt;&lt;div&gt;based on id&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="3550" y="1330" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="&lt;b&gt;Login.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Login page component that provides form for user to sign in&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="1670" y="1160" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="&lt;b&gt;Register.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Register page component that provides form to register&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="1920" y="1160" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="&lt;b&gt;ForgotPassword.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Page to create new password&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="2170" y="1160" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="&lt;b&gt;ResetPassword.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Page to reset password&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fillOpacity=100;imageWidth=24;" parent="1" vertex="1">
+                    <mxGeometry x="2420" y="1160" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="&lt;b&gt;AuthContextType.ts&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;This file creates the AuthContext using React createContext. It includes:&lt;/div&gt;&lt;div&gt;&lt;ul&gt;&lt;li style=&quot;text-align: left;&quot;&gt;User (Currently authenticated User defined in &lt;span style=&quot;background-color: rgb(255, 255, 102);&quot;&gt;User.ts&lt;/span&gt;)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;Token (JWT access token)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;isAuthenticated (Boolean indicating if user is authenticated&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;isLoading (Boolean indicating if authentication status is being checked)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;login (Function to log in a user with structure of login request defined in &lt;span style=&quot;background-color: rgb(255, 255, 102);&quot;&gt;User.ts&lt;/span&gt;)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;reqister (Function to register a new user with structure of register request defined in &lt;span style=&quot;background-color: rgb(255, 255, 102);&quot;&gt;User.ts&lt;/span&gt;)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;logout (Function to log out)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;updateUser (Function to update the current user&#39;s information with structure of update request defined in &lt;span style=&quot;background-color: rgb(255, 255, 102);&quot;&gt;User.ts&lt;/span&gt;)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;deleteAccount (Function to delete the current user&#39;s account)&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="680" y="1820" width="480" height="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="&lt;b&gt;useAuth.ts&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;This file defines a custom React hook that provides access to the authentication context. By using useAuth(), you get access to functions and values within the context.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Example: Gives access to login function&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;const { login } = useAuth();&amp;nbsp;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;noLabel=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1580" y="1450" width="370" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="&lt;b&gt;User.ts&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;This file defines TypeScript interfaces for user-related data structures&lt;/div&gt;&lt;div&gt;&lt;ul&gt;&lt;li style=&quot;text-align: left;&quot;&gt;User&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;LoginRequest&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;RegisterRequest&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;UpdateUserRequest&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;AuthReponse&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="805" y="2180" width="230" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="" style="endArrow=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="25" target="22" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1090" y="2220" as="sourcePoint"/>
+                        <mxPoint x="1140" y="2170" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="28" value="" style="endArrow=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="22" target="6" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1150" y="1900" as="sourcePoint"/>
+                        <mxPoint x="1200" y="1850" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="29" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="25" target="6" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1200" y="2120" as="sourcePoint"/>
+                        <mxPoint x="1250" y="2070" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="31" value="" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="6" target="4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1450" y="1200" as="sourcePoint"/>
+                        <mxPoint x="1500" y="1150" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="32" value="App is wrapped in AuthProvider component&amp;nbsp;&lt;div&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;that provides AuthContext storing user data&lt;/font&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="31" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3354" y="-1" relative="1" as="geometry">
+                        <mxPoint x="749" y="-92" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="34" value="" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="6" target="23" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1710" y="1580" as="sourcePoint"/>
+                        <mxPoint x="1760" y="1530" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="44" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="4" target="13" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1900" y="1000" as="sourcePoint"/>
+                        <mxPoint x="1950" y="950" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="57" value="If user visits /login&amp;nbsp;&lt;div&gt;page,&amp;nbsp;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;Login.tsx&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;is called&lt;/span&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="44" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0064" y="1" relative="1" as="geometry">
+                        <mxPoint x="-173" y="44" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="48" value="" style="endArrow=classic;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=0.25;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;elbow=vertical;dashed=1;" parent="1" source="13" target="4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1730" y="980" as="sourcePoint"/>
+                        <mxPoint x="1780" y="930" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="50" value="&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(0, 0, 0);&quot;&gt;If user clicks on&amp;nbsp;&lt;/span&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(0, 0, 0);&quot;&gt;sign up button,&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(0, 0, 0);&quot;&gt;he is&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;redirected&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;to /register page&lt;/span&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="48" vertex="1" connectable="0">
+                    <mxGeometry x="-0.6274" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="49" value="" style="endArrow=classic;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;dashed=1;" parent="1" source="13" target="4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1730" y="980" as="sourcePoint"/>
+                        <mxPoint x="1780" y="930" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="51" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;If user clicks on&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;forgot password&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;button,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;he is&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;redirected to&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;/forgot-password&lt;/span&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="49" vertex="1" connectable="0">
+                    <mxGeometry x="-0.6007" y="-1" relative="1" as="geometry">
+                        <mxPoint x="-1" y="-79" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="52" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="4" target="14" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2370" y="1230" as="sourcePoint"/>
+                        <mxPoint x="2130" y="1130" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="63" value="If user visits /register&lt;div&gt;page, Register.tsx&lt;/div&gt;&lt;div&gt;is called&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="52" vertex="1" connectable="0">
+                    <mxGeometry x="0.6787" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="53" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="23" target="14" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1940" y="1460" as="sourcePoint"/>
+                        <mxPoint x="2100" y="1350" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1765" y="1370"/>
+                            <mxPoint x="2015" y="1370"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="56" value="&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(0, 0, 0);&quot;&gt;If user clicks on register button,&lt;/span&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;context register function is called&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="53" vertex="1" connectable="0">
+                    <mxGeometry x="0.756" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="54" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="23" target="13" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2050" y="1400" as="sourcePoint"/>
+                        <mxPoint x="2100" y="1350" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="55" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;If user clicks on login button,&lt;/span&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;context login function is called&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="54" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0086" y="1" relative="1" as="geometry">
+                        <mxPoint x="1" y="-51" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="59" value="" style="endArrow=classic;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;strokeWidth=2;" parent="1" source="13" target="4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1890" y="890" as="sourcePoint"/>
+                        <mxPoint x="1940" y="840" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1620" y="1205"/>
+                            <mxPoint x="1620" y="890"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="60" value="If user logs in,&lt;div&gt;he is redirected&lt;/div&gt;&lt;div&gt;to &quot;/&quot; page&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="59" vertex="1" connectable="0">
+                    <mxGeometry x="-0.477" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="61" value="" style="endArrow=classic;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;dashed=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;" parent="1" source="14" target="4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1950" y="1120" as="sourcePoint"/>
+                        <mxPoint x="2000" y="1110" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1968" y="1110"/>
+                            <mxPoint x="2001" y="1110"/>
+                            <mxPoint x="2001" y="890"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="62" value="If user clicks on&lt;div&gt;Already have an&lt;/div&gt;&lt;div&gt;account button, he&lt;/div&gt;&lt;div&gt;is redirected to&lt;/div&gt;&lt;div&gt;/login page&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="61" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0086" y="-1" relative="1" as="geometry">
+                        <mxPoint y="-27" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="64" value="" style="endArrow=classic;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="14" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2000" y="1060" as="sourcePoint"/>
+                        <mxPoint x="2050" y="890" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1910" y="1183"/>
+                            <mxPoint x="1910" y="890"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="65" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;If user registers,&lt;/span&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;he is redirected&lt;/div&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;to &quot;/&quot; page&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="64" vertex="1" connectable="0">
+                    <mxGeometry x="-0.2754" y="3" relative="1" as="geometry">
+                        <mxPoint y="-42" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="66" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="4" target="15" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2210" y="1120" as="sourcePoint"/>
+                        <mxPoint x="2260" y="1070" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="67" value="If user visits&amp;nbsp;&lt;div&gt;/forgot-password,&lt;div&gt;ForgotPassword.tsx&amp;nbsp;&lt;/div&gt;&lt;div&gt;is&amp;nbsp;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;called&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="66" vertex="1" connectable="0">
+                    <mxGeometry x="0.6846" relative="1" as="geometry">
+                        <mxPoint y="-5" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="68" value="" style="endArrow=classic;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="4" target="16" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2330" y="1160" as="sourcePoint"/>
+                        <mxPoint x="2380" y="1110" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="104" value="If user visits&amp;nbsp;&lt;div&gt;/reset-password &amp;amp;&lt;/div&gt;&lt;div&gt;/reset-password with token&lt;/div&gt;&lt;div&gt;received via email&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="68" vertex="1" connectable="0">
+                    <mxGeometry x="0.8044" y="-2" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="70" value="Temp Backend Shape" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+                    <mxGeometry x="4940" y="1870" width="220" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="71" value="" style="endArrow=classic;startArrow=classic;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="70" target="15" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2460" y="1620" as="sourcePoint"/>
+                        <mxPoint x="2510" y="1570" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="4080" y="1920"/>
+                            <mxPoint x="2265" y="1920"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="72" value="POST Request to&amp;nbsp;&lt;div&gt;change&amp;nbsp;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;password at&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;/api/auth/forgot-password&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;backend endpoint&lt;/span&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="71" vertex="1" connectable="0">
+                    <mxGeometry x="0.5587" relative="1" as="geometry">
+                        <mxPoint x="-68" y="-300" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="75" value="" style="endArrow=classic;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="15" target="4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2250" y="1160" as="sourcePoint"/>
+                        <mxPoint x="2300" y="1110" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="76" value="If user submitted&amp;nbsp;&lt;div&gt;request, he is&amp;nbsp;&lt;/div&gt;&lt;div&gt;redirected to&amp;nbsp;&lt;/div&gt;&lt;div&gt;/login page&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="75" vertex="1" connectable="0">
+                    <mxGeometry x="-0.061" y="-1" relative="1" as="geometry">
+                        <mxPoint y="-12" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="78" value="" style="endArrow=classic;startArrow=classic;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.25;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="70" target="16" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2850" y="1670" as="sourcePoint"/>
+                        <mxPoint x="2650" y="1490" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2515" y="1895"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="105" value="POST request to&lt;div&gt;reset password at&lt;/div&gt;&lt;div&gt;/api/auth/reset-password&lt;/div&gt;&lt;div&gt;backend endpoint&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="78" vertex="1" connectable="0">
+                    <mxGeometry x="0.843" y="-1" relative="1" as="geometry">
+                        <mxPoint x="-1" y="139" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="79" value="" style="endArrow=classic;startArrow=classic;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="6" target="70" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2100" y="1780" as="sourcePoint"/>
+                        <mxPoint x="2460" y="1710" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1520" y="1667"/>
+                            <mxPoint x="1520" y="1945"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="82" value="App.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="1940" y="2060" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="84" value="AuthPage.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="2080" y="2060" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="85" value="EventDetail.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="2220" y="2060" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="86" value="EventList.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="2360" y="2060" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="87" value="NavBar.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="2785" y="2060" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="88" value="Profile.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="2640" y="2060" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="89" value="ProtectedRoute.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="2925" y="2060" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="90" value="Settings.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="3065" y="2060" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="91" value="&lt;b&gt;CalendarDownloadButton.tsx&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Adds button to download event&lt;/div&gt;&lt;div&gt;as ics file&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="4010" y="1470" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="92" value="&lt;b&gt;EventImage.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Defines EventImage component&lt;/div&gt;&lt;div&gt;to show images&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="3780" y="1470" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="93" value="&lt;b&gt;EventList.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Displays list of events based on provided sort option&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="3540" y="1470" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="94" value="&lt;b&gt;EventSortButton.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Defines React component that&lt;/div&gt;&lt;div&gt;provides sorting controls for the&lt;/div&gt;&lt;div&gt;event list&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="3310" y="1470" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="95" value="&lt;b&gt;index.ts&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;File exports config values from&lt;/div&gt;&lt;div&gt;parameters.json&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1260" y="1090" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="98" value="&lt;b&gt;parameters.json&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Contains backend URL, port &amp;amp; event interest keys&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;" parent="1" vertex="1">
+                    <mxGeometry x="1260" y="940" width="190" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="100" value="&lt;b&gt;useEvents.ts&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Custom React hook establishes a WebSocket connection&amp;nbsp;&lt;/div&gt;&lt;div&gt;to backend &amp;amp; saves events in React state&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="3540" y="1600" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="101" value="&lt;b&gt;Events.ts&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Defines Event type with&lt;/div&gt;&lt;div&gt;properties (id, title, etc.)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="3780" y="1600" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="103" value="index.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="1800" y="2060" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="106" value="" style="endArrow=classic;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.25;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="16" target="4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2480" y="1110" as="sourcePoint"/>
+                        <mxPoint x="2530" y="1060" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="107" value="If user resets password,&lt;div&gt;he is redirected to&lt;/div&gt;&lt;div&gt;/login page after&lt;/div&gt;&lt;div&gt;2 seconds&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="106" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3371" relative="1" as="geometry">
+                        <mxPoint y="35" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="108" value="" style="endArrow=classic;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;dashed=1;" parent="1" source="16" target="4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2420" y="1130" as="sourcePoint"/>
+                        <mxPoint x="2460" y="1060" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="109" value="If no token is&lt;div&gt;provided, user is&lt;/div&gt;&lt;div&gt;redirected to&lt;/div&gt;&lt;div&gt;/forgot-password&lt;/div&gt;&lt;div&gt;page&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="108" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3948" y="-2" relative="1" as="geometry">
+                        <mxPoint x="-2" y="-86" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="110" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#C73500;strokeWidth=2;fillColor=#fa6800;" parent="1" source="84" target="13" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2380" y="1550" as="sourcePoint"/>
+                        <mxPoint x="2430" y="1500" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2140" y="1400"/>
+                            <mxPoint x="1890" y="1400"/>
+                            <mxPoint x="1890" y="1270"/>
+                            <mxPoint x="1813" y="1270"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="111" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#C73500;strokeWidth=2;fillColor=#fa6800;" parent="1" source="84" target="14" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2147" y="1910" as="sourcePoint"/>
+                        <mxPoint x="2110" y="1360" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2140" y="1400"/>
+                            <mxPoint x="2110" y="1400"/>
+                            <mxPoint x="2110" y="1270"/>
+                            <mxPoint x="2063" y="1270"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="113" value="" style="endArrow=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#C73500;strokeWidth=2;fillColor=#fa6800;" parent="1" source="84" target="16" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2090" y="1820" as="sourcePoint"/>
+                        <mxPoint x="2458" y="1270" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2140" y="1400"/>
+                            <mxPoint x="2467" y="1400"/>
+                            <mxPoint x="2467" y="1270"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="127" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="23" target="8" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2570" y="1570" as="sourcePoint"/>
+                        <mxPoint x="2620" y="1520" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1765" y="1370"/>
+                            <mxPoint x="2745" y="1370"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="129" value="If user clicks on logout button,&lt;div&gt;context logout function is called&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="127" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0004" y="-3" relative="1" as="geometry">
+                        <mxPoint x="355" y="-3" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="128" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#C73500;strokeWidth=2;fillColor=#fa6800;" parent="1" source="87" target="8" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2475" y="2110" as="sourcePoint"/>
+                        <mxPoint x="2843" y="1330" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2845" y="2020"/>
+                            <mxPoint x="2745" y="2020"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="130" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="4" target="8" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2680" y="1120" as="sourcePoint"/>
+                        <mxPoint x="2730" y="1070" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="131" value="Navbar component&amp;nbsp;&lt;div&gt;is&amp;nbsp;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;always rendered&lt;/span&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="130" vertex="1" connectable="0">
+                    <mxGeometry x="0.876" y="1" relative="1" as="geometry">
+                        <mxPoint x="-6" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="132" value="" style="endArrow=classic;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="8" target="4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2720" y="1060" as="sourcePoint"/>
+                        <mxPoint x="2770" y="1010" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="133" value="If user clicks button in navbar:&lt;div&gt;&lt;ul&gt;&lt;li&gt;Logout -&amp;gt; /login&lt;/li&gt;&lt;li&gt;Sign In -&amp;gt; /login&lt;/li&gt;&lt;li&gt;Register -&amp;gt; /register&lt;/li&gt;&lt;li&gt;Profile -&amp;gt; /&lt;/li&gt;&lt;li&gt;Events -&amp;gt; /events&lt;/li&gt;&lt;li&gt;Settings -&amp;gt; /settings&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=left;verticalAlign=middle;resizable=0;points=[];" parent="132" vertex="1" connectable="0">
+                    <mxGeometry x="-0.5908" y="-1" relative="1" as="geometry">
+                        <mxPoint x="-73" y="-26" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="135" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#e3c800;strokeColor=#B09500;strokeWidth=2;" parent="1" source="6" target="95" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1780" y="1330" as="sourcePoint"/>
+                        <mxPoint x="1830" y="1280" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1280" y="1330"/>
+                            <mxPoint x="1355" y="1330"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="136" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;fillColor=#e3c800;strokeColor=#B09500;" parent="1" source="95" target="16" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1780" y="1330" as="sourcePoint"/>
+                        <mxPoint x="1830" y="1280" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1355" y="1330"/>
+                            <mxPoint x="2563" y="1330"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="137" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#e3c800;strokeColor=#B09500;strokeWidth=2;" parent="1" source="95" target="8" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2120" y="1310" as="sourcePoint"/>
+                        <mxPoint x="2170" y="1260" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1355" y="1330"/>
+                            <mxPoint x="2793" y="1330"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="138" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;strokeWidth=2;fillColor=#e3c800;strokeColor=#B09500;" parent="1" source="95" target="98" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1470" y="1100" as="sourcePoint"/>
+                        <mxPoint x="1520" y="1050" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="139" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="23" target="11">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2980" y="1560" as="sourcePoint"/>
+                        <mxPoint x="3030" y="1510" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="147" value="Imports user, updateUser() function,&amp;nbsp;&lt;div&gt;and deleteAccount() function&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="139">
+                    <mxGeometry x="-0.0913" y="-1" relative="1" as="geometry">
+                        <mxPoint x="389" y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="140" value="" style="endArrow=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#e3c800;strokeColor=#B09500;strokeWidth=2;" edge="1" parent="1" source="95" target="11">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2460" y="1520" as="sourcePoint"/>
+                        <mxPoint x="2510" y="1470" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1355" y="1400"/>
+                            <mxPoint x="1480" y="1400"/>
+                            <mxPoint x="1480" y="1440"/>
+                            <mxPoint x="3127" y="1440"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="143" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" edge="1" parent="1" source="7" target="9">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3140" y="1280" as="sourcePoint"/>
+                        <mxPoint x="3190" y="1230" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="144" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" edge="1" parent="1" source="7" target="11">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3140" y="1280" as="sourcePoint"/>
+                        <mxPoint x="3190" y="1230" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="145" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" edge="1" parent="1" source="7" target="10">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3140" y="1280" as="sourcePoint"/>
+                        <mxPoint x="3190" y="1230" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="146" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" edge="1" parent="1" source="4" target="7">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2870" y="1290" as="sourcePoint"/>
+                        <mxPoint x="2920" y="1240" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="155" value="User visits any&amp;nbsp;&lt;div&gt;protected route&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="146">
+                    <mxGeometry x="0.922" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="152" value="Events.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+                    <mxGeometry x="2500" y="2060" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="153" value="" style="endArrow=none;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#fa6800;strokeColor=#C73500;strokeWidth=2;" edge="1" parent="1" source="152" target="10">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3200" y="1540" as="sourcePoint"/>
+                        <mxPoint x="3250" y="1490" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2560" y="1990"/>
+                            <mxPoint x="3290" y="1990"/>
+                            <mxPoint x="3290" y="1398"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="154" value="" style="endArrow=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#fa6800;strokeColor=#C73500;strokeWidth=2;" edge="1" parent="1" source="88" target="9">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2780" y="1760" as="sourcePoint"/>
+                        <mxPoint x="2830" y="1710" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2700" y="1470"/>
+                            <mxPoint x="2898" y="1470"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="158" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" edge="1" parent="1" source="7" target="12">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3560" y="1460" as="sourcePoint"/>
+                        <mxPoint x="3610" y="1410" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="159" value="" style="endArrow=classic;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" edge="1" parent="1" source="11" target="4">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3200" y="870" as="sourcePoint"/>
+                        <mxPoint x="3250" y="820" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="160" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;If user deletes&amp;nbsp;&lt;/span&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;accocunt,&amp;nbsp;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;he is&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;redirected to&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;/login page&lt;/span&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="159">
+                    <mxGeometry x="-0.6363" y="2" relative="1" as="geometry">
+                        <mxPoint y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="163" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="94" target="10">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3510" y="1510" as="sourcePoint"/>
+                        <mxPoint x="3560" y="1460" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="164" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="93" target="10">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3510" y="1510" as="sourcePoint"/>
+                        <mxPoint x="3560" y="1460" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="165" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#fa6800;strokeColor=#C73500;strokeWidth=2;" edge="1" parent="1" source="86" target="94">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2540" y="2200" as="sourcePoint"/>
+                        <mxPoint x="3250" y="1850" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2420" y="1970"/>
+                            <mxPoint x="3405" y="1970"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="166" value="" style="endArrow=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;fillColor=#fa6800;strokeColor=#C73500;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="90" target="11">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3050" y="1850" as="sourcePoint"/>
+                        <mxPoint x="3100" y="1800" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="3125" y="1420"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="167" value="" style="endArrow=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="94" target="93">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3740" y="1650" as="sourcePoint"/>
+                        <mxPoint x="3790" y="1600" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="3452" y="1580"/>
+                            <mxPoint x="3588" y="1580"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="168" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="91" target="12">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3900" y="1590" as="sourcePoint"/>
+                        <mxPoint x="3950" y="1540" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="169" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="100" target="93">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3680" y="1660" as="sourcePoint"/>
+                        <mxPoint x="3730" y="1610" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="170" value="" style="endArrow=classic;startArrow=classic;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.006;exitY=0.374;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;exitPerimeter=0;strokeWidth=2;" edge="1" parent="1" source="70" target="100">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="4160" y="1780" as="sourcePoint"/>
+                        <mxPoint x="4210" y="1730" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="177" value="useEvents.ts sends&amp;nbsp;&lt;div&gt;&quot;get_events&quot; message&lt;div&gt;to /ws/events&lt;/div&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="170">
+                    <mxGeometry x="0.8466" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="171" value="" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#fa6800;strokeColor=#C73500;strokeWidth=2;" edge="1" parent="1" source="103" target="3">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1970" y="1530" as="sourcePoint"/>
+                        <mxPoint x="2020" y="1480" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1860" y="2400"/>
+                            <mxPoint x="580" y="2400"/>
+                            <mxPoint x="580" y="520"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="172" value="" style="endArrow=none;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="101" target="100">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3600" y="1690" as="sourcePoint"/>
+                        <mxPoint x="3650" y="1640" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="173" value="" style="endArrow=none;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#fa6800;strokeColor=#C73500;strokeWidth=2;" edge="1" parent="1" source="82" target="4">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2160" y="1430" as="sourcePoint"/>
+                        <mxPoint x="2210" y="1380" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2000" y="2430"/>
+                            <mxPoint x="530" y="2430"/>
+                            <mxPoint x="530" y="730"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="174" value="" style="endArrow=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#fa6800;strokeColor=#C73500;strokeWidth=2;" edge="1" parent="1" source="89" target="7">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2910" y="1620" as="sourcePoint"/>
+                        <mxPoint x="2960" y="1570" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2985" y="2010"/>
+                            <mxPoint x="2830" y="2010"/>
+                            <mxPoint x="2830" y="1270"/>
+                            <mxPoint x="2955" y="1270"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="175" value="" style="endArrow=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;fillColor=#fa6800;strokeColor=#C73500;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="85" target="12">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3320" y="1770" as="sourcePoint"/>
+                        <mxPoint x="4130" y="1380" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2280" y="2040"/>
+                            <mxPoint x="4440" y="2040"/>
+                            <mxPoint x="4440" y="1375"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="178" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="92" target="93">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3850" y="1650" as="sourcePoint"/>
+                        <mxPoint x="3900" y="1600" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="3875" y="1580"/>
+                            <mxPoint x="3682" y="1580"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="179" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="92" target="12">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3850" y="1650" as="sourcePoint"/>
+                        <mxPoint x="3900" y="1600" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="180" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="101" target="91">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3880" y="1680" as="sourcePoint"/>
+                        <mxPoint x="3930" y="1630" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="181" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="100" target="12">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3710" y="1550" as="sourcePoint"/>
+                        <mxPoint x="3760" y="1500" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="3740" y="1622"/>
+                            <mxPoint x="3740" y="1430"/>
+                            <mxPoint x="3692" y="1430"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

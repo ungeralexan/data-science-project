@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import 'antd/dist/reset.css';
-import './index.css';
+import './index.css'; /* Global styles */
 import App from './App';
 
 /*

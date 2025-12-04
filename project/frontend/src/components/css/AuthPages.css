@@ -1,0 +1,40 @@
+/* AuthPages.css - Shared styles for Login, Register, ForgotPassword, ResetPassword pages */
+
+/* Centered container for auth forms */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* Auth card styling */
+.auth-card {
+    width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Full width space container */
+.auth-space-full-width {
+    width: 100%;
+}
+
+/* Centered text container */
+.auth-text-center {
+    text-align: center;
+}
+
+/* Auth page title */
+.auth-title {
+    margin-bottom: 8px;
+}
+
+/* Form item with no bottom margin */
+.auth-form-item-no-margin {
+    margin-bottom: 0;
+}
+
+/* Link button with no padding */
+.auth-link-button {
+    padding: 0;
+}

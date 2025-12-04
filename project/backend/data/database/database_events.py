@@ -1,5 +1,5 @@
 
-from sqlalchemy import create_engine, Column, Integer, String, Text
+from sqlalchemy import create_engine, Column, Integer, String, Text, JSON
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 # SQLite database URL
@@ -43,6 +43,22 @@ class EventORM(Base):
     registration_needed = Column(String, nullable=True)
     url = Column(String, nullable=True)
     image_key = Column(String, nullable=True)
+
+
+# Define the UserORM class which represents the "users" table in the database.
+class UserORM(Base):
+    __tablename__ = "users"  # Name of the table in the database.
+
+    # Define the columns of the table.
+    user_id = Column(Integer, primary_key=True, index=True, autoincrement=True)  # Primary key column, auto-incremented integer.
+    password = Column(String, nullable=False)  # Hashed password
+    email = Column(String, unique=True, index=True, nullable=False)  # Unique email address
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
+    interest_keys = Column(JSON, nullable=True)  # List of interest keywords
+    interest_text = Column(Text, nullable=True)  # Free-form interest description
+    suggested_event_ids = Column(JSON, nullable=True)  # List of suggested event IDs
+
 
 # Function to initialize the database and create tables.
 def init_db() -> None:

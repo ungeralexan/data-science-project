@@ -1,0 +1,9 @@
+/* ProtectedRoute.css - Styles for the protected route loading state */
+
+/* Loading spinner container */
+.protected-route-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}

@@ -1,0 +1,22 @@
+/* App.css - Styles for the main App layout */
+
+/* Header styling */
+.app-header {
+    background: #fff;
+    color: rgba(0, 0, 0, 0.88);
+    display: flex;
+    gap: 15px;
+    padding-inline: 20px;
+}
+
+/* Logo/brand styling */
+.app-logo {
+    font-weight: 500;
+    font-size: 22px;
+}
+
+/* Main content area */
+.app-content {
+    padding: 24px;
+    min-height: 100vh;
+}

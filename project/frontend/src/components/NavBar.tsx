@@ -49,7 +49,7 @@ const authenticatedItems: MenuProps['items'] = [
 const unauthenticatedItems: MenuProps['items'] = [];
 
 export default function NavBar() {
-  const { isAuthenticated, logout, user } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
   /*
@@ -92,9 +92,6 @@ export default function NavBar() {
       {/* if authenticated, show greeting and logout button */}
       {isAuthenticated ? (
         <Space>
-          <span className="navbar-greeting">
-            Hi, {user?.first_name}
-          </span>
           <Button 
             icon={<LogoutOutlined />} 
             onClick={handleLogout}

@@ -26,9 +26,10 @@ import "./css/EventList.css";
 interface EventListProps {
   sortOption: SortOption;
   showLikedOnly?: boolean;
+  suggestedEventIds?: number[] | null;  // Filter to show only suggested events for user
 }
 
-export default function EventList({ sortOption, showLikedOnly = false }: EventListProps) {
+export default function EventList({ sortOption, showLikedOnly = false, suggestedEventIds }: EventListProps) {
 
   // -------------- Initialization --------------
 
@@ -88,10 +89,18 @@ export default function EventList({ sortOption, showLikedOnly = false }: EventLi
 
   const sortedEvents = useMemo(() => {
 
+    // Start with all events
+    let filteredEvents = events;
+
+    // Filter by suggested event IDs if provided
+    if (suggestedEventIds && suggestedEventIds.length > 0) {
+      filteredEvents = filteredEvents.filter(event => suggestedEventIds.includes(event.id));
+    }
+
     // Filter events if showLikedOnly is enabled (uses state instead of reading from localStorage)
-    const filteredEvents = showLikedOnly 
-      ? events.filter(event => likedEventIds.includes(event.id))
-      : events;
+    if (showLikedOnly) {
+      filteredEvents = filteredEvents.filter(event => likedEventIds.includes(event.id));
+    }
 
     // Creates a copy of filtered events to sort
     const arr = [...filteredEvents];
@@ -172,7 +181,7 @@ export default function EventList({ sortOption, showLikedOnly = false }: EventLi
 
     // Return the sorted array
     return arr;
-  }, [events, sortOption, showLikedOnly, likedEventIds]); // Recompute only when events, sortOption, showLikedOnly, or likedEventIds change
+  }, [events, sortOption, showLikedOnly, likedEventIds, suggestedEventIds]); // Recompute when any filter/sort criteria change
 
   // -------------- Check for Error --------------
 

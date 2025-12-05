@@ -14,8 +14,3 @@
     background: transparent;
     flex: 1;
 }
-
-/* User greeting text */
-.navbar-greeting {
-    color: #666;
-}

@@ -72,28 +72,21 @@ def extract_event_info_with_llm(email_text: str) -> dict:
 
     An event is a scheduled occurrence. It is NOT a invitation to participate in a study, survey, or non-event activity.
 
-    LANGUAGE OF OUTPUT
+    RULES:
 
-    Regardless of the original email language, return all textual fields in English,
-    except for proper names (e.g. building names, street names, institution names),
-    which you may keep as in the original.
+    1. Translate any non English text into English, except for names (e.g. building names, street names, institution names)!
+    2. Change the time and date formats to match MM/DD/YYYY and HH:MM AM/PM. If unsure, use null. 
+    3. When reading emails, pay special attention to lines that indicate event details, for example (in German emails):
 
-    DATE AND TIME HANDLING
+        - "Datum:" (date)
+        - "Uhrzeit:" (time)
+        - "Ort:" (location)
 
-    Change the time and date formats to match MM/DD/YYYY and HH:MM AM/PM. If unsure, use null.
-    When reading emails, pay special attention to lines that indicate event details, for example (in German emails):
-
-    - "Datum:" (date)
-    - "Uhrzeit:" (time)
-    - "Ort:" (location)
-
-    TITLE RULES
-
-    - If the email clearly contains a headline, workshop name, lecture title, or event title, USE THAT as the basis for the Title field (translated to English if needed, but keep names).
-    - If there is no explicit title, generate a SHORT, CONCISE event title (about 5–10 words)  that would look good as a calendar headline.
-    - Do NOT use long sentences as titles.
-    - Do NOT include full subtitles with many clauses or questions.
-    - Do NOT summarize the whole email in the title.
+    4. If the email clearly contains a headline, workshop name, lecture title, or event title, USE THAT as the basis for the Title field.
+    5. If there is no explicit title, generate a SHORT, CONCISE event title (about 4 to 6 words) that would look good as a calendar headline.
+    6. Do NOT use long sentences as titles.
+    7. Do NOT include full subtitles with many clauses or questions.
+    8. Do NOT summarize the whole email in the title.
 
     OUTPUT FORMAT
 
@@ -104,7 +97,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - End_Date (String or null): The ending date of the event. 
     - Start_Time (String or null): The starting time of the event.
     - End_Time (String or null): The ending time of the event.
-    - Description (String or null): A description of the event that provides more context and details.
+    - Description (String or null): A description of the event that provides more context and details. You may summarize key points from the email body.
     - Location (String or null): The full location/address of the event as a single string. If the event is remote or online, specify that.
     - Street (String or null): The street name only (without house number).
     - House_Number (String or null): The building/house number.

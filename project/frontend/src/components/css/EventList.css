@@ -63,10 +63,11 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   background-color: #fff;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /*Coming Closer Effect: The seconds indicate how long this effect takes*/
 }
 
 .event-card:hover {
+  /*Coming Closer Effect: -4px indicates how much closer it should come*/
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
@@ -153,10 +154,12 @@
   object-fit: cover;
   border-radius: 8px;
   display: block;
+  /*Transform 0.3 seconds indicates how long it takes for the image to come closer*/
   transition: transform 0.3s ease;
 }
 
 .event-card:hover .event-card-image {
+  /*Scale (1.05) means that the image is scaled by 1.05 if one hovers over it*/
   transform: scale(1.05);
 }
 

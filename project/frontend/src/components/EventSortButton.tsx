@@ -41,7 +41,6 @@ const EventSortControls: React.FC<EventSortControlsProps> = ({
   return (
     <div className="event-list-controls">
       <label className="event-list-sort-label">
-        Sort Events:&nbsp;
         <select
           className="event-list-sort-select"
           value={sortOption}

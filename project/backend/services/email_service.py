@@ -78,7 +78,7 @@ def send_email(to_email: str,
     except smtplib.SMTPException as e:
         print(f"SMTP Error: {e}")
         return False
-    except Exception as e:
+    except Exception as e: # pylint: disable=broad-except
         print(f"Error sending email: {e}")
         return False
 

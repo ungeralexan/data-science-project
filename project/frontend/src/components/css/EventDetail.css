@@ -91,6 +91,40 @@
   line-height: 1.7;
 }
 
+/* ----------- Actions (Like Button) -----------*/
+
+.event-detail-actions {
+  margin-top: 16px;
+  padding-top: 12px;
+}
+
+/* ----------- Location Link -----------*/
+
+.event-detail-location-link {
+  color: #1890ff;
+  text-decoration: none;
+}
+
+.event-detail-location-link:hover {
+  text-decoration: underline;
+}
+
+/* ----------- Event Link -----------*/
+
+.event-detail-link {
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+/* ----------- Buttons Row (Calendar + Website) -----------*/
+
+.event-detail-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
 /* ----------- Calendar Button -----------*/
 
 /* Custom styling for the calendar button */

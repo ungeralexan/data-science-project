@@ -25,10 +25,6 @@ import type { Event } from "../types/Event";
         and initiates the download.
 */
 
-type CalendarDownloadButtonsProps = {
-  event: Event;
-};
-
 type ParsedICSDate = {
   date: string;      // "YYYYMMDD"
   dateTime?: string; // "YYYYMMDDTHHMMSS"
@@ -168,6 +164,11 @@ function downloadICS(fileName: string, content: string) {
 }
 
 // Props for the CalendarDownloadButtons component
+type CalendarDownloadButtonsProps = {
+  event: Event;
+};
+
+// Props for the CalendarDownloadButtons component
 const CalendarDownloadButtons: React.FC<CalendarDownloadButtonsProps> = ({
   event,
 }) => {
@@ -181,12 +182,10 @@ const CalendarDownloadButtons: React.FC<CalendarDownloadButtonsProps> = ({
   };
 
   return (
-  <div>
     <Button type="primary" size="large" className="event-detail-calendar-button" onClick={handleDownloadCalendar}>
       Add to calendar (.ics)
     </Button>
-  </div>
-);
+  );
 };
 
 export default CalendarDownloadButtons;

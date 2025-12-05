@@ -1,5 +1,4 @@
 from typing import List
-import pandas as pd
 from pathlib import Path
 
 from sqlalchemy.orm import Session
@@ -82,6 +81,7 @@ def insert_non_duplicate_events(db: Session, events_raw: List[dict]) -> None:
         end_date_str = event.get("End_Date") or start_date_str
 
         # Create new EventORM row
+        # like_count is not set here, defaults to NULL/0
         new_row = EventORM(
             title = title,
             start_date = start_date_str,
@@ -90,6 +90,13 @@ def insert_non_duplicate_events(db: Session, events_raw: List[dict]) -> None:
             end_time = event.get("End_Time"),
             description = event.get("Description"),
             location = event.get("Location") or "",
+            street = event.get("Street"),
+            house_number = event.get("House_Number"),
+            zip_code = event.get("Zip_Code"),
+            city = event.get("City"),
+            country = event.get("Country"),
+            room = event.get("Room"),
+            floor = event.get("Floor"),
             speaker = event.get("Speaker"),
             organizer = event.get("Organizer"),
             registration_needed = event.get("Registration_Needed"),

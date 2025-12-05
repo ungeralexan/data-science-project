@@ -1,0 +1,50 @@
+/* LikeButton.css - Styles for the Like Button component */
+
+.like-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid #d9d9d9;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.like-button:hover {
+  border-color: #ff4d6a;
+  color: #ff4d6a;
+}
+
+.like-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.like-button--liked {
+  background: #fff1f3;
+  border-color: #ff4d6a;
+  color: #ff4d6a;
+}
+
+.like-button--liked:hover {
+  background: #ffe6e9;
+}
+
+.like-button__count {
+  font-weight: 500;
+}
+
+/* Small variant for event cards */
+.like-button--small {
+  padding: 4px 10px;
+  font-size: 12px;
+  gap: 4px;
+}
+
+.like-button--small .anticon {
+  font-size: 12px;
+}

@@ -206,6 +206,15 @@
   overflow: hidden;
 }
 
+/* Actions row (like button) */
+.event-card-actions {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: flex-start;
+}
+
 /* Mobile adjustments for cards */
 @media (max-width: 576px) {
   .event-card {

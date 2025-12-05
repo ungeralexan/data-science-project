@@ -16,6 +16,13 @@ EVENT_SCHEMA  = {
         "End_Time": {"type": "STRING", "nullable": True},
         "Description": {"type": "STRING", "nullable": True},
         "Location": {"type": "STRING", "nullable": True},
+        "Street": {"type": "STRING", "nullable": True},
+        "House_Number": {"type": "STRING", "nullable": True},
+        "Zip_Code": {"type": "STRING", "nullable": True},
+        "City": {"type": "STRING", "nullable": True},
+        "Country": {"type": "STRING", "nullable": True},
+        "Room": {"type": "STRING", "nullable": True},
+        "Floor": {"type": "STRING", "nullable": True},
         "Speaker": {"type": "STRING", "nullable": True},
         "Organizer": {"type": "STRING", "nullable": True},
         "Registration_Needed": {"type": "BOOLEAN", "nullable": True},
@@ -24,7 +31,9 @@ EVENT_SCHEMA  = {
     },
     "required": [
         "Title", "Start_Date", "End_Date", "Start_Time", "End_Time",
-        "Description", "Location", "Speaker", "Organizer", "Registration_Needed", "URL", "Image_Key",
+        "Description", "Location", "Street", "House_Number", "Zip_Code", 
+        "City", "Country", "Room", "Floor", "Speaker", "Organizer", 
+        "Registration_Needed", "URL", "Image_Key",
     ],
 }
 
@@ -96,7 +105,14 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Start_Time (String or null): The starting time of the event.
     - End_Time (String or null): The ending time of the event.
     - Description (String or null): A description of the event that provides more context and details.
-    - Location (String or null): The location of the event. If the event is remote or online, specify that.
+    - Location (String or null): The full location/address of the event as a single string. If the event is remote or online, specify that.
+    - Street (String or null): The street name only (without house number).
+    - House_Number (String or null): The building/house number.
+    - Zip_Code (String or null): The postal/zip code.
+    - City (String or null): The city name.
+    - Country (String or null): The country name.
+    - Room (String or null): The room name or number if specified.
+    - Floor (String or null): The floor number if specified.
     - Speaker (String or null): The speaker of the event if available.
     - Organizer (String or null): The organizer of the event if available.
     - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false.

@@ -8,7 +8,7 @@ DATABASE_URL = "sqlite:///./data/database/tuevent_database.db"
 
 
 # ----- JWT Authentication Configuration -----
-JWT_SECRET_KEY = "your-secret-key-change-in-production"  # TODO: Move to environment variable
+JWT_SECRET_KEY = "RANDOMKEYFORJWTSECRETCHANGEINPRODUCTION"
 JWT_ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_DAYS = 7
 PASSWORD_RESET_EXPIRE_HOURS = 1

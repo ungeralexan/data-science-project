@@ -1,43 +1,60 @@
-import { useMemo } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { useEvents } from "../hooks/useEvents";
 import type { SortOption } from "./EventSortButton";
 import EventImage from "./EventImage";
+import LikeButton from "./LikeButton";
 import { useNavigate } from "react-router-dom";
 
 import "./css/EventList.css";
 
 /*
-  This component displays a list of events sorted based on the provided sort option.
+  This file defines the EventList component, which displays a list of events with sorting and filtering capabilities.
 
-  EventListProps:
-    EventListProps is a TypeScript interface that defines the props for the EventList component.
-    It includes the current sort option.
+  Sections:
+
+  EventList Component:
+    - Fetches events using the useEvents hook.
+    - Manages liked events state to track which events the user has liked.
+    - Provides sorting functionality based on the selected sort option.
+    - Renders the list of events, including event images, titles, dates, locations, and like buttons.
   
-  EventList:
-    EventList is a React functional component that fetches events using the useEvents hook,
-    sorts them based on the provided sort option, and renders them in a grid layout.
-    It handles different sorting options such as title, date, and time in both ascending and descending order.
-    If there are no events or an error occurs during fetching, it displays appropriate messages.
-  
-    parseDate:
-      parseDate is a helper function that converts a date string into a timestamp for comparison during sorting.
-
-    parseTimeToMinutes:
-      parseTimeToMinutes is a helper function that converts a time string into total minutes for comparison during sorting.
-
-    sortedEvents:
-      sortedEvents is a memoized array of events sorted according to the selected sort option.
+  Helper Functions:
+    - parseDate: Converts date strings into timestamps for sorting.
+    - parseTimeToMinutes: Converts time strings into total minutes for sorting.
 */
 
 interface EventListProps {
   sortOption: SortOption;
+  showLikedOnly?: boolean;
 }
 
-export default function EventList({ sortOption }: EventListProps) {
+export default function EventList({ sortOption, showLikedOnly = false }: EventListProps) {
+
+  // -------------- Initialization --------------
 
   // Fetch events and error state using the custom useEvents hook
   const { events, error } = useEvents();
   const navigate = useNavigate();
+
+  // State to track liked event IDs - triggers re-render when likes change
+  const [likedEventIds, setLikedEventIds] = useState<number[]>(() => {
+    return JSON.parse(localStorage.getItem("likedEvents") || "[]");
+  });
+
+  // -------------- Helper Functions --------------
+
+  // Callback to update liked events state when a like/unlike happens
+  const handleLikeChange = useCallback((eventId: number, isLiked: boolean) => {
+
+    setLikedEventIds(prev => {
+      if (isLiked) {
+        return [...prev, eventId];
+      } else {
+        return prev.filter(id => id !== eventId);
+      }
+    });
+
+  }, []);
 
   // Helper function to parse date strings into timestamps
   const parseDate = (dateStr?: string | null) => {
@@ -67,17 +84,17 @@ export default function EventList({ sortOption }: EventListProps) {
     return h * 60 + m;
   };
 
-  /*
-    Memoization:
-      useMemo is a React hook that memoizes the result of a computation (in this case, sorting events).
-      It only recomputes the sorted array when the dependencies (events or sortOption) change.
-      This improves performance by preventing unnecessary re-sorting on every render.
-  
-  */
+  // -------------- Sort Events --------------
+
   const sortedEvents = useMemo(() => {
 
-    // Creates a copy of events to sort
-    const arr = [...events];
+    // Filter events if showLikedOnly is enabled (uses state instead of reading from localStorage)
+    const filteredEvents = showLikedOnly 
+      ? events.filter(event => likedEventIds.includes(event.id))
+      : events;
+
+    // Creates a copy of filtered events to sort
+    const arr = [...filteredEvents];
 
     /*
       Sort the events array based on the selected sort option.
@@ -155,14 +172,17 @@ export default function EventList({ sortOption }: EventListProps) {
 
     // Return the sorted array
     return arr;
-  }, [events, sortOption]); // Recompute only when events or sortOption change
+  }, [events, sortOption, showLikedOnly, likedEventIds]); // Recompute only when events, sortOption, showLikedOnly, or likedEventIds change
+
+  // -------------- Check for Error --------------
 
   // Render error message if there was an error fetching events
   if (error) {
     return <div className="event-list-error">Error: {error}</div>;
   }
 
-  // Render the sorted list of events
+  // -------------- Render Component --------------
+
   return (
 
     // Container for the event list
@@ -173,22 +193,6 @@ export default function EventList({ sortOption }: EventListProps) {
         
         /*
           Render the grid of event cards.
-          
-          sortedEvents.map:
-            This method iterates over each event in the sortedEvents array and returns a JSX element for each event.
-            Each event card displays the event image, title, date, time, location, and description (if available).
-          
-            dateObj:
-              dateObj is a Date object created from the event's start_date string.
-              It is used to format the date for display.
-              
-            dateLabel:
-              dateLabel is a formatted string representing the event's start date.
-              If the date is invalid, it falls back to displaying the original date string.
-              
-            timeLabel:
-              timeLabel is a string representing the event's start time.
-              If no time is provided, it defaults to an empty string.
         */
         <div className="event-grid">
           {sortedEvents.map((event) => {
@@ -199,30 +203,6 @@ export default function EventList({ sortOption }: EventListProps) {
             
             /*
               Render individual event card with image, title, date/time, location, and description.
-            
-            event-card:
-              This div represents a single event card in the grid layout.
-              It contains the event image, title, date/time, location, and description (if available).
-            
-              EventImage:
-                The EventImage component is used to display the event's image based on the provided imageKey.
-                It falls back to a default image if no matching key is found.
-              
-              event-card__image-placeholder:
-                This div serves as a placeholder for the event image, ensuring consistent sizing and layout.
-
-              event-card__title:
-                This div displays the title of the event.
-
-              event-card__datetime:
-                This div displays the formatted date and time of the event.
-
-              event-card__location:
-                This div displays the location of the event, if available.
-
-              event-card__description:
-                This div displays the description of the event, if available.
-
             */
             return (
               <div 
@@ -248,6 +228,15 @@ export default function EventList({ sortOption }: EventListProps) {
                 {event.location && (
                   <div className="event-card-location">{event.location}</div>
                 )}
+
+                <div className="event-card-actions">
+                  <LikeButton 
+                    eventId={event.id} 
+                    initialLikeCount={event.like_count} 
+                    size="small"
+                    onLikeChange={handleLikeChange}
+                  />
+                </div>
               </div>
             );
           })}

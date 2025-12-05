@@ -2,7 +2,7 @@ from typing import Optional
 import json
 from pydantic import BaseModel
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -53,13 +53,21 @@ class Event(BaseModel):
     end_date: str
     start_time: Optional[str] = None
     end_time: Optional[str] = None
-    location: Optional[str] = None
+    location: Optional[str] = None  # Kept for backward compatibility / full address string
+    street: Optional[str] = None
+    house_number: Optional[str] = None
+    zip_code: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    room: Optional[str] = None
+    floor: Optional[str] = None
     description: Optional[str] = None
     speaker: Optional[str] = None
     organizer: Optional[str] = None
     registration_needed: Optional[str] = None
     url: Optional[str] = None
     image_key: Optional[str] = None
+    like_count: int = 0
 
 
 # ---- Utility functions -----
@@ -75,12 +83,20 @@ def orm_to_pydantic(event: EventORM) -> Event:
         start_time = event.start_time,
         end_time = event.end_time,
         location = event.location,
+        street = event.street,
+        house_number = event.house_number,
+        zip_code = event.zip_code,
+        city = event.city,
+        country = event.country,
+        room = event.room,
+        floor = event.floor,
         description = event.description,
         speaker = event.speaker,
         organizer = event.organizer,
         registration_needed = event.registration_needed,
         url = event.url,
         image_key = event.image_key,
+        like_count = event.like_count or 0,
     )
 
 
@@ -120,6 +136,44 @@ async def shutdown_event():
     print("Shutting down the backend server...")
     scheduler.shutdown()
     print("Scheduler shut down.")
+
+
+# ----- Event Like Endpoints -----
+@app.post("/api/events/{event_id}/like")
+async def like_event(event_id: int):
+    """Increment the like count for an event."""
+
+    with SessionLocal() as db:
+
+        event = db.query(EventORM).filter(EventORM.id == event_id).first()
+
+        if event is None:
+            raise HTTPException(status_code=404, detail="Event not found")
+        
+        event.like_count = (event.like_count or 0) + 1
+        
+        db.commit()
+        db.refresh(event)
+        
+        return {"like_count": event.like_count}
+
+
+@app.post("/api/events/{event_id}/unlike")
+async def unlike_event(event_id: int):
+    """Decrement the like count for an event."""
+    with SessionLocal() as db:
+
+        event = db.query(EventORM).filter(EventORM.id == event_id).first()
+
+        if event is None:
+            raise HTTPException(status_code=404, detail="Event not found")
+        
+        # Ensure like_count doesn't go below 0
+        event.like_count = max((event.like_count or 0) - 1, 0)
+        db.commit()
+        db.refresh(event)
+        
+        return {"like_count": event.like_count}
 
 
 # ----- WebSocket endpoint -----

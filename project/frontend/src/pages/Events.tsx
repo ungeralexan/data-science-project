@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { Typography } from 'antd';
 import EventList from '../components/EventList';
-
 import EventSortControls from "../components/EventSortButton";
 import type { SortOption } from "../components/EventSortButton";
+import LikedFilterButton from "../components/LikedFilterButton";
 import "../components/css/Events.css";
 
 /*
@@ -23,6 +23,9 @@ import "../components/css/Events.css";
     EventSortControls is a custom component that provides UI controls for selecting the sorting option. It takes
     sortOption and onChange props to manage the current sorting state.
   
+  LikedFilterButton:
+    LikedFilterButton is a custom component that provides a toggle button to filter events by liked status.
+  
   useState:
     useState is a React hook that allows functional components to have state variables. In this case, it is used
     to manage the current sorting option for the events.
@@ -34,6 +37,9 @@ export default function Events() {
 
   // State to hold the current sorting option for events
   const [sortOption, setSortOption] = useState<SortOption>("date-asc");
+  
+  // State to hold whether to show only liked events
+  const [showLikedOnly, setShowLikedOnly] = useState<boolean>(false);
 
   // Render the Events page with title, sorting controls, and event list
   return (
@@ -42,12 +48,18 @@ export default function Events() {
         <Title level={2} className="events-page-title">Events</Title>
       </div>
 
-      <EventSortControls
-        sortOption={sortOption}
-        onChange={setSortOption}
-      />
+      <div className="events-page-controls">
+        <EventSortControls
+          sortOption={sortOption}
+          onChange={setSortOption}
+        />
+        <LikedFilterButton
+          showLikedOnly={showLikedOnly}
+          onChange={setShowLikedOnly}
+        />
+      </div>
       
-      <EventList sortOption={sortOption} />
+      <EventList sortOption={sortOption} showLikedOnly={showLikedOnly} />
     </div>
   );
 }

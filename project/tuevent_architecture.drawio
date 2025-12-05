@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="QU4z8uhpkmPFsxJ6umoC" name="Architecture">
-        <mxGraphModel dx="3187" dy="1731" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="10000" pageHeight="5000" math="0" shadow="0">
+        <mxGraphModel dx="1434" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="10000" pageHeight="5000" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -8,7 +8,7 @@
                     <mxGeometry x="4860" y="2150" width="640" height="382.5" as="geometry"/>
                 </mxCell>
                 <mxCell id="334" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;dashed=1;strokeWidth=3;strokeColor=#6c8ebf;fillStyle=auto;glass=0;fillOpacity=35;" parent="1" vertex="1">
-                    <mxGeometry x="6560" y="1637.5" width="460" height="565" as="geometry"/>
+                    <mxGeometry x="6560" y="1637.5" width="460" height="802.5" as="geometry"/>
                 </mxCell>
                 <mxCell id="112" value="" style="endArrow=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeColor=#C73500;strokeWidth=2;fillColor=#fa6800;" parent="1" source="84" target="15" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -22,10 +22,10 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="80" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;dashed=1;strokeWidth=3;strokeColor=#b85450;fillStyle=auto;glass=0;fillOpacity=35;" parent="1" vertex="1">
-                    <mxGeometry x="2750" y="1140" width="1000" height="300" as="geometry"/>
+                    <mxGeometry x="2750" y="1150" width="1160" height="280" as="geometry"/>
                 </mxCell>
                 <mxCell id="20" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;dashed=1;strokeWidth=3;strokeColor=#82b366;fillStyle=auto;glass=0;fillOpacity=35;" parent="1" vertex="1">
-                    <mxGeometry x="1650" y="1140" width="1090" height="130" as="geometry"/>
+                    <mxGeometry x="1660" y="1150" width="1080" height="110" as="geometry"/>
                 </mxCell>
                 <mxCell id="3" value="&lt;b&gt;main.tsx&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Sets up the React app by wrapping the App component with necessary providers for routing and theming &amp;amp; rendering it to the Dom.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
                     <mxGeometry x="2055" y="450" width="230" height="140" as="geometry"/>
@@ -55,13 +55,13 @@
                     <mxGeometry x="2850" y="1330" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="10" value="&lt;b&gt;Events.tsx&lt;/b&gt;&lt;div&gt;(/events)&lt;br&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Renders Sort Control Button &amp;amp; Event List&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
-                    <mxGeometry x="3310" y="1330" width="190" height="90" as="geometry"/>
+                    <mxGeometry x="3470" y="1330" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="11" value="&lt;b&gt;Settings.tsx&amp;nbsp;&lt;/b&gt;&lt;div&gt;(/settings)&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;User can change login credentials &amp;amp; define interests&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
                     <mxGeometry x="3080" y="1330" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="12" value="&lt;b&gt;EventDetail.tsx&lt;/b&gt;&lt;div&gt;(&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;/events:id)&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Renders specific event&lt;/div&gt;&lt;div&gt;based on id&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
-                    <mxGeometry x="3550" y="1330" width="190" height="90" as="geometry"/>
+                    <mxGeometry x="3710" y="1330" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="13" value="&lt;b&gt;Login.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Login page component that provides form for user to sign in&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
                     <mxGeometry x="1670" y="1160" width="190" height="90" as="geometry"/>
@@ -331,16 +331,16 @@
                     <mxGeometry x="3065" y="2060" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="91" value="&lt;b&gt;CalendarDownloadButton.tsx&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Adds button to download event&lt;/div&gt;&lt;div&gt;as ics file&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
-                    <mxGeometry x="4010" y="1470" width="190" height="90" as="geometry"/>
+                    <mxGeometry x="4170" y="1470" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="92" value="&lt;b&gt;EventImage.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Defines EventImage component&lt;/div&gt;&lt;div&gt;to show images&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
-                    <mxGeometry x="3780" y="1470" width="190" height="90" as="geometry"/>
+                    <mxGeometry x="3940" y="1470" width="190" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="93" value="&lt;b&gt;EventList.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Displays list of events based on provided sort option&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
-                    <mxGeometry x="3540" y="1470" width="190" height="90" as="geometry"/>
+                <mxCell id="93" value="&lt;b&gt;EventList.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Displays list of events based on provided sort option &amp;amp; filter&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="3700" y="1470" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="94" value="&lt;b&gt;EventSortButton.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Defines React component that&lt;/div&gt;&lt;div&gt;provides sorting controls for the&lt;/div&gt;&lt;div&gt;event list&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
-                    <mxGeometry x="3310" y="1470" width="190" height="90" as="geometry"/>
+                    <mxGeometry x="3470" y="1470" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="95" value="&lt;b&gt;index.ts&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;File exports config values from&lt;/div&gt;&lt;div&gt;parameters.json&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
                     <mxGeometry x="1260" y="1090" width="190" height="90" as="geometry"/>
@@ -349,10 +349,10 @@
                     <mxGeometry x="1260" y="940" width="190" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="100" value="&lt;b&gt;useEvents.ts&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Custom React hook establishes a WebSocket connection&amp;nbsp;&lt;/div&gt;&lt;div&gt;to backend &amp;amp; saves events in React state&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
-                    <mxGeometry x="3540" y="1600" width="190" height="90" as="geometry"/>
+                    <mxGeometry x="3700" y="1700" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="101" value="&lt;b&gt;Events.ts&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Defines Event type with&lt;/div&gt;&lt;div&gt;properties (id, title, etc.)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
-                    <mxGeometry x="3780" y="1600" width="190" height="90" as="geometry"/>
+                    <mxGeometry x="3940" y="1700" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="103" value="index.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
                     <mxGeometry x="1800" y="2060" width="120" height="80" as="geometry"/>
@@ -557,9 +557,9 @@
                         <mxPoint x="3200" y="1540" as="sourcePoint"/>
                         <mxPoint x="3250" y="1490" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="2560" y="1990"/>
-                            <mxPoint x="3290" y="1990"/>
-                            <mxPoint x="3290" y="1398"/>
+                            <mxPoint x="2560" y="1970"/>
+                            <mxPoint x="3450" y="1970"/>
+                            <mxPoint x="3450" y="1398"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
@@ -607,8 +607,9 @@
                         <mxPoint x="2540" y="2200" as="sourcePoint"/>
                         <mxPoint x="3250" y="1850" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="2420" y="1970"/>
-                            <mxPoint x="3405" y="1970"/>
+                            <mxPoint x="2420" y="1990"/>
+                            <mxPoint x="3560" y="1990"/>
+                            <mxPoint x="3560" y="1560"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
@@ -626,12 +627,12 @@
                         <mxPoint x="3740" y="1650" as="sourcePoint"/>
                         <mxPoint x="3790" y="1600" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="3452" y="1580"/>
-                            <mxPoint x="3588" y="1580"/>
+                            <mxPoint x="3613" y="1580"/>
+                            <mxPoint x="3748" y="1580"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="168" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="91" target="12" edge="1">
+                <mxCell id="168" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="91" target="12" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="3900" y="1590" as="sourcePoint"/>
                         <mxPoint x="3950" y="1540" as="targetPoint"/>
@@ -651,7 +652,7 @@
                 </mxCell>
                 <mxCell id="177" value="useEvents.ts sends&amp;nbsp;&lt;div&gt;&quot;get_events&quot; message&lt;div&gt;to /ws/events&lt;/div&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="170" vertex="1" connectable="0">
                     <mxGeometry x="0.8466" y="-1" relative="1" as="geometry">
-                        <mxPoint as="offset"/>
+                        <mxPoint y="-54" as="offset"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="171" value="" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#fa6800;strokeColor=#C73500;strokeWidth=2;" parent="1" source="103" target="3" edge="1">
@@ -694,14 +695,14 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="175" value="" style="endArrow=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;fillColor=#fa6800;strokeColor=#C73500;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="85" target="12" edge="1">
+                <mxCell id="175" value="" style="endArrow=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;fillColor=#fa6800;strokeColor=#C73500;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="85" target="12" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="3320" y="1770" as="sourcePoint"/>
                         <mxPoint x="4130" y="1380" as="targetPoint"/>
                         <Array as="points">
                             <mxPoint x="2280" y="2040"/>
-                            <mxPoint x="4440" y="2040"/>
-                            <mxPoint x="4440" y="1375"/>
+                            <mxPoint x="3680" y="2040"/>
+                            <mxPoint x="3680" y="1398"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
@@ -715,7 +716,12 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="179" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="92" target="12" edge="1">
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-458" value="Eventlist renders&lt;div&gt;EventImage&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="178">
+                    <mxGeometry x="-0.147" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="179" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="92" target="12" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="3850" y="1650" as="sourcePoint"/>
                         <mxPoint x="3900" y="1600" as="targetPoint"/>
@@ -727,19 +733,20 @@
                         <mxPoint x="3930" y="1630" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="181" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="100" target="12" edge="1">
+                <mxCell id="181" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="100" target="12" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="3710" y="1550" as="sourcePoint"/>
                         <mxPoint x="3760" y="1500" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="3740" y="1622"/>
-                            <mxPoint x="3740" y="1430"/>
-                            <mxPoint x="3692" y="1430"/>
+                            <mxPoint x="3843" y="1680"/>
+                            <mxPoint x="3900" y="1680"/>
+                            <mxPoint x="3900" y="1460"/>
+                            <mxPoint x="3805" y="1460"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="182" value="&lt;b&gt;app.py&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;This file sets up the FastAPI app, CORS settings, WebSocket endpoints , imports auth_router from &lt;span style=&quot;background-color: rgb(243, 253, 104);&quot;&gt;routes.py&lt;/span&gt; and starts a scheduled task for periodic email processing&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Creates websocket_events() at /ws/events to send list of events if it receives &quot;get_events&quot; message.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
-                    <mxGeometry x="5040" y="1840" width="400" height="160" as="geometry"/>
+                <mxCell id="182" value="&lt;b&gt;app.py&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;This file sets up the FastAPI app, CORS settings, WebSocket endpoints, imports auth_router from &lt;span style=&quot;background-color: rgb(243, 253, 104);&quot;&gt;routes.py&lt;/span&gt; and starts a scheduled task for periodic email processing. Websocket endpoints:&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;table align=&quot;center&quot; style=&quot;border: 1px solid rgb(0, 0, 0); border-collapse: collapse;&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Endpoint&lt;/td&gt;&lt;td&gt;Description&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/api/events/{event_id}/like&lt;/td&gt;&lt;td&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;Query event based on event_id and&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;increase like_count by +1&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/api/events/{event_id}/unlike&lt;/td&gt;&lt;td&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;Query event based on event_id and&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;decrease like_count by -1 whith floor = 0&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/ws/events&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Query all events &amp;amp; send to frontend&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="5040" y="1810" width="400" height="220" as="geometry"/>
                 </mxCell>
                 <mxCell id="183" value="&lt;b&gt;email_downloader.py&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Uses imaplib library to download emails from University Webserver and concatenate them to one txt file&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="5275" y="2170" width="210" height="100" as="geometry"/>
@@ -762,7 +769,7 @@
                 <mxCell id="189" value="&lt;b&gt;models.py&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;This file defines the following pydantic models used in the authentication system:&lt;/div&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;ul style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;li style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); text-align: left;&quot;&gt;UserCreate (Model for user registration)&lt;/li&gt;&lt;li style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); text-align: left;&quot;&gt;UserLogin (Model for user login)&lt;/li&gt;&lt;li style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); text-align: left;&quot;&gt;UserUpdate (Model for updating user info)&lt;/li&gt;&lt;li style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); text-align: left;&quot;&gt;UserReponse (Model for returning user info without password)&lt;/li&gt;&lt;li style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); text-align: left;&quot;&gt;TokenReponse (Model for returning JWT tokens containing UserReponse model)&lt;/li&gt;&lt;li style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); text-align: left;&quot;&gt;PasswordRequestRequest (Model for requesting password reset)&lt;/li&gt;&lt;li style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); text-align: left;&quot;&gt;PasswordReset (Model for resetting password with token)&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="5270" y="915" width="430" height="245" as="geometry"/>
                 </mxCell>
-                <mxCell id="190" value="&lt;b&gt;routes.py&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;This file defines the authentication API routes using FastAPI. FastAPI automatically validates the request bodies against provided pydantic models defined in &lt;span style=&quot;background-color: rgb(243, 253, 104);&quot;&gt;models.py&lt;/span&gt; ensuring required information is present.&amp;nbsp;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;It includes the following endpoints:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;table align=&quot;center&quot; style=&quot;border: 1px solid rgb(0, 0, 0); border-collapse: collapse;&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Endpoint&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Function&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;&amp;nbsp;Message Type&amp;nbsp;&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Validated Against&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;&amp;nbsp;Reponse Model&amp;nbsp;&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;&amp;nbsp;&lt;span style=&quot;background-color: rgb(243, 253, 104);&quot;&gt;utils.py&lt;/span&gt; Functions&amp;nbsp;&lt;br&gt;called&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/register&lt;br&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;register()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;POST&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;UserCreate&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;TokenResponse&lt;/span&gt;&lt;/div&gt;&lt;i&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;(AuthResponse in&lt;/font&gt;&lt;/i&gt;&lt;/div&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent; font-size: 12px;&quot;&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;frontend)&lt;/font&gt;&lt;/i&gt;&lt;/div&gt;&lt;/font&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;hash_password()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;create_access_token()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;user_orm_to_response()&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Registers new user&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/login&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;login()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;POST&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;UserLogin&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;TokenResponse&lt;/span&gt;&lt;/div&gt;&lt;i&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;(AuthResponse in&lt;/i&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;frontend)&lt;/i&gt;&lt;/div&gt;&lt;/i&gt;&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;verify_password()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;crreate_access_token()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;user_orm_to_response()&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Login user&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/me&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;get_me()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;GET&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;UserORM&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;UserReponse&lt;/span&gt;&lt;/div&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;(User in frontend)&lt;/i&gt;&lt;/div&gt;&lt;/font&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;get_current_user()&lt;br&gt;user_orm_to_response()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Return user info&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/me&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;update_me()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;PUT&lt;/td&gt;&lt;td&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;UserUpdate,&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;UserORM&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;UserResponse&lt;/span&gt;&lt;/div&gt;&lt;i&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;(User in frontend)&lt;/font&gt;&lt;/i&gt;&lt;/div&gt;&lt;/i&gt;&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;get_current_user()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;hash_passwort()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;user_orm_to_response()&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Update user info&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/me&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;delete_me()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;DELETE&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;UserORM&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;get_current_user()&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Delete user from db&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/forgot-password&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;forgot_password()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;POST&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;PasswordResetRequest&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63);&quot;&gt;create_password_reset_token()&lt;/span&gt;&lt;br style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Calls &lt;br&gt;send_password_reset_email() &lt;br&gt;function from&lt;br&gt;&lt;span style=&quot;background-color: rgb(243, 253, 104);&quot;&gt;email_service.py&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/reset-password&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;reset_password()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;POST&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;PasswordReset&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;decode_password_reset_token()&lt;br&gt;hash_password()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Reset password&lt;br&gt;using reset token&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="190" value="&lt;b&gt;routes.py&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;This file defines the authentication API routes using FastAPI. FastAPI automatically validates the request bodies&amp;nbsp;&lt;/div&gt;&lt;div&gt;against provided pydantic models defined in &lt;span style=&quot;background-color: rgb(243, 253, 104);&quot;&gt;models.py&lt;/span&gt; ensuring required information is present.&amp;nbsp;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;It includes the following endpoints:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;table align=&quot;center&quot; style=&quot;border: 1px solid rgb(0, 0, 0); border-collapse: collapse;&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Endpoint&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Function&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;&amp;nbsp;Message Type&amp;nbsp;&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Validated Against&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;&amp;nbsp;Reponse Model&amp;nbsp;&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;&amp;nbsp;&lt;span style=&quot;background-color: rgb(243, 253, 104);&quot;&gt;utils.py&lt;/span&gt; Functions&amp;nbsp;&lt;br&gt;called&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/register&lt;br&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;register()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;POST&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;UserCreate&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;TokenResponse&lt;/span&gt;&lt;/div&gt;&lt;i&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;(AuthResponse in&lt;/font&gt;&lt;/i&gt;&lt;/div&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent; font-size: 12px;&quot;&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;frontend)&lt;/font&gt;&lt;/i&gt;&lt;/div&gt;&lt;/font&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;hash_password()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;create_access_token()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;user_orm_to_response()&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Registers new user&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/login&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;login()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;POST&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;UserLogin&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;TokenResponse&lt;/span&gt;&lt;/div&gt;&lt;i&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;(AuthResponse in&lt;/i&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;frontend)&lt;/i&gt;&lt;/div&gt;&lt;/i&gt;&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;verify_password()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;crreate_access_token()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;user_orm_to_response()&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Login user&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/me&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;get_me()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;GET&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;UserORM&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;UserReponse&lt;/span&gt;&lt;/div&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;(User in frontend)&lt;/i&gt;&lt;/div&gt;&lt;/font&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;get_current_user()&lt;br&gt;user_orm_to_response()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Return user info&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/me&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;update_me()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;PUT&lt;/td&gt;&lt;td&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;UserUpdate,&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;UserORM&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;UserResponse&lt;/span&gt;&lt;/div&gt;&lt;i&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;i style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;(User in frontend)&lt;/font&gt;&lt;/i&gt;&lt;/div&gt;&lt;/i&gt;&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;get_current_user()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;hash_passwort()&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;user_orm_to_response()&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Update user info&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/me&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;delete_me()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;DELETE&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;UserORM&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/td&gt;&lt;td style=&quot;&quot;&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;get_current_user()&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Delete user from db&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/forgot-password&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;forgot_password()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;POST&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;PasswordResetRequest&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63);&quot;&gt;create_password_reset_token()&lt;/span&gt;&lt;br style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Calls &lt;br&gt;send_password_reset_email() &lt;br&gt;function from&lt;br&gt;&lt;span style=&quot;background-color: rgb(243, 253, 104);&quot;&gt;email_service.py&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;/reset-password&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;reset_password()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;POST&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;PasswordReset&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;decode_password_reset_token()&lt;br&gt;hash_password()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Reset password&lt;br&gt;using reset token&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="5280" y="1242.51" width="950" height="410" as="geometry"/>
                 </mxCell>
                 <mxCell id="191" value="&lt;b&gt;utils.py&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;This file contains utility functions for authentication:&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;table style=&quot;border: 1px solid rgb(0, 0, 0); border-collapse: collapse;&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Function&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;hash_password()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Uses bcrypt to hash user password for &lt;br&gt;storing in database&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;verfify_password()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Verifies password against hash stored in &lt;br&gt;database during login&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;create_access_token()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Creates encoded access token&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;decode_access_token()&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Recalculates &amp;amp; compares access token &lt;br&gt;to ensure user authentication&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;create_password_reset_token()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Creates encoded password_reset token&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;decode_password_reset_token()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63);&quot;&gt;Recalculates &amp;amp; compares access token&lt;/span&gt;&lt;br style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63);&quot;&gt;to ensure user authentication. Further ensures &lt;br&gt;that provided token is indeed a password reset &lt;br&gt;token&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;user_orm_to_response()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Converts UserORM (SQAlchecmy ORM model) &lt;br&gt;to Pydantic UserResponse model&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align: left;&quot;&gt;get_current_user()&lt;/td&gt;&lt;td style=&quot;text-align: left;&quot;&gt;Get UserORM based on provided JWT token&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
@@ -772,7 +779,7 @@
                     <mxGeometry x="6770" y="1652.5100000000002" width="60" height="79.99" as="geometry"/>
                 </mxCell>
                 <mxCell id="193" value="events" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fillColor=default;rounded=1;shadow=0;swimlaneLine=1;" parent="1" vertex="1">
-                    <mxGeometry x="6600" y="1752.5" width="180" height="420" as="geometry">
+                    <mxGeometry x="6600" y="1752.5" width="180" height="660" as="geometry">
                         <mxRectangle x="5640" y="2180" width="80" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
@@ -875,7 +882,7 @@
                         <mxRectangle width="30" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="219" value="description" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="217" vertex="1">
+                <mxCell id="219" value="street" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="217" vertex="1">
                     <mxGeometry x="30" width="150" height="30" as="geometry">
                         <mxRectangle width="150" height="30" as="alternateBounds"/>
                     </mxGeometry>
@@ -888,7 +895,7 @@
                         <mxRectangle width="30" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="222" value="speaker" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="220" vertex="1">
+                <mxCell id="222" value="house_number" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="220" vertex="1">
                     <mxGeometry x="30" width="150" height="30" as="geometry">
                         <mxRectangle width="150" height="30" as="alternateBounds"/>
                     </mxGeometry>
@@ -901,7 +908,7 @@
                         <mxRectangle width="30" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="225" value="organizer" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="223" vertex="1">
+                <mxCell id="225" value="zip_code" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="223" vertex="1">
                     <mxGeometry x="30" width="150" height="30" as="geometry">
                         <mxRectangle width="150" height="30" as="alternateBounds"/>
                     </mxGeometry>
@@ -914,7 +921,7 @@
                         <mxRectangle width="30" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="228" value="registration_needed" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="226" vertex="1">
+                <mxCell id="228" value="city" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="226" vertex="1">
                     <mxGeometry x="30" width="150" height="30" as="geometry">
                         <mxRectangle width="150" height="30" as="alternateBounds"/>
                     </mxGeometry>
@@ -927,7 +934,7 @@
                         <mxRectangle width="30" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="231" value="url" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="229" vertex="1">
+                <mxCell id="231" value="country" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="229" vertex="1">
                     <mxGeometry x="30" width="150" height="30" as="geometry">
                         <mxRectangle width="150" height="30" as="alternateBounds"/>
                     </mxGeometry>
@@ -940,7 +947,111 @@
                         <mxRectangle width="30" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="308" value="image_key" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="306" vertex="1">
+                <mxCell id="308" value="room" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" parent="306" vertex="1">
+                    <mxGeometry x="30" width="150" height="30" as="geometry">
+                        <mxRectangle width="150" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-419" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;" vertex="1" parent="193">
+                    <mxGeometry y="420" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-420" value="" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;editable=1;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-419">
+                    <mxGeometry width="30" height="30" as="geometry">
+                        <mxRectangle width="30" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-421" value="floor" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-419">
+                    <mxGeometry x="30" width="150" height="30" as="geometry">
+                        <mxRectangle width="150" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-422" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;" vertex="1" parent="193">
+                    <mxGeometry y="450" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-423" value="" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;editable=1;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-422">
+                    <mxGeometry width="30" height="30" as="geometry">
+                        <mxRectangle width="30" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-424" value="description" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-422">
+                    <mxGeometry x="30" width="150" height="30" as="geometry">
+                        <mxRectangle width="150" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-425" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;" vertex="1" parent="193">
+                    <mxGeometry y="480" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-426" value="" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;editable=1;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-425">
+                    <mxGeometry width="30" height="30" as="geometry">
+                        <mxRectangle width="30" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-427" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;speaker&lt;/span&gt;" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-425">
+                    <mxGeometry x="30" width="150" height="30" as="geometry">
+                        <mxRectangle width="150" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-428" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;" vertex="1" parent="193">
+                    <mxGeometry y="510" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-429" value="" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;editable=1;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-428">
+                    <mxGeometry width="30" height="30" as="geometry">
+                        <mxRectangle width="30" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-430" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;organizer&lt;/span&gt;" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-428">
+                    <mxGeometry x="30" width="150" height="30" as="geometry">
+                        <mxRectangle width="150" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-431" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;" vertex="1" parent="193">
+                    <mxGeometry y="540" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-432" value="" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;editable=1;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-431">
+                    <mxGeometry width="30" height="30" as="geometry">
+                        <mxRectangle width="30" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-433" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;registration_needed&lt;/span&gt;" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-431">
+                    <mxGeometry x="30" width="150" height="30" as="geometry">
+                        <mxRectangle width="150" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-434" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;" vertex="1" parent="193">
+                    <mxGeometry y="570" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-435" value="" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;editable=1;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-434">
+                    <mxGeometry width="30" height="30" as="geometry">
+                        <mxRectangle width="30" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-436" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;url&lt;/span&gt;" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-434">
+                    <mxGeometry x="30" width="150" height="30" as="geometry">
+                        <mxRectangle width="150" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-437" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;" vertex="1" parent="193">
+                    <mxGeometry y="600" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-438" value="" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;editable=1;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-437">
+                    <mxGeometry width="30" height="30" as="geometry">
+                        <mxRectangle width="30" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-439" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;image_key&lt;/span&gt;" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-437">
+                    <mxGeometry x="30" width="150" height="30" as="geometry">
+                        <mxRectangle width="150" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-440" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;" vertex="1" parent="193">
+                    <mxGeometry y="630" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-441" value="" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;editable=1;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-440">
+                    <mxGeometry width="30" height="30" as="geometry">
+                        <mxRectangle width="30" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-442" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;like_count&lt;/span&gt;" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="bR4AIOGPCTmCH_ZrxjPx-440">
                     <mxGeometry x="30" width="150" height="30" as="geometry">
                         <mxRectangle width="150" height="30" as="alternateBounds"/>
                     </mxGeometry>
@@ -1106,7 +1217,7 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="352" value="" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#000000;shadow=0;dashed=0;shape=mxgraph.ios7.icons.reload;" parent="1" vertex="1">
-                    <mxGeometry x="5000" y="2070" width="24" height="27" as="geometry"/>
+                    <mxGeometry x="5010" y="2080" width="24" height="27" as="geometry"/>
                 </mxCell>
                 <mxCell id="357" value="" style="endArrow=classic;startArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" parent="1" source="186" target="211" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -1143,7 +1254,7 @@
                 </mxCell>
                 <mxCell id="371" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Startup Event: AsyncIOScheduler&amp;nbsp;&lt;/span&gt;&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;executes&amp;nbsp;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;pipeline regularly&lt;/span&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="370" vertex="1" connectable="0">
                     <mxGeometry x="0.4623" y="1" relative="1" as="geometry">
-                        <mxPoint x="79" y="-3" as="offset"/>
+                        <mxPoint x="61" y="-6" as="offset"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="372" value="" style="endArrow=classic;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="340" target="186" edge="1">
@@ -1271,8 +1382,8 @@
                         <mxPoint x="6190" y="2050" as="sourcePoint"/>
                         <mxPoint x="6240" y="2000" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="5530" y="2007"/>
-                            <mxPoint x="5530" y="1960"/>
+                            <mxPoint x="5530" y="2008"/>
+                            <mxPoint x="5530" y="1975"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
@@ -1375,6 +1486,95 @@
                         <Array as="points">
                             <mxPoint x="6335" y="1200"/>
                             <mxPoint x="6677" y="1200"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-446" value="&lt;b&gt;LikeButton.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Adds button to like/unlike event&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                    <mxGeometry x="4400" y="1470" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-448" value="&lt;b&gt;EventWebsiteButton.tsx&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Renders a button that links to event&#39;s external url if provided&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                    <mxGeometry x="4630" y="1470" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-449" value="LikeButton.css" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+                    <mxGeometry x="3200" y="2060" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-453" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="bR4AIOGPCTmCH_ZrxjPx-446" target="93">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="4190" y="1580" as="sourcePoint"/>
+                        <mxPoint x="4240" y="1530" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="4448" y="1610"/>
+                            <mxPoint x="3843" y="1610"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-457" value="Event List renders like button" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="bR4AIOGPCTmCH_ZrxjPx-453">
+                    <mxGeometry x="0.002" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-454" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="bR4AIOGPCTmCH_ZrxjPx-446" target="12">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="4160" y="1500" as="sourcePoint"/>
+                        <mxPoint x="4210" y="1450" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-455" value="" style="endArrow=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="bR4AIOGPCTmCH_ZrxjPx-448" target="12">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="4160" y="1500" as="sourcePoint"/>
+                        <mxPoint x="4210" y="1450" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-456" value="&lt;div&gt;&lt;b&gt;LikedFilterButton.tsx&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Defines a toggle button that filters events to show only liked ones.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                    <mxGeometry x="3240" y="1470" width="190" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-459" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" edge="1" parent="1" source="bR4AIOGPCTmCH_ZrxjPx-446" target="182">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="4830" y="1880" as="sourcePoint"/>
+                        <mxPoint x="4880" y="1830" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-463" value="Click on button sends&amp;nbsp;&lt;div&gt;POST request to&amp;nbsp;&lt;div&gt;/api/events/{eventId}/like or&lt;/div&gt;&lt;div&gt;/api/events{eventId}/unlike&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="bR4AIOGPCTmCH_ZrxjPx-459">
+                    <mxGeometry x="-0.5994" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-464" value="" style="endArrow=none;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#e3c800;strokeColor=#B09500;strokeWidth=2;" edge="1" parent="1" source="95" target="bR4AIOGPCTmCH_ZrxjPx-446">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1410" y="1230" as="sourcePoint"/>
+                        <mxPoint x="3690" y="1700" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1210" y="1135"/>
+                            <mxPoint x="1210" y="240"/>
+                            <mxPoint x="4448" y="240"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-465" value="" style="endArrow=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;fillColor=#fa6800;strokeColor=#C73500;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="bR4AIOGPCTmCH_ZrxjPx-449" target="bR4AIOGPCTmCH_ZrxjPx-446">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2830" y="2212" as="sourcePoint"/>
+                        <mxPoint x="4260" y="1550" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="3260" y="2050"/>
+                            <mxPoint x="4580" y="2050"/>
+                            <mxPoint x="4580" y="1590"/>
+                            <mxPoint x="4542" y="1590"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-466" value="" style="endArrow=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="bR4AIOGPCTmCH_ZrxjPx-456" target="10">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3580" y="1440" as="sourcePoint"/>
+                        <mxPoint x="3630" y="1390" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bR4AIOGPCTmCH_ZrxjPx-467" value="" style="endArrow=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;fillColor=#fa6800;strokeColor=#C73500;strokeWidth=2;" edge="1" parent="1" source="152" target="bR4AIOGPCTmCH_ZrxjPx-456">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="3200" y="1850" as="sourcePoint"/>
+                        <mxPoint x="3460" y="1790" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2560" y="1950"/>
+                            <mxPoint x="3335" y="1950"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>

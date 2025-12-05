@@ -41,13 +41,21 @@ class EventORM(Base):
     end_date = Column(String)
     start_time = Column(String, nullable=True)
     end_time = Column(String, nullable=True)
-    location = Column(String, nullable=True)
+    location = Column(String, nullable=True)  # Kept for backward compatibility / full address string
+    street = Column(String, nullable=True)
+    house_number = Column(String, nullable=True)
+    zip_code = Column(String, nullable=True)
+    city = Column(String, nullable=True)
+    country = Column(String, nullable=True)
+    room = Column(String, nullable=True)
+    floor = Column(String, nullable=True)
     description = Column(Text, nullable=True)
     speaker = Column(String, nullable=True)
     organizer = Column(String, nullable=True)
     registration_needed = Column(String, nullable=True)
     url = Column(String, nullable=True)
     image_key = Column(String, nullable=True)
+    like_count = Column(Integer, default=0, nullable=False)  # Number of likes for the event
 
 
 # Define the UserORM class which represents the "users" table in the database.

@@ -15,7 +15,7 @@ There are two important concepts when a user wants to sign into an account:
 ## Authentication
 
 Authentication is the process of identifying a user through their credentials. The user goes to the website, types in their email and password and gets access. 
-At this point, the user is authenticated. After successful authentication, the user is issued a access token (Jason Web Token).
+At this point, the user is authenticated. After successful authentication, the user is issued an access token (Jason Web Token).
 The access token is used for authorization.
 
 ## Authorization
@@ -70,7 +70,7 @@ f (SECRET_KEY HEADER PAYLOAD) = oa3ziIZAoVFdn-97rweJAjjFn6a4ZSw7ogIHA74mGq0
 
 #### HOW DOES AUTHORIZATION WORK WITH JWT?
 
-When a token is send to a server, it will take the header and the payload, run it through the exact same hashing function to produce an signature and compare that signature to the one provided by the user. 
+When a token is send to a server, it will take the header and the payload, run it through the exact same hashing function to produce a signature and compare that signature to the one provided by the user. 
 If they match, the user is authorized. Otherwise, he is declined. 
 Jason Web Tokens are not encrypted. They are encoded using Base64. Anyone can view and alter the tokens. However, when changing any part of the token (e.g. the payload), the signature changes which will result in the user being declined. 
 
@@ -237,7 +237,7 @@ HTTP Bearer function:
 
 - Looks for the ```Authorization``` header in incoming requests.
 - Expects the format ```Bearer <token>```
-- Parses it and extracts just the token part (After "Bearer", Example: )
+- Parses it and extracts just the token part (After "Bearer")
 - Returns an HTTPAuthorizationCredentials object
 
 ``` PYTHON
@@ -287,7 +287,7 @@ def decode_access_token(token: str) -> Optional[int]:
 
 **Step 3:**
 
-After the changes have been made in the database, the ```update_me()``` functions ```return user_orm_to_response(user)``` which simply converts the ```UserORM``` into a pydantic model.
+After the changes have been made in the database, the ```update_me()``` functions returns ```user_orm_to_response(user)``` which simply converts the ```UserORM``` into a pydantic model.
 FastAPI sends the Response JSON to the Frontend:
 
 ``` JSON

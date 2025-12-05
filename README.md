@@ -42,13 +42,20 @@ Events are extracted automatically using LLM-based parsing and displayed in a cl
 - **User Authentication**: Full auth system with registration, login, password reset via email
 - **WebSocket API**: Real-time event data delivery to frontend
 - **Scheduled Tasks**: Automatic email processing every 3 hours
+- **Like System**: API endpoints to like/unlike events with persistent like counts
 
 ### Frontend
 - **Event Browsing**: Responsive grid layout with event cards
-- **Event Details**: Detailed view with location, time, description, and calendar download
+- **Event Sorting**: Sort events by title, date, or time (ascending/descending)
+- **Event Filtering**: Filter to show only liked events
+- **Like Events**: Heart button to like/unlike events, persisted to localStorage
+- **Event Details**: Detailed view with organizer, speaker, registration status, location (with Google Maps link), and description
+- **Calendar Download**: Export events as .ics files for calendar apps
+- **External Links**: Button to visit event website (with automatic https:// handling)
 - **User Accounts**: Registration, login, profile management
 - **Password Reset**: Email-based password recovery flow
 - **User Interests**: Personalized interest settings for future event recommendations
+- **Profile Page**: User info display with recommended events section
 
 ---
 
@@ -95,20 +102,37 @@ data-science-project/
             ├── main.tsx            # React entrypoint
             │
             ├── pages/              # Page components
-            │   ├── Events.tsx      # Event listing page
-            │   ├── EventDetail.tsx # Single event view
+            │   ├── Events.tsx      # Event listing page with sort & filter
+            │   ├── EventDetail.tsx # Single event view with like, calendar, website link
             │   ├── Login.tsx       # Login page
             │   ├── Register.tsx    # Registration page
-            │   ├── Profile.tsx     # User profile
+            │   ├── Profile.tsx     # User profile with recommended events
             │   ├── Settings.tsx    # User settings & interests
             │   ├── ForgotPassword.tsx
             │   └── ResetPassword.tsx
             │
             ├── components/         # Reusable UI components
-            │   ├── EventList.tsx
-            │   ├── EventImage.tsx
-            │   ├── NavBar.tsx
-            │   └── CalendarDownloadButton.tsx
+            │   ├── EventList.tsx           # Event grid with sorting & filtering
+            │   ├── EventImage.tsx          # Event image display
+            │   ├── EventSortButton.tsx     # Sort dropdown control
+            │   ├── EventWebsiteButton.tsx  # External website link button
+            │   ├── CalendarDownloadButton.tsx  # ICS calendar download
+            │   ├── LikeButton.tsx          # Heart icon like/unlike toggle
+            │   ├── LikedFilterButton.tsx   # Filter to show liked events only
+            │   ├── NavBar.tsx              # Navigation bar
+            │   ├── ProtectedRoute.tsx      # Auth route wrapper
+            │   │
+            │   └── css/            # Component stylesheets
+            │       ├── App.css
+            │       ├── AuthPages.css
+            │       ├── EventDetail.css
+            │       ├── EventList.css
+            │       ├── Events.css
+            │       ├── LikeButton.css
+            │       ├── NavBar.css
+            │       ├── Profile.css
+            │       ├── ProtectedRoute.css
+            │       └── Settings.css
             │
             ├── context/            # React Context for state management
             │   ├── AuthContext.tsx     # Authentication provider

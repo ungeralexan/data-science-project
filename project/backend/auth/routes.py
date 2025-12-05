@@ -5,8 +5,9 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.exc import OperationalError
 
-from data.database.database_events import SessionLocal, UserORM  # pylint: disable=import-error
+from data.database.database_events import SessionLocal, UserORM, init_db  # pylint: disable=import-error
 from services.email_service import send_password_reset_email  # pylint: disable=import-error
 
 from .models import (
@@ -18,6 +19,7 @@ from .models import (
     PasswordResetRequest,
     PasswordReset,
 )
+
 from .utils import (
     hash_password,
     verify_password,
@@ -28,6 +30,15 @@ from .utils import (
     get_current_user,
 )
 
+#
+#   This file defines the authentication API routes using FastAPI.
+#   It includes endpoints for user registration, login, profile management,
+#   password reset, and account deletion.
+#   
+#   It uses SQLAlchemy for database interactions and JWT for token handling.
+#   
+#
+
 
 # Create router with prefix
 auth_router = APIRouter(prefix="/api/auth", tags=["auth"])
@@ -35,62 +46,76 @@ auth_router = APIRouter(prefix="/api/auth", tags=["auth"])
 # Thread pool for running blocking operations (email sending)
 email_executor = ThreadPoolExecutor(max_workers=2)
 
-
 @auth_router.post("/register", response_model=TokenResponse)
 async def register(user_data: UserCreate):
     """Register a new user."""
-    with SessionLocal() as db:
-        # Check if email already exists
-        existing_user = db.query(UserORM).filter(UserORM.email == user_data.email).first()
-        if existing_user:
-            raise HTTPException(status_code=400, detail="Email already registered")
-        
-        # Create new user
-        hashed_password = hash_password(user_data.password)
-        new_user = UserORM(
-            email=user_data.email,
-            password=hashed_password,
-            first_name=user_data.first_name,
-            last_name=user_data.last_name,
-        )
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
-        
-        # Create access token
-        access_token = create_access_token(new_user.user_id)
-        
-        return TokenResponse(
-            access_token=access_token,
-            token_type="bearer",
-            user=user_orm_to_response(new_user)
-        )
+    try:
+        with SessionLocal() as db:
+            # Check if email already exists
+            existing_user = db.query(UserORM).filter(UserORM.email == user_data.email).first()
+            
+            if existing_user:
+                raise HTTPException(status_code=400, detail="Email already registered")
+            
+            # Create new user
+            hashed_password = hash_password(user_data.password)
+
+            new_user = UserORM(
+                email=user_data.email,
+                password=hashed_password,
+                first_name=user_data.first_name,
+                last_name=user_data.last_name,
+            )
+
+            db.add(new_user)
+            db.commit()
+            db.refresh(new_user)
+            
+            # Create access token
+            access_token = create_access_token(new_user.user_id)
+            
+            return TokenResponse(
+                access_token=access_token,
+                token_type="bearer",
+                user=user_orm_to_response(new_user)
+            )
+    except OperationalError:
+        # Database doesn't exist, initialize it and retry
+        init_db()
+
+        #Reattempt registration
+        return await register(user_data)
 
 
 @auth_router.post("/login", response_model=TokenResponse)
 async def login(user_data: UserLogin):
     """Login a user."""
-    with SessionLocal() as db:
-        user = db.query(UserORM).filter(UserORM.email == user_data.email).first()
+    try:
+        with SessionLocal() as db:
+            user = db.query(UserORM).filter(UserORM.email == user_data.email).first()
+            
+            if user is None or not verify_password(user_data.password, user.password):
+                raise HTTPException(status_code=401, detail="Invalid email or password")
+            
+            # Create access token
+            access_token = create_access_token(user.user_id)
+            
+            return TokenResponse(
+                access_token=access_token,
+                token_type="bearer",
+                user = user_orm_to_response(user)
+            )
         
-        if user is None or not verify_password(user_data.password, user.password):
-            raise HTTPException(status_code=401, detail="Invalid email or password")
-        
-        # Create access token
-        access_token = create_access_token(user.user_id)
-        
-        return TokenResponse(
-            access_token=access_token,
-            token_type="bearer",
-            user=user_orm_to_response(user)
-        )
+    except OperationalError:
+        # Database doesn't exist, initialize it and retry
+        init_db()
+        return await login(user_data)
 
 
 @auth_router.get("/me", response_model=UserResponse)
 async def get_me(current_user: UserORM = Depends(get_current_user)):
     """Get the current authenticated user's information."""
     return user_orm_to_response(current_user)
-
 
 @auth_router.put("/me", response_model=UserResponse)
 async def update_me(user_update: UserUpdate, current_user: UserORM = Depends(get_current_user)):

@@ -8,14 +8,17 @@ import imaplib
 import email
 import ssl
 from email.policy import default
-from bs4 import BeautifulSoup
+import warnings
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+from config import IMAP_HOST, IMAP_PORT, EMAIL_TEMP_DIR  # pylint: disable=import-error
 
-# -------- Email download settings --------
-HOST = "mailserv.uni-tuebingen.de"
+#I disable this warning because it doesn't affect our use case
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
-os.makedirs("data/temp_emails", exist_ok = True)
-OUTDIR = "data/temp_emails"
+# Create temp email directory if it doesn't exist
+os.makedirs(EMAIL_TEMP_DIR, exist_ok=True)
 
+# Load credentials from secrets.json
 with open("secrets.json", "r", encoding="utf-8") as f:
     secrets = json.load(f)
 
@@ -31,7 +34,7 @@ def download_latest_emails(limit: int = 10) -> None:
 
     # ---- connect and login ----
     context = ssl.create_default_context()
-    M = imaplib.IMAP4_SSL(HOST, 993, ssl_context=context) # connect to server
+    M = imaplib.IMAP4_SSL(IMAP_HOST, IMAP_PORT, ssl_context=context) # connect to server
     M.login(USER, PASSWORD)
     M.select("Inbox") # select inbox
 
@@ -90,7 +93,7 @@ def download_latest_emails(limit: int = 10) -> None:
         # ---- filter for "Rundmail" emails ----
         if ("rundmail" in body.lower()) or ("wiwinews" in body.lower()):
             # ---- save per-email .txt file ----
-            per_email_path = os.path.join(OUTDIR, f"msg_{i:04d}.txt")
+            per_email_path = os.path.join(EMAIL_TEMP_DIR, f"msg_{i:04d}.txt")
 
             # write to file including Subject and From headers for context
             with open(per_email_path, "w", encoding="utf-8") as per_email_file:
@@ -117,15 +120,15 @@ def download_latest_emails(limit: int = 10) -> None:
     combined_string = "\n\n".join(combined_chunks)
 
     # ---- delete old email .txt files ----
-    for fname in os.listdir(OUTDIR):
+    for fname in os.listdir(EMAIL_TEMP_DIR):
         if fname.lower().endswith(".txt"):
             try:
-                os.remove(os.path.join(OUTDIR, fname))
+                os.remove(os.path.join(EMAIL_TEMP_DIR, fname))
             except OSError:
                 pass
 
     # ---- save combined all_emails.txt file ----
-    all_path = os.path.join(OUTDIR, "all_emails.txt")
+    all_path = os.path.join(EMAIL_TEMP_DIR, "all_emails.txt")
 
     with open(all_path, "w", encoding="utf-8") as all_path_files:
         all_path_files.write(combined_string)

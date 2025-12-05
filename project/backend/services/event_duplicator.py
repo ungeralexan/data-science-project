@@ -4,6 +4,7 @@ from typing import List
 from google import genai
 
 from data.database.database_events import EventORM  # pylint: disable=import-error
+from config import LLM_MODEL  # pylint: disable=import-error
 
 # Define the expected schema for the LLM response
 # It should be a list of objects with a single boolean field "is_new"
@@ -69,8 +70,8 @@ def filter_new_events(candidates: List[dict], existing_events: List[EventORM]) -
     that overlaps at the same date(s)/time(s), not just vaguely similar.
 
     You will receive:
-      - `candidate_events`: a JSON array of candidate events
-      - `existing_events`: a JSON array of events already stored
+      - candidate_events: a JSON array of candidate events
+      - existing_events: a JSON array of events already stored
 
     For EACH candidate in order, decide if it is NEW or already present among existing events.
 
@@ -103,7 +104,7 @@ def filter_new_events(candidates: List[dict], existing_events: List[EventORM]) -
 
     # Generate the response
     resp = client.models.generate_content(
-        model = "gemini-2.5-flash",
+        model = LLM_MODEL,
         contents = f"{system_instruction}\n\n{user_prompt}",
         config = {
             "response_mime_type": "application/json",

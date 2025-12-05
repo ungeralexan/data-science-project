@@ -2,8 +2,12 @@
 from sqlalchemy import create_engine, Column, Integer, String, Text, JSON
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-# SQLite database URL
-DATABASE_URL = "sqlite:///./data/database/events.db"
+from config import DATABASE_URL  # pylint: disable=import-error
+
+#
+#   This file sets up the database connection and defines ORM models for events and users.
+#   ORM models are Python classes that map to database tables, allowing us to interact with the database using Python code.
+#
 
 # Create the database engine. An engine is an object that manages the connection to the database.
 engine = create_engine(
@@ -22,10 +26,11 @@ SessionLocal = sessionmaker(
     bind = engine # Bind the session to the engine. (This connects the session to our database)
 )
 
-# Create a base class for our ORM models.
+# Create a base class for our ORM models. A base is a class that other ORM models will inherit from.
 Base = declarative_base() 
 
 # Define the EventORM class which represents the "events" table in the database.
+# By adding (Base) we make EventORM inherit from the Base class we created earlier.
 class EventORM(Base):
     __tablename__ = "events" # Name of the table in the database.
 

@@ -10,34 +10,36 @@ from apscheduler.triggers.cron import CronTrigger
 
 from data.database.database_events import init_db, SessionLocal, EventORM  # pylint: disable=import-error
 from services.event_pipeline import run_email_to_db_pipeline  # pylint: disable=import-error
-from auth import auth_router  # pylint: disable=import-error
+from auth.routes import auth_router  # pylint: disable=import-error
+
+from config import (  # pylint: disable=import-error
+    CORS_ORIGINS,
+    SCHEDULER_TIMEZONE,
+    EMAIL_PIPELINE_CRON_HOURS,
+    EMAIL_PIPELINE_DEFAULT_LIMIT,
+)
+
+# This file sets up the FastAPI application, including CORS settings,
+# WebSocket endpoints, and scheduled tasks for periodic email processing.
 
 #----- FastAPI app and scheduler -----
 app = FastAPI()
 
 # Initialize scheduler
-scheduler = AsyncIOScheduler(timezone="Europe/Berlin")
-
-# ---- CORS settings -----
-
-# Allowed origins for CORS requests (from frontend)
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://193.196.53.179:5173",
-]
+scheduler = AsyncIOScheduler(timezone=SCHEDULER_TIMEZONE)
 
 # Add CORS (Cross-Origin Resource Sharing) middleware
 # Middleware is needed to allow frontend (running on different origin) to access backend API
 app.add_middleware(
     CORSMiddleware, # Middleware class for handling CORS requests
-    allow_origins=origins, # Allowed origins for CORS requests (from frontend)
+    allow_origins=CORS_ORIGINS, # Allowed origins for CORS requests (from frontend)
     allow_credentials=True, # Allow cookies, authorization headers, etc.
     allow_methods=["*"], # Allow all HTTP methods
     allow_headers=["*"], # Allow all headers
 )
 
 # ----- Include routers -----
+# Needed to include auth routes
 app.include_router(auth_router)
 
 # ----- Data model ----
@@ -102,8 +104,8 @@ async def startup_event():
     #3) Schedule periodic email downloads and processing
     scheduler.add_job(
         run_email_to_db_pipeline,
-        trigger = CronTrigger(hour="*/3"),  # every 3 hours
-        kwargs = {"limit": 15}, # process up to 15 emails each run
+        trigger = CronTrigger(hour=EMAIL_PIPELINE_CRON_HOURS),  # every 3 hours
+        kwargs = {"limit": EMAIL_PIPELINE_DEFAULT_LIMIT}, # process up to 15 emails each run
         id="email_pipeline_job",
         replace_existing = True,
     )

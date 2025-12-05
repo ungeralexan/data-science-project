@@ -4,6 +4,9 @@ Pydantic models for authentication.
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 
+#
+#   This file defines Pydantic models used in the authentication system.
+#
 
 class UserCreate(BaseModel):
     """Model for user registration."""
@@ -30,7 +33,7 @@ class UserUpdate(BaseModel):
 
 
 class UserResponse(BaseModel):
-    """Model for user response (excludes password)."""
+    """Model for returning user info like profile details without password."""
     user_id: int
     email: str
     first_name: str
@@ -41,10 +44,10 @@ class UserResponse(BaseModel):
 
 
 class TokenResponse(BaseModel):
-    """Model for token response."""
-    access_token: str
-    token_type: str
-    user: UserResponse
+    """Model for token response. This is used when returning JWT tokens."""
+    access_token: str # JWT Token String
+    token_type: str #Always "bearer" (OAuth2 Standard)
+    user: UserResponse # User info associated with the token
 
 
 class PasswordResetRequest(BaseModel):

@@ -1,43 +1,30 @@
-# services/email_service.py
-"""
-Email service for sending transactional emails (password reset, etc.)
-Uses Gmail SMTP with App Password for authentication.
-"""
-
-import smtplib
+import smtplib #Python library for sending emails via SMTP
 import json
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from pathlib import Path
+from email.mime.text import MIMEText #For creating email body parts
+from email.mime.multipart import MIMEMultipart #For combining multiple parts (HTML + plain text)
 
+from config import SMTP_SERVER, SMTP_PORT, FRONTEND_URL, PASSWORD_RESET_EXPIRE_HOURS  # pylint: disable=import-error
+
+#
+#   This file defines functions to send emails using Gmail's SMTP server.
+#
 
 # Load email credentials from secrets.json
 def load_email_credentials() -> tuple[str, str]:
     """Load SMTP credentials from secrets.json"""
-    secrets_path = Path(__file__).parent.parent / "secrets.json"
-    with open(secrets_path, "r") as f:
+
+    with open("secrets.json", "r", encoding="utf-8") as f:
         secrets = json.load(f)
+
     return secrets.get("SMTP_EMAIL", ""), secrets.get("SMTP_PASSWORD", "")
 
 
-# SMTP Configuration for Gmail
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
+def send_email(to_email: str, 
+               subject: str, 
+               html_content: str, 
+               text_content: str = None) -> bool:
+    """ Send an email using Gmail SMTP."""
 
-
-def send_email(to_email: str, subject: str, html_content: str, text_content: str = None) -> bool:
-    """
-    Send an email using Gmail SMTP.
-    
-    Args:
-        to_email: Recipient email address
-        subject: Email subject
-        html_content: HTML body of the email
-        text_content: Plain text body (optional, fallback for non-HTML clients)
-    
-    Returns:
-        True if email sent successfully, False otherwise
-    """
     smtp_email, smtp_password = load_email_credentials()
     
     if not smtp_email or not smtp_password:
@@ -45,8 +32,13 @@ def send_email(to_email: str, subject: str, html_content: str, text_content: str
         return False
     
     try:
-        # Create message
+
+        # Creates an email with multiple versions of the content
+        # Email clients pick the best version they can display
+        # The client prefers HTML over plain text if both are available
         msg = MIMEMultipart("alternative")
+        
+        
         msg["Subject"] = subject
         msg["From"] = f"tuevent <{smtp_email}>"
         msg["To"] = to_email
@@ -59,6 +51,17 @@ def send_email(to_email: str, subject: str, html_content: str, text_content: str
         # Add HTML version
         part2 = MIMEText(html_content, "html")
         msg.attach(part2)
+
+        #
+        #   At this point, by adding both "plain" and "html" the structure of the
+        #   email is as follows:
+        #
+        #   Email Message (MIMEMultipart "alternative")
+        #   ├── Part 1: Plain Text (fallback)
+        #   │   "Hello, click here to reset: http://..."
+        #   │
+        #   └── Part 2: HTML (preferred)
+        #       <html><body><h1>Password Reset</h1>...</body></html>
         
         # Connect to Gmail SMTP and send
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
@@ -80,19 +83,11 @@ def send_email(to_email: str, subject: str, html_content: str, text_content: str
         return False
 
 
-def send_password_reset_email(to_email: str, reset_token: str, frontend_url: str = "http://localhost:5173") -> bool:
+def send_password_reset_email(to_email: str, reset_token: str) -> bool:
     """
     Send a password reset email with a reset link.
-    
-    Args:
-        to_email: Recipient email address
-        reset_token: JWT token for password reset
-        frontend_url: Base URL of the frontend application
-    
-    Returns:
-        True if email sent successfully, False otherwise
     """
-    reset_link = f"{frontend_url}/reset-password?token={reset_token}"
+    reset_link = f"{FRONTEND_URL}/reset-password?token={reset_token}"
     
     subject = "Reset Your Password - tuevent"
     
@@ -123,7 +118,7 @@ def send_password_reset_email(to_email: str, reset_token: str, frontend_url: str
                 {reset_link}
             </p>
             
-            <p><strong>This link will expire in 1 hour.</strong></p>
+            <p><strong>This link will expire in {PASSWORD_RESET_EXPIRE_HOURS} hour(s).</strong></p>
             
             <p>If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.</p>
             
@@ -147,7 +142,7 @@ def send_password_reset_email(to_email: str, reset_token: str, frontend_url: str
     Click the link below to reset your password:
     {reset_link}
     
-    This link will expire in 1 hour.
+    This link will expire in {PASSWORD_RESET_EXPIRE_HOURS} hour(s).
     
     If you didn't request a password reset, you can safely ignore this email.
     Your password will remain unchanged.

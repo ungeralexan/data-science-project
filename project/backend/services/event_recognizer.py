@@ -1,6 +1,8 @@
 import json
 from google import genai
 
+from config import IMAGE_KEYS, LLM_MODEL  # pylint: disable=import-error
+
 # -------- LLM Event Extraction Settings --------
 
 # Schema for a single event object
@@ -26,27 +28,11 @@ EVENT_SCHEMA  = {
     ],
 }
 
-# List of valid image keys
-IMAGE_KEYS = [
-    "daad", "cultural_exchange", "machine_learning", "sports_course", "ai",
-    "data_science", "max_plank", "startup", "application_workshop", "debate",
-    "museum", "student_organisation", "art_workshop", "erasmus", "networking",
-    "sustainability", "blood_donation", "festival_tuebingen", "open_day",
-    "theatre", "buddy", "film_screening", "orchestra", "tournament",
-    "careerfair", "finance_event", "orientation_week", "training", "city_tour",
-    "german_course", "party", "volunteering", "climate", "hike_trip",
-    "reading", "workshop", "workshop_png", "colloquium", "info_session",
-    "research_fair", "company_talk", "language_course", "science", "science_png",
-    "concert_event", "lecture_talk", "consulting_event", "library", "science_fair",
-]
-
 # Schema for multiple event objects (array of EVENT_SCHEMA)
 SCHEMA_MULTI = {
     "type": "ARRAY",
     "items": EVENT_SCHEMA,
 }
-
-image_keys_str = ", ".join(f'"{k}"' for k in IMAGE_KEYS)
 
 #-------- LLM Event Extraction Function --------
 def extract_event_info_with_llm(email_text: str) -> dict:
@@ -54,6 +40,9 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     Uses Gemini to extract multiple events from a text containing multiple emails.
     Returns a list of dicts (one per event).
     """
+    
+    # Generate image keys string for the prompt
+    image_keys_str = ", ".join(f'"{k}"' for k in IMAGE_KEYS)
     
     # System instructions
     system_instruction = f"""
@@ -114,7 +103,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
 
     # Make the LLM call to generate content with the specified schema
     resp = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=LLM_MODEL,
         contents=contents,
         config={
             "response_mime_type": "application/json",

@@ -5,12 +5,13 @@ from pathlib import Path
 from sqlalchemy.orm import Session
 
 from data.database.database_events import SessionLocal, EventORM  # pylint: disable=import-error
+from config import EMAIL_TEMP_DIR, EMAIL_PIPELINE_DEFAULT_LIMIT  # pylint: disable=import-error
 
 from services.email_downloader import download_latest_emails   # pylint: disable=import-error
 from services.event_duplicator import filter_new_events  # pylint: disable=import-error
 from services.event_recognizer import extract_event_info_with_llm  # pylint: disable=import-error
 
-def run_email_to_db_pipeline(limit: int = 15, outdir: str = "data/temp_emails") -> None:
+def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: str = EMAIL_TEMP_DIR) -> None:
     """
     Runs the pipeline to download emails, extract events, and insert them into the database.
     """
@@ -40,15 +41,6 @@ def run_email_to_db_pipeline(limit: int = 15, outdir: str = "data/temp_emails") 
     # 4) Opens DB session and insert non-duplicates
     with SessionLocal() as db:
         insert_non_duplicate_events(db, events_raw)
-
-    # 5) Convert all extracted events (not only new ones) to DataFrame and save
-    # This is temporary for analysis purposes
-    df_results = pd.DataFrame(events_raw)
-    out_path = Path(outdir) / "extracted_event_info.xlsx"
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    df_results.to_excel(out_path, index=False)
-
-    print(f"Saved {len(df_results)} events to {out_path}")
 
 
 def insert_non_duplicate_events(db: Session, events_raw: List[dict]) -> None:

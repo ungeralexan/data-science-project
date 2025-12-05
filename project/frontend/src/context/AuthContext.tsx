@@ -184,10 +184,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
             method: 'PUT',
+            
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
+
             body: JSON.stringify(data),
         });
 

@@ -47,8 +47,9 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     # System instructions
     system_instruction = f"""
 
-    You are a multilingual assistant that extracts event information from email texts according to a given schema. 
-    The emails may be in various languages including English and German. The text you receive contains multiple emails concatenated together.
+    You are a multilingual assistant that extracts structured event information from university email texts. 
+    The emails may be in various languages including English and German. The input text you receive contains
+    multiple emails concatenated together.
 
     The text format is as follows:
 
@@ -56,13 +57,38 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     followed by lines with "Subject: ..." and "From: ...", then a blank line, then the email body text,
     and ends with a line like "--------------- EMAIL: X End ---------------".
     
-    Only extract if there is a clear event. An event is a scheduled occurrence. It is NOT a invitation to participate in a study, survey, or non-event activity.
+    Some emails describe one event, some describe multiple events, and some are not events at all.
+    
+    DEFINITION OF AN EVENT
+
+    An event is a scheduled occurrence. It is NOT a invitation to participate in a study, survey, or non-event activity.
+
+    LANGUAGE OF OUTPUT
+
+    Regardless of the original email language, return all textual fields in English,
+    except for proper names (e.g. building names, street names, institution names),
+    which you may keep as in the original.
+
+    DATE AND TIME HANDLING
+
     Change the time and date formats to match MM/DD/YYYY and HH:MM AM/PM. If unsure, use null.
-    When reading emails, pay special attention to lines starting with:
+    When reading emails, pay special attention to lines that indicate event details, for example (in German emails):
+
     - "Datum:" (date)
     - "Uhrzeit:" (time)
-    - "Ort:" (location) 
-    Return ONLY a single JSON object with exactly these keys and nothing else:
+    - "Ort:" (location)
+
+    TITLE RULES
+
+    - If the email clearly contains a headline, workshop name, lecture title, or event title, USE THAT as the basis for the Title field (translated to English if needed, but keep names).
+    - If there is no explicit title, generate a SHORT, CONCISE event title (about 5–10 words)  that would look good as a calendar headline.
+    - Do NOT use long sentences as titles.
+    - Do NOT include full subtitles with many clauses or questions.
+    - Do NOT summarize the whole email in the title.
+
+    OUTPUT FORMAT
+
+    You must return ONLY a JSON ARRAY ([]) of event objects. Each object in the array must follow this schema:
 
     - Title (String): The title or name of the event. 
     - Start_Date (String or null): The starting date of the event.

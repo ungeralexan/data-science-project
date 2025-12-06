@@ -1,8 +1,28 @@
 # tuevent — Tübingen Event Planner
 
-Our Data Science project that automatically extracts events from the University of Tuebingen mailing lists and displays them in a modern web application.
+A Data Science project that automatically extracts events from Tübingen university mailing lists and displays them in a modern web application.
 
-**Team:** Veja, Maurice, Alex
+**Team:** Veja, Maurice, Alex  
+**Tech:** FastAPI · React · SQLite · Google Gemini · JWT
+
+---
+
+---
+
+## Table of Contents
+
+- [Project Goal](#project-goal)
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Configuration](#configuration)
+- [API Endpoints](#api-endpoints)
+- [Running the Project](#running-the-project)
+- [Email Pipeline Flow](#email-pipeline-flow)
+- [Authentication Flow](#authentication-flow)
+- [Development & Contributing](#development--contributing)
+- [Testing](#testing)
+
 
 ---
 

@@ -2,33 +2,16 @@
 import { useState } from "react";
 import { Typography } from 'antd';
 import EventList from '../components/EventList';
+import EventCalendar from '../components/EventCalendar';
 import EventSortControls from "../components/EventSortButton";
 import type { SortOption } from "../components/EventSortButton";
 import LikedFilterButton from "../components/LikedFilterButton";
+import ViewToggleButton from "../components/ViewToggleButton";
 import "../components/css/Events.css";
 
 /*
-  Events.tsx is the main page component for displaying a list of events. It includes sorting functionality
-  to allow users to sort events based on different criteria.
-
-  Typography:
-    Typography is a component from Ant Design that provides various typographic elements like titles, paragraphs,
-    and text styles to enhance the visual presentation of text content.
-  
-  EventList:
-    EventList is a custom component that fetches and displays a list of events. It takes a sortOption prop
-    to determine the order in which events are displayed.
-  
-  EventSortControls:
-    EventSortControls is a custom component that provides UI controls for selecting the sorting option. It takes
-    sortOption and onChange props to manage the current sorting state.
-  
-  LikedFilterButton:
-    LikedFilterButton is a custom component that provides a toggle button to filter events by liked status.
-  
-  useState:
-    useState is a React hook that allows functional components to have state variables. In this case, it is used
-    to manage the current sorting option for the events.
+  Events.tsx is the main page component for displaying events. It includes sorting functionality
+  to allow users to sort events based on different criteria or change the view mode between list and calendar.
 */
 
 const { Title } = Typography;
@@ -40,6 +23,9 @@ export default function Events() {
   
   // State to hold whether to show only liked events
   const [showLikedOnly, setShowLikedOnly] = useState<boolean>(false);
+
+  // State to toggle between list and calendar views
+  const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
 
   // Render the Events page with title, sorting controls, and event list
   return (
@@ -57,9 +43,18 @@ export default function Events() {
           showLikedOnly={showLikedOnly}
           onChange={setShowLikedOnly}
         />
+        <ViewToggleButton
+          viewMode={viewMode}
+          onToggle={setViewMode}
+        />
       </div>
       
-      <EventList sortOption={sortOption} showLikedOnly={showLikedOnly} />
+      {/* Toggle between list and calendar views */}
+      {viewMode === "list" ? (
+        <EventList sortOption={sortOption} showLikedOnly={showLikedOnly} />
+      ) : (
+        <EventCalendar showLikedOnly={showLikedOnly} />
+      )}
     </div>
   );
 }

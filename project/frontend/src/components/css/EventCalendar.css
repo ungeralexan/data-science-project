@@ -1,0 +1,134 @@
+/* EventCalendar.css */
+
+.event-calendar {
+  margin-top: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  padding: 16px;
+}
+
+.event-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.event-calendar-month {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.event-calendar-nav {
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.event-calendar-nav:hover {
+  border-color: #1677ff;
+  color: #1677ff;
+}
+
+.event-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.event-calendar-weekday {
+  text-align: center;
+  font-weight: 600;
+  color: #555;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.event-calendar-cell {
+  height: 130px;
+  width: 100%;
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid #f0f0f0;
+  box-sizing: border-box;
+}
+
+.event-calendar-cell--today {
+  background: #e6f4ff;
+  border-color: #91caff;
+}
+
+.event-calendar-cell--blank {
+  background: transparent;
+  border: none;
+}
+
+.event-calendar-day-number {
+  font-weight: 700;
+  color: #333;
+}
+
+.event-calendar-events {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.event-calendar-event {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  padding: 4px 6px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.event-calendar-event-time {
+  color: #1677ff;
+  font-weight: 600;
+  min-width: 48px;
+}
+
+.event-calendar-event-title {
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.event-calendar-empty {
+  color: #999;
+  font-size: 12px;
+}
+
+.event-calendar-error {
+  color: #d4380d;
+  padding: 12px;
+  background: #fff2e8;
+  border: 1px solid #ffd8bf;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .event-calendar {
+    padding: 12px;
+  }
+
+  .event-calendar-cell {
+    min-height: 90px;
+  }
+}

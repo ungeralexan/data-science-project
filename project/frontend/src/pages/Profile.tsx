@@ -1,7 +1,11 @@
 // src/pages/Profile.tsx
+import { useState } from 'react';
 import { Typography, Card } from 'antd';
 import { useAuth } from '../hooks/useAuth';
 import EventList from '../components/EventList';
+import EventSortControls from '../components/EventSortButton';
+import type { SortOption } from '../components/EventSortButton';
+import LikedFilterButton from '../components/LikedFilterButton';
 import '../components/css/Profile.css';
 
 /*
@@ -13,6 +17,10 @@ const { Title, Paragraph } = Typography;
 
 export default function Profile() {
     const { user } = useAuth();
+
+    // Sorting and liked-only filters reused from Events page
+    const [sortOption, setSortOption] = useState<SortOption>('date-asc');
+    const [showLikedOnly, setShowLikedOnly] = useState<boolean>(false);
 
     if (!user) {
         return (
@@ -31,10 +39,24 @@ export default function Profile() {
 
             {/* Recommended Events Section */}
             {hasSuggestedEvents ? (
-                <EventList 
-                    sortOption="date-asc" 
-                    suggestedEventIds={user.suggested_event_ids} 
-                />
+                <>
+                    <div className="events-page-controls">
+                        <EventSortControls
+                            sortOption={sortOption}
+                            onChange={setSortOption}
+                        />
+                        <LikedFilterButton
+                            showLikedOnly={showLikedOnly}
+                            onChange={setShowLikedOnly}
+                        />
+                    </div>
+
+                    <EventList 
+                        sortOption={sortOption}
+                        showLikedOnly={showLikedOnly}
+                        suggestedEventIds={user.suggested_event_ids} 
+                    />
+                </>
             ) : (
                 <Card className="profile-card">
                     <div className="profile-recommended-empty">

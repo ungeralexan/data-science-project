@@ -1,4 +1,7 @@
 # tuevent — Tübingen Event Planner
+<p align="center">
+  <img src="front-pic/tuevent-banner.png" alt="tuevent banner" width="80%">
+</p>
 
 A Data Science project that automatically extracts events from Tübingen university mailing lists and displays them in a modern web application.
 

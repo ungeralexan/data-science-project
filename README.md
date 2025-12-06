@@ -7,7 +7,6 @@ A Data Science project that automatically extracts events from Tübingen univers
 
 ---
 
----
 
 ## Table of Contents
 
@@ -271,6 +270,32 @@ docker-compose up --build
 ```
 
 ---
+
+## Development & Contributing
+
+This project was developed as part of the *Data Science in Business & Economics* program.
+
+### Branching
+
+- `main` → stable version used for demo / deployment  
+- feature branches (e.g. `alex/docs-setup`, `alex/frontend-filters`) for new work
+
+### Code Style
+
+- **Backend**: follow PEP8, type hints where reasonable  
+- **Frontend**: TypeScript + React with functional components
+
+
+## Testing
+
+Basic automated tests (unit and integration) are planned for:
+
+- Backend API endpoints (authentication, events)
+- Email pipeline components (parsing, filtering, extraction, deduplication)
+- Frontend components (critical pages like Events and Profile)
+
+> **Work in progress:** As of now, only manual end-to-end tests have been performed.  
+> See future updates in the `tests/` directory for more details.
 
 
 

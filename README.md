@@ -73,6 +73,7 @@ Events are extracted automatically using LLM-based parsing and displayed in a cl
 - **Event Sorting**: Sort events by title, date, or time (ascending/descending)
 - **Event Filtering**: Filter to show only liked events
 - **Like Events**: Heart button to like/unlike events, persisted to localStorage
+- **Calendar View**: Toggle between list and calendar month view with clickable events and today highlight
 - **Event Details**: Detailed view with organizer, speaker, registration status, location (with Google Maps link), and description
 - **Calendar Download**: Export events as .ics files for calendar apps
 - **External Links**: Button to visit event website (with automatic https:// handling)
@@ -137,12 +138,14 @@ data-science-project/
             │
             ├── components/         # Reusable UI components
             │   ├── EventList.tsx           # Event grid with sorting & filtering
+            │   ├── EventCalendar.tsx       # Monthly calendar view with clickable events
             │   ├── EventImage.tsx          # Event image display
             │   ├── EventSortButton.tsx     # Sort dropdown control
             │   ├── EventWebsiteButton.tsx  # External website link button
             │   ├── CalendarDownloadButton.tsx  # ICS calendar download
             │   ├── LikeButton.tsx          # Heart icon like/unlike toggle
             │   ├── LikedFilterButton.tsx   # Filter to show liked events only
+            │   ├── ViewToggleButton.tsx    # Toggle between list and calendar views
             │   ├── NavBar.tsx              # Navigation bar
             │   ├── ProtectedRoute.tsx      # Auth route wrapper
             │   │
@@ -150,6 +153,7 @@ data-science-project/
             │       ├── App.css
             │       ├── AuthPages.css
             │       ├── EventDetail.css
+            │       ├── EventCalendar.css
             │       ├── EventList.css
             │       ├── Events.css
             │       ├── LikeButton.css

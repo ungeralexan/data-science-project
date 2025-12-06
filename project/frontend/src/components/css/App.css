@@ -7,6 +7,10 @@
     display: flex;
     gap: 15px;
     padding-inline: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 /* Logo/brand styling */

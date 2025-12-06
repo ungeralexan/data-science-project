@@ -6,6 +6,12 @@
     flex: 1;
     align-items: center;
     justify-content: space-between;
+    position: sticky; /*Sticky makes events navbar stick to the top*/
+    top: 0;
+    z-index: 1000;
+    background: #fff;
+    padding: 8px 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 /* Menu styling */

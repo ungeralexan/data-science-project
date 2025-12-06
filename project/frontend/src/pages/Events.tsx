@@ -30,23 +30,25 @@ export default function Events() {
   // Render the Events page with title, sorting controls, and event list
   return (
     <div className="events-page">
-      <div className="events-page-header">
-        <Title level={2} className="events-page-title">Events</Title>
-      </div>
+      <div className="events-page-topbar">
+        <div className="events-page-header">
+          <Title level={2} className="events-page-title">Events</Title>
+        </div>
 
-      <div className="events-page-controls">
-        <EventSortControls
-          sortOption={sortOption}
-          onChange={setSortOption}
-        />
-        <LikedFilterButton
-          showLikedOnly={showLikedOnly}
-          onChange={setShowLikedOnly}
-        />
-        <ViewToggleButton
-          viewMode={viewMode}
-          onToggle={setViewMode}
-        />
+        <div className="events-page-controls">
+          <EventSortControls
+            sortOption={sortOption}
+            onChange={setSortOption}
+          />
+          <LikedFilterButton
+            showLikedOnly={showLikedOnly}
+            onChange={setShowLikedOnly}
+          />
+          <ViewToggleButton
+            viewMode={viewMode}
+            onToggle={setViewMode}
+          />
+        </div>
       </div>
       
       {/* Toggle between list and calendar views */}

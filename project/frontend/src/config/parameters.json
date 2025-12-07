@@ -1,5 +1,5 @@
 {
-    "API_BASE_URL": "http://localhost:8000",
+    "API_BASE_URL": "http://193.196.53.179:8000",
     "WS_PORT": 8000,
     "POSSIBLE_INTEREST_KEYWORDS": ["Technology", "Music", "Sports", "Art", "Science", "Business",  "Health", "Education", "Entertainment",
         "Food", "Travel", "Fashion", "Gaming", "Photography", "Finance"]

@@ -1,22 +1,62 @@
-/* NavBar.css - Styles for the navigation bar */
+/*
+  NavBar.css - Navigation Bar Styles
+  
+  This file contains styles for the navigation menu that appears in the header.
+  The NavBar displays navigation links (Events, Settings) and the logout button.
+  It's rendered inside the app-header and uses Ant Design Menu component.
+  
+  Uses CSS variables from DarkMode.css for theme support.
+  
+  Used by: NavBar.tsx component
+*/
 
-/* NavBar container */
+/* =========================================================================
+   NAVIGATION CONTAINER
+   ========================================================================= */
+
+/* 
+  Wrapper for the entire navigation area including menu items and logout button.
+  Uses flexbox to distribute space between navigation links and action buttons.
+*/
 .navbar-container {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky; /*Sticky makes events navbar stick to the top*/
-    top: 0;
-    z-index: 1000;
-    background: #fff;
-    padding: 8px 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;                              /* Horizontal layout */
+  flex: 1;                                    /* Takes remaining space after logo */
+  align-items: center;                        /* Vertically center items */
+  justify-content: space-between;             /* Menu on left, logout on right */
+  position: sticky;                           /* Stays fixed during scroll */
+  top: 0;                                     /* Sticks to top of viewport */
+  z-index: 1000;                              /* Below header (1100) but above content */
+  background: var(--header-bg);               /* Theme-aware background */
+  padding: 8px 16px;                          /* Internal spacing */
+  box-shadow: 0 2px 8px var(--shadow-color);  /* Theme-aware shadow */
+  transition: background-color 0.3s ease;     /* Smooth transition for theme toggle */
 }
 
-/* Menu styling */
+/* =========================================================================
+   MENU STYLING
+   ========================================================================= */
+
+/* 
+  Ant Design Menu component customization.
+  Removes default borders and sets transparent background.
+*/
 .navbar-menu {
-    border-bottom: none;
-    background: transparent;
-    flex: 1;
+  border-bottom: none;                        /* Removes Ant Design's default bottom border */
+  background: transparent !important;         /* Transparent to inherit parent background */
+  flex: 1;                                    /* Expands to fill available space */
+}
+
+/* Menu item text color - uses theme variable */
+.navbar-menu .ant-menu-item {
+  color: var(--text-primary) !important;
+}
+
+/* Selected menu item - uses accent color */
+.navbar-menu .ant-menu-item-selected {
+  color: var(--accent-color) !important;
+}
+
+/* Menu item links inherit color from parent */
+.navbar-menu .ant-menu-item a {
+  color: inherit !important;
 }

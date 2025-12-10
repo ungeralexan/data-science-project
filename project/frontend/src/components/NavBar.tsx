@@ -3,7 +3,6 @@ import { Menu, Button, Space } from 'antd';
 import type { MenuProps } from 'antd';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  UserOutlined,
   CalendarOutlined,
   SettingOutlined,
   LogoutOutlined,
@@ -40,7 +39,6 @@ import './css/NavBar.css';
 
 // Navigation items for authenticated users
 const authenticatedItems: MenuProps['items'] = [
-  { key: '/',        icon: <UserOutlined />,    label: <Link to="/">Profile</Link> },
   { key: '/events',  icon: <CalendarOutlined />,label: <Link to="/events">Events</Link> },
   { key: '/settings',icon: <SettingOutlined />, label: <Link to="/settings">Settings</Link> },
 ];

@@ -25,7 +25,8 @@ export type SortOption =
   | "date-asc"
   | "date-desc"
   | "time-asc"
-  | "time-desc";
+  | "time-desc"
+  | "none";
 
 // Define the props for the EventSortControls component
 interface EventSortControlsProps {

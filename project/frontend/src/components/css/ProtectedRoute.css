@@ -1,9 +1,30 @@
-/* ProtectedRoute.css - Styles for the protected route loading state */
+/*
+  ProtectedRoute.css - Protected Route Loading State Styles
+  
+  This file contains styles for the loading spinner shown while 
+  authentication state is being verified for protected routes.
+  The spinner appears briefly when accessing Settings or other 
+  authenticated-only pages.
+  
+  Uses CSS variables from DarkMode.css for theme support.
+  
+  Used by: ProtectedRoute.tsx component
+*/
 
-/* Loading spinner container */
+/* =========================================================================
+   LOADING STATE
+   ========================================================================= */
+
+/* 
+  Centers the Ant Design Spin component while authentication 
+  status is being checked. Provides visual feedback during 
+  the brief verification period.
+*/
 .protected-route-loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
+  display: flex;                              /* Flexbox for centering */
+  justify-content: center;                    /* Horizontal center */
+  align-items: center;                        /* Vertical center */
+  min-height: 80vh;                           /* Takes most of viewport to center in view */
+  background: var(--bg-primary);              /* Theme-aware background */
+  transition: background-color 0.3s ease;
 }

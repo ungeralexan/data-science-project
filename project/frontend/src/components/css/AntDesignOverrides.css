@@ -1,0 +1,278 @@
+/*
+  AntDesignOverrides.css - Ant Design Component Theme Overrides
+  
+  This file contains CSS overrides for Ant Design components to support
+  dark mode theming. Ant Design components use their own internal styling,
+  so we need to override them with our CSS variables for dark mode support.
+  
+  These overrides apply globally when body.theme-dark is active.
+  
+  Used by: All pages using Ant Design components
+  Imported in: App.tsx (after DarkMode.css)
+*/
+
+/* =========================================================================
+   GLOBAL BODY STYLES
+   ========================================================================= */
+
+body.theme-dark {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* =========================================================================
+   LAYOUT COMPONENTS
+   ========================================================================= */
+
+body.theme-dark .ant-layout {
+  background: var(--bg-primary);
+}
+
+body.theme-dark .ant-layout-header {
+  background: var(--header-bg) !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+body.theme-dark .ant-layout-content {
+  background: var(--bg-primary);
+}
+
+/* =========================================================================
+   CARD COMPONENT
+   ========================================================================= */
+
+body.theme-dark .ant-card {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+body.theme-dark .ant-card-head {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.theme-dark .ant-card-body {
+  color: var(--text-primary);
+}
+
+/* =========================================================================
+   FORM INPUTS
+   ========================================================================= */
+
+body.theme-dark .ant-input,
+body.theme-dark .ant-input-affix-wrapper,
+body.theme-dark .ant-select-selector,
+body.theme-dark .ant-input-password {
+  background: var(--input-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .ant-input::placeholder,
+body.theme-dark .ant-select-selection-placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+body.theme-dark .ant-form-item-label > label {
+  color: var(--text-primary);
+}
+
+body.theme-dark .ant-form-item-extra {
+  color: var(--text-secondary) !important;
+}
+
+/* Password input eye icon */
+body.theme-dark .ant-input-password-icon {
+  color: var(--text-secondary) !important;
+}
+
+body.theme-dark .ant-input-password-icon:hover {
+  color: var(--text-primary) !important;
+}
+
+/* =========================================================================
+   SELECT DROPDOWN
+   ========================================================================= */
+
+body.theme-dark .ant-select-dropdown {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+body.theme-dark .ant-select-item {
+  color: var(--text-primary);
+}
+
+body.theme-dark .ant-select-item-option-active,
+body.theme-dark .ant-select-item-option-selected {
+  background: var(--bg-tertiary) !important;
+}
+
+body.theme-dark .ant-select-selection-item {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .ant-select-selection-item-remove {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .ant-select-selection-item-remove:hover {
+  color: var(--accent-color) !important;
+}
+
+/* =========================================================================
+   MENU COMPONENT
+   ========================================================================= */
+
+body.theme-dark .ant-menu {
+  background: transparent !important;
+}
+
+body.theme-dark .ant-menu-item,
+body.theme-dark .ant-menu-submenu-title {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .ant-menu-item-selected {
+  color: var(--accent-color) !important;
+}
+
+/* =========================================================================
+   BUTTON COMPONENTS
+   ========================================================================= */
+
+body.theme-dark .ant-btn-default {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.theme-dark .ant-btn-default:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+body.theme-dark .ant-btn-text {
+  color: var(--text-primary);
+}
+
+body.theme-dark .ant-btn-text:hover {
+  background: var(--hover-bg);
+}
+
+/* =========================================================================
+   TYPOGRAPHY
+   ========================================================================= */
+
+body.theme-dark .ant-typography {
+  color: var(--text-primary);
+}
+
+body.theme-dark .ant-typography.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* =========================================================================
+   DIVIDER
+   ========================================================================= */
+
+body.theme-dark .ant-divider {
+  border-color: var(--border-color);
+}
+
+/* =========================================================================
+   MODAL COMPONENT
+   ========================================================================= */
+
+body.theme-dark .ant-modal-content {
+  background: var(--bg-secondary);
+}
+
+body.theme-dark .ant-modal-header {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+body.theme-dark .ant-modal-title {
+  color: var(--text-primary);
+}
+
+body.theme-dark .ant-modal-close {
+  color: var(--text-secondary);
+}
+
+body.theme-dark .ant-modal-body {
+  color: var(--text-primary);
+}
+
+body.theme-dark .ant-modal-body p,
+body.theme-dark .ant-modal-body span,
+body.theme-dark .ant-modal-body div,
+body.theme-dark .ant-modal-confirm-content {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .ant-modal-footer {
+  border-color: var(--border-color);
+}
+
+/* Modal confirm buttons */
+body.theme-dark .ant-modal-confirm-btns .ant-btn-default {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .ant-modal-confirm-btns .ant-btn-default:hover {
+  background: var(--hover-bg) !important;
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+body.theme-dark .ant-modal-confirm-btns .ant-btn-dangerous {
+  background: var(--error-color) !important;
+  border-color: var(--error-color) !important;
+  color: #fff !important;
+}
+
+body.theme-dark .ant-modal-confirm-btns .ant-btn-dangerous:hover {
+  background: #ff7875 !important;
+  border-color: #ff7875 !important;
+  color: #fff !important;
+}
+
+/* =========================================================================
+   MESSAGE NOTIFICATION
+   ========================================================================= */
+
+body.theme-dark .ant-message-notice-content {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 6px 16px var(--shadow-color);
+}
+
+body.theme-dark .ant-message-success .anticon,
+body.theme-dark .ant-message-error .anticon,
+body.theme-dark .ant-message-warning .anticon,
+body.theme-dark .ant-message-info .anticon {
+  color: inherit;
+}
+
+/* =========================================================================
+   SPIN / LOADING
+   ========================================================================= */
+
+body.theme-dark .ant-spin-text {
+  color: var(--text-primary);
+}
+
+/* =========================================================================
+   TAG COMPONENT
+   ========================================================================= */
+
+body.theme-dark .ant-tag {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}

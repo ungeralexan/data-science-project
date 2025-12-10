@@ -22,11 +22,14 @@ export interface AuthContextType {
     token: string | null;
     isAuthenticated: boolean;
     isLoading: boolean;
+    likedEventIds: number[];  // Array of event IDs that the user has liked
     login: (data: LoginRequest) => Promise<void>;
     register: (data: RegisterRequest) => Promise<void>;
     logout: () => void;
     updateUser: (data: UpdateUserRequest) => Promise<void>;
     deleteAccount: () => Promise<void>;
+    toggleLike: (eventId: number) => Promise<{ like_count: number; isLiked: boolean }>;  // Toggle like status for an event
+    isEventLiked: (eventId: number) => boolean;  // Check if an event is liked
 }
 
 /*

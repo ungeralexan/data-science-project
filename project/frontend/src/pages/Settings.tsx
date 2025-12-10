@@ -1,11 +1,12 @@
 // src/pages/Settings.tsx
 import { useState } from 'react';
 
-import { Typography, Form, Input, Button, Card, Space, Divider, Select, App } from 'antd';
-import { MailOutlined, LockOutlined, UserOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Typography, Form, Input, Button, Card, Space, Divider, Select, App, Switch } from 'antd';
+import { MailOutlined, LockOutlined, UserOutlined, ExclamationCircleOutlined, BulbOutlined } from '@ant-design/icons';
 
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { useTheme } from '../hooks/useTheme';
 import { POSSIBLE_INTEREST_KEYWORDS } from '../config';
 import '../components/css/Settings.css';
 
@@ -53,6 +54,7 @@ function SettingsContent() {
 
     // Authentication context and navigation
     const { user, updateUser, deleteAccount } = useAuth();
+    const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const { message: messageApi, modal } = App.useApp();
     
@@ -207,6 +209,28 @@ function SettingsContent() {
                             </Button>
                         </Form.Item>
                     </Form>
+                </Card>
+
+                {/* Appearance Card - Dark Mode Toggle */}
+                <Card title="Appearance">
+                    <div className="settings-appearance-row">
+                        <div className="settings-appearance-info">
+                            <Space>
+                                <BulbOutlined />
+                                <Text strong>Dark Mode</Text>
+                            </Space>
+                            <br />
+                            <Text type="secondary">
+                                Switch between light and dark theme
+                            </Text>
+                        </div>
+                        <Switch
+                            checked={theme === 'dark'}
+                            onChange={toggleTheme}
+                            checkedChildren="Dark"
+                            unCheckedChildren="Light"
+                        />
+                    </div>
                 </Card>
 
                 {/* Interests Card */}

@@ -1,22 +1,73 @@
-/* Settings.css - Styles for the Settings page */
+/*
+  Settings.css - Settings Page Styles
+  
+  This file contains styles for the user Settings page which includes:
+  - Profile information editing (name, email)
+  - Dark mode toggle (appearance settings)
+  - Interest keywords and description
+  - Password change form
+  - Account deletion (danger zone)
+  
+  Uses CSS variables from DarkMode.css for theme support.
+  
+  Used by: Settings.tsx page component
+*/
 
-/* Settings page container */
+/* =========================================================================
+   PAGE CONTAINER
+   ========================================================================= */
+
+/* 
+  Centers the settings content with a max width for readability.
+  Prevents the form from stretching too wide on large screens.
+*/
 .settings-container {
-    max-width: 600px;
-    margin: 0 auto;
+  max-width: 600px;                           /* Limits width for better readability */
+  margin: 0 auto;                             /* Centers container horizontally */
+  color: var(--text-primary);                 /* Theme-aware text */
 }
 
-/* Full width space container */
+/* =========================================================================
+   LAYOUT UTILITIES
+   ========================================================================= */
+
+/* Makes Ant Design Space component fill full width */
 .settings-space-full-width {
-    width: 100%;
+  width: 100%;
 }
 
-/* Danger zone card border */
+/* =========================================================================
+   APPEARANCE SECTION
+   ========================================================================= */
+
+/* 
+  Row layout for the dark mode toggle.
+  Places the label/description on left and switch on right.
+*/
+.settings-appearance-row {
+  display: flex;                              /* Horizontal layout */
+  justify-content: space-between;             /* Pushes switch to right side */
+  align-items: center;                        /* Vertically centers elements */
+}
+
+/* Contains the icon, title, and description text for appearance setting */
+.settings-appearance-info {
+  flex: 1;                                    /* Takes remaining space before switch */
+}
+
+/* =========================================================================
+   DANGER ZONE
+   ========================================================================= */
+
+/* 
+  Red-bordered card for destructive actions (account deletion).
+  Visual warning to indicate irreversible action.
+*/
 .settings-danger-card {
-    border-color: #ff4d4f;
+  border-color: var(--error-color);           /* Theme-aware error/danger color */
 }
 
-/* Danger zone divider */
+/* Reduced margin divider within danger zone card */
 .settings-danger-divider {
-    margin: 12px 0;
+  margin: 12px 0;                             /* Tight vertical spacing */
 }

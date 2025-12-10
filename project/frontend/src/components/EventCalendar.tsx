@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEvents } from "../hooks/useEvents";
+import { useAuth } from "../hooks/useAuth";
 import type { Event } from "../types/Event";
 import "./css/EventCalendar.css";
 
@@ -18,6 +19,7 @@ interface EventCalendarProps {
 
 // -------- Constants --------
 const WEEKDAY_LABELS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const WEEKDAY_LABELS_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 // -------- Helper Functions --------
 
@@ -53,8 +55,9 @@ export default function EventCalendar({ showLikedOnly = false, suggestedEventIds
 
     // ----- State & Hooks -----
 
-    const { events, error } = useEvents(); // Query events from backend
+    const { events, error, isLoading } = useEvents(); // Query events from backend
     const navigate = useNavigate(); // For navigating to event details page
+    const { likedEventIds } = useAuth(); // Get liked event IDs from auth context
 
     // State to track the currently displayed month
     const [currentMonth, setCurrentMonth] = useState<Date>(() => {
@@ -69,16 +72,15 @@ export default function EventCalendar({ showLikedOnly = false, suggestedEventIds
         let result: Event[] = events;
 
         if (suggestedEventIds && suggestedEventIds.length > 0) {
-        result = result.filter((e) => suggestedEventIds.includes(e.id));
+            result = result.filter((e) => suggestedEventIds.includes(e.id));
         }
 
         if (showLikedOnly) {
-        const likedEventIds: number[] = JSON.parse(localStorage.getItem("likedEvents") || "[]");
-        result = result.filter((e) => likedEventIds.includes(e.id));
+            result = result.filter((e) => likedEventIds.includes(e.id));
         }
 
         return result;
-    }, [events, showLikedOnly, suggestedEventIds]);
+    }, [events, showLikedOnly, suggestedEventIds, likedEventIds]);
 
     // Group events by date key for quick lookup
     const eventsByDate = useMemo(() => {
@@ -200,6 +202,10 @@ export default function EventCalendar({ showLikedOnly = false, suggestedEventIds
     // Generate month label (e.g., "March 2024")
     const monthLabel = currentMonth.toLocaleString(undefined, { month: "long", year: "numeric" });
 
+    if (isLoading) {
+        return <div className="event-calendar">Loading calendar...</div>;
+    }
+
     if (error) {
         return <div className="event-calendar-error">Error: {error}</div>;
     }
@@ -229,9 +235,10 @@ export default function EventCalendar({ showLikedOnly = false, suggestedEventIds
             <div className="event-calendar-grid">
                 
                 {/* Shows the labels for the days of the week */}
-                {WEEKDAY_LABELS.map((label) => (
+                {WEEKDAY_LABELS.map((label, index) => (
                     <div key={label} className="event-calendar-weekday">
-                        {label}
+                        <span className="weekday-full">{label}</span>
+                        <span className="weekday-short">{WEEKDAY_LABELS_SHORT[index]}</span>
                     </div>
                 ))}
 

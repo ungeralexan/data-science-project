@@ -182,7 +182,7 @@ const CalendarDownloadButtons: React.FC<CalendarDownloadButtonsProps> = ({
   };
 
   return (
-    <Button type="primary" size="large" className="event-detail-calendar-button" onClick={handleDownloadCalendar}>
+    <Button type="primary" size="large" className="event-detail-action-button" onClick={handleDownloadCalendar}>
       Add to calendar (.ics)
     </Button>
   );

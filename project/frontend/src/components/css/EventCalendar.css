@@ -1,12 +1,32 @@
-/* EventCalendar.css */
+/*
+  EventCalendar.css - Calendar View Styles
+  
+  This file contains styles for the calendar-based event view.
+  Events are displayed in a monthly calendar grid with day cells
+  showing event previews. Responsive for mobile devices.
+  
+  Uses CSS variables from DarkMode.css for theme support.
+  
+  Used by: EventCalendar.tsx component
+  Appears on: Events.tsx page (when calendar view is selected)
+*/
+
+/* =========================================================================
+   CALENDAR CONTAINER
+   ========================================================================= */
 
 .event-calendar {
   margin-top: 16px;
-  background: #fff;
+  background: var(--card-bg);                 /* Theme-aware background */
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 20px var(--shadow-color); /* Theme-aware shadow */
   padding: 16px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+/* =========================================================================
+   CALENDAR HEADER
+   ========================================================================= */
 
 .event-calendar-header {
   display: flex;
@@ -19,11 +39,13 @@
 .event-calendar-month {
   font-weight: 600;
   font-size: 18px;
+  color: var(--text-primary);                 /* Theme-aware text */
 }
 
 .event-calendar-nav {
-  border: 1px solid #d9d9d9;
-  background: #fff;
+  border: 1px solid var(--border-color);      /* Theme-aware border */
+  background: var(--bg-tertiary);             /* Theme-aware background */
+  color: var(--text-primary);                 /* Theme-aware text */
   border-radius: 6px;
   padding: 6px 10px;
   cursor: pointer;
@@ -31,9 +53,13 @@
 }
 
 .event-calendar-nav:hover {
-  border-color: #1677ff;
-  color: #1677ff;
+  border-color: var(--accent-color);          /* Accent color on hover */
+  color: var(--accent-color);
 }
+
+/* =========================================================================
+   CALENDAR GRID
+   ========================================================================= */
 
 .event-calendar-grid {
   display: grid;
@@ -44,27 +70,41 @@
 .event-calendar-weekday {
   text-align: center;
   font-weight: 600;
-  color: #555;
+  color: var(--text-secondary);               /* Theme-aware text */
   padding: 6px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-light); /* Theme-aware border */
 }
+
+/* Full weekday names shown by default */
+.event-calendar-weekday .weekday-full {
+  display: inline;
+}
+
+.event-calendar-weekday .weekday-short {
+  display: none;
+}
+
+/* =========================================================================
+   CALENDAR CELLS
+   ========================================================================= */
 
 .event-calendar-cell {
   height: 130px;
   width: 100%;
-  background: #fafafa;
+  background: var(--bg-tertiary);             /* Theme-aware background */
   border-radius: 10px;
   padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  border: 1px solid #f0f0f0;
+  border: 1px solid var(--border-light);      /* Theme-aware border */
   box-sizing: border-box;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .event-calendar-cell--today {
-  background: #e6f4ff;
-  border-color: #91caff;
+  background: rgba(96, 165, 250, 0.15);       /* Semi-transparent accent */
+  border-color: var(--accent-color);
 }
 
 .event-calendar-cell--blank {
@@ -74,8 +114,12 @@
 
 .event-calendar-day-number {
   font-weight: 700;
-  color: #333;
+  color: var(--text-primary);                 /* Theme-aware text */
 }
+
+/* =========================================================================
+   CALENDAR EVENTS
+   ========================================================================= */
 
 .event-calendar-events {
   display: flex;
@@ -85,8 +129,8 @@
 }
 
 .event-calendar-event {
-  background: #fff;
-  border: 1px solid #e5e5e5;
+  background: var(--card-bg);                 /* Theme-aware background */
+  border: 1px solid var(--border-color);      /* Theme-aware border */
   border-radius: 6px;
   padding: 4px 6px;
   display: flex;
@@ -95,40 +139,169 @@
   font-size: 12px;
   cursor: pointer;
   overflow: hidden;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .event-calendar-event-time {
-  color: #1677ff;
+  color: var(--accent-color);                 /* Theme-aware accent */
   font-weight: 600;
   min-width: 48px;
 }
 
 .event-calendar-event-title {
-  color: #333;
+  color: var(--text-primary);                 /* Theme-aware text */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .event-calendar-empty {
-  color: #999;
+  color: var(--text-tertiary);                /* Theme-aware muted text */
   font-size: 12px;
 }
 
 .event-calendar-error {
-  color: #d4380d;
+  color: var(--error-color);                  /* Theme-aware error color */
   padding: 12px;
   background: #fff2e8;
   border: 1px solid #ffd8bf;
   border-radius: 8px;
 }
 
+/* =========================================================================
+   TABLET RESPONSIVE (max-width: 768px)
+   ========================================================================= */
+
 @media (max-width: 768px) {
   .event-calendar {
-    padding: 12px;
+    padding: 8px;
+  }
+
+  .event-calendar-header {
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .event-calendar-month {
+    font-size: 16px;
+  }
+
+  .event-calendar-nav {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  /* Switch to a more mobile-friendly layout */
+  .event-calendar-grid {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+
+  .event-calendar-weekday {
+    font-size: 10px;
+    padding: 4px 0;
+  }
+
+  /* Show abbreviated weekday names on mobile */
+  .event-calendar-weekday .weekday-full {
+    display: none;
+  }
+
+  .event-calendar-weekday .weekday-short {
+    display: inline;
   }
 
   .event-calendar-cell {
-    min-height: 90px;
+    height: auto;
+    min-height: 60px;
+    padding: 4px;
+    border-radius: 6px;
+  }
+
+  .event-calendar-day-number {
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .event-calendar-events {
+    gap: 2px;
+  }
+
+  .event-calendar-event {
+    padding: 2px 4px;
+    font-size: 9px;
+    border-radius: 4px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+  }
+
+  .event-calendar-event-time {
+    font-size: 8px;
+    min-width: auto;
+  }
+
+  .event-calendar-event-title {
+    font-size: 9px;
+    line-height: 1.2;
+  }
+
+  .event-calendar-empty {
+    font-size: 9px;
+  }
+}
+
+/* =========================================================================
+   SMALL PHONE RESPONSIVE (max-width: 480px)
+   ========================================================================= */
+
+@media (max-width: 480px) {
+  .event-calendar {
+    padding: 6px;
+    border-radius: 8px;
+  }
+
+  .event-calendar-header {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .event-calendar-month {
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    order: -1;
+  }
+
+  .event-calendar-grid {
+    gap: 1px;
+  }
+
+  .event-calendar-weekday {
+    font-size: 8px;
+    padding: 2px 0;
+  }
+
+  .event-calendar-cell {
+    min-height: 50px;
+    padding: 2px;
+    border-radius: 4px;
+  }
+
+  .event-calendar-day-number {
+    font-size: 10px;
+  }
+
+  .event-calendar-event {
+    padding: 1px 2px;
+    font-size: 8px;
+  }
+
+  .event-calendar-event-time {
+    display: none; /* Hide time on very small screens to save space */
+  }
+
+  .event-calendar-event-title {
+    font-size: 8px;
   }
 }

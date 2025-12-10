@@ -12,10 +12,11 @@
   display: flex; /* Flexbox for side-by-side layout */
   gap: 24px; /* Space between image and content */
   align-items: flex-start; /* Align items to the top */
-  background: #fafafa; /*Slightly darker background for contrast */
+  background: var(--bg-secondary); /*Slightly darker background for contrast */
   border-radius: 16px; /* Rounded corners */
   padding: 20px; /* Inner padding */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+  box-shadow: 0 8px 20px var(--shadow-color, rgba(0, 0, 0, 0.06)); /* Subtle shadow */
+  transition: background-color 0.3s ease;
 }
 
 /* ----------- Back Button -----------*/
@@ -79,6 +80,9 @@
 
 .event-detail-description {
   margin-top: 24px;
+  padding: 20px;
+  border-radius: 16px; /* Rounded corners */
+  background: var(--bg-secondary); /*Slightly darker background for contrast */
 }
 
 .event-detail-description-title {
@@ -93,15 +97,43 @@
 
 /* ----------- Actions (Like Button) -----------*/
 
+/* Container for the like button on event detail page */
 .event-detail-actions {
   margin-top: 16px;
   padding-top: 12px;
 }
 
+/* ----------- Icons -----------*/
+
+/* Base icon styling for meta row icons */
+.event-detail-icon {
+  font-size: 14px;
+}
+
+/* Location icon - blue color to match location theme */
+.event-detail-icon--location {
+  color: var(--accent-color);
+}
+
+/* Organizer icon - blue color for team/organization */
+.event-detail-icon--organizer {
+  color: var(--accent-color);
+}
+
+/* Speaker icon - blue color for speaker/user */
+.event-detail-icon--speaker {
+  color: var(--accent-color);
+}
+
+/* Registration icon - green color to indicate status */
+.event-detail-icon--registration {
+  color: var(--success-color);
+}
+
 /* ----------- Location Link -----------*/
 
 .event-detail-location-link {
-  color: #1890ff;
+  color: var(--accent-color);
   text-decoration: none;
 }
 
@@ -128,10 +160,9 @@
 /* ----------- Calendar Button -----------*/
 
 /* Custom styling for the calendar button */
-.event-detail-calendar-button {
+.event-detail-action-button {
   border-radius: 999px; /* fully rounded corners */     
   font-weight: 600; /* Bold */
-  background: #1677ff;
   border: none;
 }
 

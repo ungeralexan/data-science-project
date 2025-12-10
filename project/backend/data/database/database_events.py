@@ -1,6 +1,6 @@
 
-from sqlalchemy import create_engine, Column, Integer, String, Text, JSON
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy import create_engine, Column, Integer, String, Text, JSON, ForeignKey, UniqueConstraint, event
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 from config import DATABASE_URL  # pylint: disable=import-error
 
@@ -18,6 +18,14 @@ engine = create_engine(
     # This allows multiple threads to handle different user requests simultaneously.
     connect_args={"check_same_thread": False}, 
 )
+
+# Enable foreign key support for SQLite 
+# This will ensure that foreign key constraints are enforced in the database.
+@event.listens_for(engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
 
 # Create a configured "Session" class. A session is used to interact with the database.
 SessionLocal = sessionmaker(
@@ -57,6 +65,9 @@ class EventORM(Base):
     image_key = Column(String, nullable=True)
     like_count = Column(Integer, default=0, nullable=False)  # Number of likes for the event
 
+    # Relationship to users who liked this event
+    liked_by_users = relationship("UserLikeORM", back_populates="event")
+
 
 # Define the UserORM class which represents the "users" table in the database.
 class UserORM(Base):
@@ -72,6 +83,29 @@ class UserORM(Base):
     interest_text = Column(Text, nullable=True)  # Free-form interest description
     suggested_event_ids = Column(JSON, nullable=True)  # List of suggested event IDs
 
+    # Relationship to liked events - cascade delete when user is deleted
+    liked_events = relationship("UserLikeORM", back_populates="user", cascade="all, delete-orphan", passive_deletes=True)
+
+
+# Define the UserLikeORM class which represents the "user_likes" table in the database.
+# This table stores which users have liked which events.
+class UserLikeORM(Base):
+    __tablename__ = "user_likes"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+
+    # CASCADE means that if a user or event is deleted, all their likes are also deleted.
+    user_id = Column(Integer, ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False)
+    event_id = Column(Integer, ForeignKey("events.id", ondelete="CASCADE"), nullable=False)
+
+    # Ensure a user can only like an event once
+    __table_args__ = (
+        UniqueConstraint("user_id", "event_id", name="unique_user_event_like"),
+    )
+
+    # Relationships
+    user = relationship("UserORM", back_populates="liked_events")
+    event = relationship("EventORM", back_populates="liked_by_users")
 
 # Function to initialize the database and create tables.
 def init_db() -> None:

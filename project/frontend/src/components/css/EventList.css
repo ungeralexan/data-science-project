@@ -1,234 +1,348 @@
+/*
+  EventList.css - Event List Grid Styles
+  
+  This file contains styles for the grid-based event listing view.
+  Events are displayed as cards in a responsive grid layout that adapts
+  from 3 columns (desktop) to 2 columns (tablet) to 1 column (mobile).
+  
+  Uses CSS variables from DarkMode.css for theme support.
+  
+  Used by: EventList.tsx component, EventSortButton.tsx
+  Appears on: Events.tsx page (when list view is selected)
+*/
 
-/* ----------- Event List -----------*/
+/* =========================================================================
+   EVENT LIST CONTAINER
+   ========================================================================= */
 
-/*event-list is the container for the entire list of events */
+/* 
+  Main wrapper for the entire event list.
+  Provides spacing from the controls above and side padding.
+*/
 .event-list {
-  margin-top: 16px;
-  padding: 0 8px;
+  margin-top: 16px;                           /* Space below controls/header */
+  padding: 0 8px;                             /* Side padding for edge spacing */
+  background: var(--card-bg);                 /* Theme-aware background */
+  transition: background-color 0.3s ease;     /* Smooth theme transition */
 }
 
-/*event-list-title is the title of the event list */
+/* Title shown above the event grid (if used) */
 .event-list-title {
   margin-bottom: 8px;
+  color: var(--text-primary);                 /* Theme-aware text */
 }
 
-/*event-list-error is the error message displayed when there is an error fetching events */
+/* =========================================================================
+   ERROR AND EMPTY STATES
+   ========================================================================= */
+
+/* 
+  Error message displayed when WebSocket connection fails
+  or events cannot be loaded from the backend.
+*/
 .event-list-error {
-  color: red;
-  padding: 16px;
-  text-align: center;
+  color: var(--error-color);                  /* Theme-aware error color */
+  padding: 16px;                              /* Comfortable spacing */
+  text-align: center;                         /* Centered message */
 }
 
-/*event-list-empty is the message displayed when there are no events to show */
+/* 
+  Message shown when no events are available to display.
+  Appears when the events array is empty.
+*/
 .event-list-empty {
-  color: #777;
-  padding: 32px;
-  text-align: center;
-  font-size: 16px;
+  color: var(--text-secondary);               /* Theme-aware muted text */
+  padding: 32px;                              /* Generous padding for prominence */
+  text-align: center;                         /* Centered message */
+  font-size: 16px;                            /* Readable font size */
 }
 
-/* event-grid is the grid container for the event cards. Shows 3 cards per row on desktop */
+/* =========================================================================
+   EVENT GRID LAYOUT
+   ========================================================================= */
+
+/* 
+  CSS Grid container for event cards.
+  Displays 3 cards per row on desktop with equal spacing.
+  Uses overflow:hidden to enable border-radius on the container.
+*/
 .event-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  display: grid;                              /* CSS Grid layout */
+  border-radius: 12px;                        /* Rounded corners on container */
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 equal columns */
+  gap: 24px;                                  /* Space between cards */
+  padding: 12px;                              /* Internal padding around cards */
+  background-color: var(--bg-secondary);      /* Theme-aware background */
+  transition: background-color 0.3s ease;     /* Smooth theme transition */
 }
 
-/* Tablet: 2 cards per row */
+/* Tablet screens: reduce to 2 columns */
 @media (max-width: 992px) {
   .event-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columns */
+    gap: 20px;                                /* Slightly smaller gaps */
   }
 }
 
-/* Mobile: 1 card per row */
+/* Mobile screens: single column layout */
 @media (max-width: 576px) {
   .event-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: 1fr;               /* Single full-width column */
+    gap: 16px;                                /* Smaller gaps for mobile */
   }
   
   .event-list {
-    padding: 0 4px;
+    padding: 0 4px;                           /* Reduced side padding on mobile */
   }
 }
 
-/* event-card is the individual event card */
+/* =========================================================================
+   EVENT CARD
+   ========================================================================= */
+
+/* 
+  Individual event card container.
+  Clickable card that navigates to the event detail page.
+  Features a subtle lift effect on hover for interactivity feedback.
+*/
 .event-card {
-  border: 1px solid #e8e8e8;
-  border-radius: 12px;
-  padding: 12px;
-  text-align: left;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  background-color: #fff;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease; /*Coming Closer Effect: The seconds indicate how long this effect takes*/
+  border: 1px solid var(--border-color);      /* Theme-aware border */
+  border-radius: 12px;                        /* Rounded corners */
+  padding: 12px;                              /* Internal spacing */
+  text-align: left;                           /* Left-align all text */
+  box-shadow: 0 2px 8px var(--shadow-color);  /* Theme-aware shadow */
+  background-color: var(--card-bg);           /* Theme-aware background */
+  cursor: pointer;                            /* Indicates clickable */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, 
+              background-color 0.3s ease, border-color 0.3s ease;
 }
 
+/* 
+  Hover effect: card lifts up slightly and shadow deepens.
+  Creates a "coming closer" effect for better interactivity.
+*/
 .event-card:hover {
-  /*Coming Closer Effect: -4px indicates how much closer it should come*/
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);                /* Lift card up 4 pixels */
+  box-shadow: 0 8px 24px var(--shadow-color); /* Deeper shadow when lifted */
+  border-color: var(--accent-color);          /* Accent border on hover */
 }
 
+/* Focus state for keyboard navigation accessibility */
 .event-card:focus {
-  outline: 2px solid #1890ff;
-  outline-offset: 2px;
+  outline: 2px solid var(--accent-color);     /* Theme-aware focus ring */
+  outline-offset: 2px;                        /* Space between card and ring */
 }
 
-/* ----------- Event Sort Controls -----------*/
+/* =========================================================================
+   SORT CONTROLS
+   ========================================================================= */
 
-/*event-list-controls is the container for the event sort controls */
+/* 
+  Container for sort dropdown and label.
+  Positioned above the event grid.
+*/
 .event-list-controls {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 16px;
-  padding: 0 8px;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: flex;                              /* Horizontal layout */
+  justify-content: flex-start;                /* Left-aligned controls */
+  align-items: center;                        /* Vertically centered */
+  margin-bottom: 16px;                        /* Space before event grid */
+  padding: 0 8px;                             /* Side padding matching list */
+  flex-wrap: wrap;                            /* Wrap on small screens */
+  gap: 8px;                                   /* Space between label and dropdown */
 }
 
-/*event-list-sort-label is the label for the event sort dropdown */
+/* "Sort by:" label text */
 .event-list-sort-label {
-  font-size: 14px;
-  color: #333;
+  font-size: 14px;                            /* Standard label size */
+  color: var(--text-primary);                 /* Theme-aware text color */
 }
 
-/*event-list-sort-select is the dropdown for selecting the event sort option */
+/* 
+  Sort dropdown select element.
+  Allows users to sort events by title, date, or time.
+*/
 .event-list-sort-select {
-  padding: 8px 12px;
-  font-size: 14px;
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-  background-color: #fff;
-  cursor: pointer;
-  transition: border-color 0.2s ease;
+  padding: 8px 12px;                          /* Internal spacing */
+  font-size: 14px;                            /* Readable font size */
+  border: 1px solid var(--border-color);      /* Theme-aware border */
+  border-radius: 6px;                         /* Rounded corners */
+  background-color: var(--input-bg);          /* Theme-aware background */
+  color: var(--text-primary);                 /* Theme-aware text */
+  cursor: pointer;                            /* Shows clickable cursor */
+  transition: border-color 0.2s ease, background-color 0.3s ease;
 }
 
+/* Hover state: accent border highlight */
 .event-list-sort-select:hover {
-  border-color: #1890ff;
+  border-color: var(--accent-color);          /* Accent border on hover */
 }
 
+/* Focus state: accent border with glow */
 .event-list-sort-select:focus {
-  outline: none;
-  border-color: #1890ff;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  outline: none;                              /* Remove default outline */
+  border-color: var(--accent-color);          /* Accent border */
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2); /* Blue glow effect */
 }
 
-/* Mobile adjustments for sort controls */
+/* Dropdown options styling */
+.event-list-sort-select option {
+  background-color: var(--bg-secondary);      /* Theme-aware option background */
+  color: var(--text-primary);                 /* Theme-aware option text */
+}
+
+/* Mobile: full-width sort controls */
 @media (max-width: 576px) {
   .event-list-controls {
     padding: 0 4px;
   }
   
   .event-list-sort-select {
-    width: 100%;
+    width: 100%;                              /* Full width on mobile */
   }
   
   .event-list-sort-label {
-    width: 100%;
+    width: 100%;                              /* Label takes full width */
   }
 }
 
-/* ----------- Single Event card properties -----------*/
+/* =========================================================================
+   EVENT CARD IMAGE
+   ========================================================================= */
 
-/* Wrapper around event image */
+/* 
+  Container for the event image with fixed aspect ratio.
+  Ensures consistent card heights regardless of image dimensions.
+*/
 .event-card-image-wrapper {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  background-color: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;                                /* Full card width */
+  aspect-ratio: 16 / 10;                      /* Widescreen-ish ratio */
+  overflow: hidden;                           /* Clips image to container */
+  border-radius: 8px;                         /* Rounded image corners */
+  margin-bottom: 12px;                        /* Space below image */
+  background-color: var(--bg-secondary);      /* Theme-aware placeholder background */
+  display: flex;                              /* Centers content */
+  align-items: center;                        /* Vertical center */
+  justify-content: center;                    /* Horizontal center */
 }
 
-/* Actual event image */
+/* 
+  The actual event image element.
+  Uses object-fit to maintain aspect ratio while filling container.
+*/
 .event-card-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-  display: block;
-  /*Transform 0.3 seconds indicates how long it takes for the image to come closer*/
-  transition: transform 0.3s ease;
+  width: 100%;                                /* Fill container width */
+  height: 100%;                               /* Fill container height */
+  object-fit: cover;                          /* Crop to fill without distortion */
+  border-radius: 8px;                         /* Match wrapper radius */
+  display: block;                             /* Remove inline spacing */
+  transition: transform 0.3s ease;            /* Smooth zoom animation */
 }
 
+/* 
+  Zoom effect on image when hovering over the card.
+  Creates subtle zoom-in effect for engagement.
+*/
 .event-card:hover .event-card-image {
-  /*Scale (1.05) means that the image is scaled by 1.05 if one hovers over it*/
-  transform: scale(1.05);
+  transform: scale(1.05);                     /* Scale up 5% on hover */
 }
 
+/* =========================================================================
+   EVENT CARD TEXT CONTENT
+   ========================================================================= */
+
+/* 
+  Event title with text truncation.
+  Limited to 2 lines with ellipsis for overflow.
+*/
 .event-card-title {
-  font-weight: 600;
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: #1a1a1a;
-  line-height: 1.4;
-  /* Limit to 2 lines with ellipsis */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-weight: 600;                           /* Semi-bold for prominence */
+  font-size: 16px;                            /* Readable title size */
+  margin-bottom: 8px;                         /* Space below title */
+  color: var(--text-primary);                 /* Theme-aware text */
+  line-height: 1.4;                           /* Comfortable line spacing */
+  display: -webkit-box;                       /* Required for line clamping */
+  -webkit-line-clamp: 2;                      /* Limit to 2 lines */
+  line-clamp: 2;                              /* Standard property for compatibility */
+  -webkit-box-orient: vertical;               /* Vertical box orientation */
+  overflow: hidden;                           /* Hide overflow text */
 }
 
+/* 
+  Date and time display in accent color.
+  Shows formatted start date and optional time.
+*/
 .event-card-datetime {
-  font-size: 13px;
-  color: #1890ff;
-  font-weight: 500;
-  margin-bottom: 4px;
+  font-size: 13px;                            /* Slightly smaller than title */
+  color: var(--accent-color);                 /* Theme-aware accent color */
+  font-weight: 500;                           /* Medium weight for emphasis */
+  margin-bottom: 4px;                         /* Tight spacing below */
 }
 
+/* 
+  Location display with pin emoji prefix.
+  Shows the event venue or address.
+*/
 .event-card-location {
-  font-size: 13px;
-  color: #666;
-  margin-top: 4px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  font-size: 13px;                            /* Matches datetime size */
+  color: var(--text-secondary);               /* Theme-aware secondary text */
+  margin-top: 4px;                            /* Space above location */
+  display: flex;                              /* Aligns emoji and text */
+  align-items: center;                        /* Vertically centered */
+  gap: 4px;                                   /* Space after emoji */
 }
 
+/* Pin emoji displayed before location text */
 .event-card-location::before {
-  content: "📍";
-  font-size: 12px;
+  content: "📍";                              /* Location pin emoji */
+  font-size: 12px;                            /* Slightly smaller than text */
 }
 
+/* 
+  Event description preview (if displayed).
+  Limited to 3 lines with ellipsis for overflow.
+*/
 .event-card-description {
-  font-size: 13px;
-  color: #666;
-  margin-top: 8px;
-  line-height: 1.5;
-  /* Limit to 3 lines with ellipsis */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-size: 13px;                            /* Small readable text */
+  color: var(--text-secondary);               /* Theme-aware secondary text */
+  margin-top: 8px;                            /* Space above description */
+  line-height: 1.5;                           /* Comfortable reading */
+  display: -webkit-box;                       /* Required for line clamping */
+  -webkit-line-clamp: 3;                      /* Limit to 3 lines */
+  line-clamp: 3;                              /* Standard property for compatibility */
+  -webkit-box-orient: vertical;               /* Vertical box orientation */
+  overflow: hidden;                           /* Hide overflow text */
 }
 
-/* Actions row (like button) */
+/* =========================================================================
+   EVENT CARD ACTIONS
+   ========================================================================= */
+
+/* 
+  Bottom row of the card containing the like button.
+  Separated from content by a subtle border.
+*/
 .event-card-actions {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #f0f0f0;
-  display: flex;
-  justify-content: flex-start;
+  margin-top: 12px;                           /* Space above separator */
+  padding-top: 12px;                          /* Space below separator */
+  border-top: 1px solid var(--border-light);  /* Theme-aware separator line */
+  display: flex;                              /* Horizontal layout */
+  justify-content: flex-start;                /* Left-aligned button */
 }
 
-/* Mobile adjustments for cards */
+/* =========================================================================
+   MOBILE RESPONSIVE ADJUSTMENTS
+   ========================================================================= */
+
 @media (max-width: 576px) {
   .event-card {
-    padding: 12px;
+    padding: 12px;                            /* Maintain padding on mobile */
   }
   
   .event-card-title {
-    font-size: 15px;
+    font-size: 15px;                          /* Slightly smaller title */
   }
   
   .event-card-image-wrapper {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 9;                     /* Standard video ratio on mobile */
   }
 }

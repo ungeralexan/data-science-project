@@ -1,13 +1,19 @@
 /*
-  Global CSS styles
-
-  This is used for setting up base styles for the application.
+  index.css - Global Base Styles
+  
+  This file contains the foundational CSS styles that apply to the entire application.
+  It sets up the basic layout structure and removes default browser margins.
+  
+  Used by: main.tsx (imported at application root)
 */
 
-/* index.css */
-html, body, #root { height: 100%; }
+/* Ensures full viewport height for the app container and its parents */
+html, body, #root { 
+  height: 100%; 
+}
 
+/* Reset default body margin and set base background color */
 body { 
-  margin: 0; 
-  background: #fff; 
+  margin: 0;           /* Removes default browser margin around the body */
+  background: #fff;    /* White background as base (overridden by dark mode) */
 }

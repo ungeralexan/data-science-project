@@ -24,7 +24,7 @@ export default function EventWebsiteButton({ url }: EventWebsiteButtonProps) {
     <Button
       type="primary"
       size="large"
-      className="event-detail-calendar-button"
+      className="event-detail-action-button"
       href={normalizedUrl}
       target="_blank"
       rel="noopener noreferrer"

@@ -31,8 +31,10 @@ export function useEvents() {
   // State variables to hold events, connection status, and error messages
   const [events, setEvents] = useState<Event[]>([]);
   const [isConnected, setIsConnected] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);  // Start with loading true
   const [error, setError] = useState<string | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
+  const hasReceivedDataRef = useRef(false); // Track if we've successfully received data (ref to avoid closure issues)
 
   // Establish WebSocket connection on component mount
   useEffect(() => {
@@ -57,15 +59,25 @@ export function useEvents() {
       try {
         const data = JSON.parse(event.data) as Event[]; // Assume data is an array of Event objects
         setEvents(data); // Update events state
+        hasReceivedDataRef.current = true; // Mark that we've received data successfully
+        setError(null); // Clear any errors on successful data receipt
+        setIsLoading(false); // Data received, no longer loading
       } catch (err) {
         console.error("Failed to parse event data:", err);
         setError("Failed to parse events from server.");
+        setIsLoading(false);
       }
     };
 
     // WebSocket error event handler
     ws.onerror = () => {
-      setError("WebSocket error occurred.");
+      // Only set error if we haven't already received data successfully
+      // This prevents showing transient errors during reconnection attempts
+      if (!hasReceivedDataRef.current) {
+        setError("WebSocket error occurred.");
+      }
+      
+      setIsLoading(false);
     };
 
     // WebSocket close event handler
@@ -79,6 +91,7 @@ export function useEvents() {
     };
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
-  // Return the current events, connection status, and error state
-  return { events, isConnected, error };
+  // Return the current events, connection status, loading state, and error state
+  // Only show error if we're not loading AND we haven't received data successfully
+  return { events, isConnected, isLoading, error: (isLoading || hasReceivedDataRef.current) ? null : error };
 }

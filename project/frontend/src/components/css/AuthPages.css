@@ -1,40 +1,82 @@
-/* AuthPages.css - Shared styles for Login, Register, ForgotPassword, ResetPassword pages */
+/*
+  AuthPages.css - Authentication Page Styles
+  
+  Shared styles for all authentication-related pages: Login, Register, 
+  ForgotPassword, and ResetPassword. These pages share a consistent 
+  centered card layout for form input.
+  
+  Uses CSS variables from DarkMode.css for theme support.
+  
+  Used by: Login.tsx, Register.tsx, ForgotPassword.tsx, ResetPassword.tsx
+*/
 
-/* Centered container for auth forms */
+/* =========================================================================
+   PAGE LAYOUT
+   ========================================================================= */
+
+/* 
+  Full page wrapper for authentication pages.
+  Theme-aware background.
+*/
+.auth-page {
+  background: var(--bg-primary);              /* Theme-aware background */
+  min-height: 100vh;                          /* Full viewport height */
+  transition: background-color 0.3s ease;
+}
+
+/* 
+  Centers the authentication card both horizontally and vertically.
+  Creates a clean, focused UI for login/registration forms.
+*/
 .auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
+  display: flex;                              /* Flexbox for centering */
+  justify-content: center;                    /* Horizontal center */
+  align-items: center;                        /* Vertical center */
+  min-height: 80vh;                           /* Takes most of viewport height */
 }
 
-/* Auth card styling */
+/* =========================================================================
+   AUTH CARD
+   ========================================================================= */
+
+/* 
+  The main card container holding the authentication form.
+  Uses Ant Design Card component with custom shadow styling.
+*/
 .auth-card {
-    width: 400px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 400px;                               /* Fixed width for consistency */
+  box-shadow: 0 4px 12px var(--shadow-color); /* Theme-aware shadow */
+  background: var(--card-bg);                 /* Theme-aware background */
+  border-color: var(--border-color);          /* Theme-aware border */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Full width space container */
+/* =========================================================================
+   UTILITY CLASSES
+   ========================================================================= */
+
+/* Makes Space component expand to full width within the card */
 .auth-space-full-width {
-    width: 100%;
+  width: 100%;
 }
 
-/* Centered text container */
+/* Centers text for titles and helper text */
 .auth-text-center {
-    text-align: center;
+  text-align: center;
 }
 
-/* Auth page title */
+/* Page title with reduced bottom margin for tighter layout */
 .auth-title {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
+  color: var(--text-primary);                 /* Theme-aware text */
 }
 
-/* Form item with no bottom margin */
+/* Removes bottom margin from form items (used for dense layouts) */
 .auth-form-item-no-margin {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
-/* Link button with no padding */
+/* Removes padding from link buttons for inline text appearance */
 .auth-link-button {
-    padding: 0;
+  padding: 0;
 }

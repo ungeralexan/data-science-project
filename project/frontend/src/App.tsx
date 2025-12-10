@@ -1,10 +1,10 @@
 import { Layout } from 'antd';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
 
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import NavBar from './components/NavBar'
-import Profile from './pages/Profile';
 import Events from './pages/Events';
 import Settings from './pages/Settings';
 import EventDetail from "./pages/EventDetail";
@@ -13,6 +13,8 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import './components/css/App.css';
+import './components/css/ColorPalette.css';
+import './components/css/AntDesignOverrides.css';
 
 /*
   App.tsx serves as the main layout component for the application, defining the structure
@@ -42,69 +44,45 @@ import './components/css/App.css';
   <ProtectedRoute>:
     ProtectedRoute wraps routes that require authentication. If the user is not logged in,
     they are redirected to the login page.
-
-  The layout of the frontend application is as follows:
-    
-    App.tsx
-      ├── AuthProvider (provides authentication context)
-      └── Layout
-          ├── Layout.Header (contains NavBar)
-          └── Layout.Content (renders different pages based on routing)
-              ├── Login (at path "/login") - public
-              ├── Register (at path "/register") - public
-              ├── Profile (at path "/") - protected
-              ├── Events (at path "/events") - protected
-              └── Settings (at path "/settings") - protected
 */
 export default function App() {
   return (
-    <AuthProvider>
-      <Layout>
+    <ThemeProvider>
+      <AuthProvider>
+        <Layout>
 
-        <Layout.Header className="app-header">
-          <div className="app-logo">
+          <Layout.Header className="app-header">
+            <Link to="/events" className="app-logo">
+              tuevent
+            </Link>
 
-            tuevent
-          </div>
+            <NavBar />
+          </Layout.Header>
 
-          <NavBar />
-        </Layout.Header>
-
-        <Layout.Content className="app-content">
+          <Layout.Content className="app-content">
           
-          <Routes>
-            {/* Public routes */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            
-            {/* Protected routes */}
-            <Route path="/" element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            } />
+            <Routes>
+              {/* Public routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              
+              {/* Public routes - events can be viewed without login */}
+              <Route path="/" element={<Events />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/events/:id" element={<EventDetail />} />
 
-            <Route path="/events" element={
-              <ProtectedRoute>
-                <Events />
-              </ProtectedRoute>
-            } />
-            <Route path="/events/:id" element={
-              <ProtectedRoute>
-                <EventDetail />
-              </ProtectedRoute>
-            } />
-            <Route path="/settings" element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            } />
-          </Routes>
-        </Layout.Content>
-        
-      </Layout>
-    </AuthProvider>
+              {/* Protected routes - require authentication */}
+              <Route path="/settings" element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </Layout.Content>
+        </Layout>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

@@ -3,11 +3,12 @@ Authentication API routes.
 """
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
+from typing import List
 
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.exc import OperationalError
 
-from data.database.database_events import SessionLocal, UserORM, init_db  # pylint: disable=import-error
+from data.database.database_events import SessionLocal, UserORM, UserLikeORM, EventORM, init_db  # pylint: disable=import-error
 from services.email_service import send_password_reset_email  # pylint: disable=import-error
 
 from .models import (
@@ -115,7 +116,21 @@ async def login(user_data: UserLogin):
 @auth_router.get("/me", response_model=UserResponse)
 async def get_me(current_user: UserORM = Depends(get_current_user)):
     """Get the current authenticated user's information."""
+
     return user_orm_to_response(current_user)
+
+
+@auth_router.get("/liked-events", response_model=List[int])
+async def get_liked_events(current_user: UserORM = Depends(get_current_user)):
+    """Get all event IDs liked by the current authenticated user."""
+
+    with SessionLocal() as db:
+        liked_events = db.query(UserLikeORM).filter(
+            UserLikeORM.user_id == current_user.user_id
+        ).all()
+        
+        return [like.event_id for like in liked_events]
+
 
 @auth_router.put("/me", response_model=UserResponse)
 async def update_me(user_update: UserUpdate, current_user: UserORM = Depends(get_current_user)):
@@ -159,6 +174,14 @@ async def delete_me(current_user: UserORM = Depends(get_current_user)):
         
         if user is None:
             raise HTTPException(status_code=404, detail="User not found")
+        
+        # Get all events liked by this user and decrease their like_count
+        user_likes = db.query(UserLikeORM).filter(UserLikeORM.user_id == current_user.user_id).all()
+        
+        for like in user_likes:
+            event = db.query(EventORM).filter(EventORM.id == like.event_id).first()
+            if event and event.like_count > 0:
+                event.like_count -= 1
         
         db.delete(user)
         db.commit()

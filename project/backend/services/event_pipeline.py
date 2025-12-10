@@ -9,17 +9,25 @@ from config import EMAIL_TEMP_DIR, EMAIL_PIPELINE_DEFAULT_LIMIT  # pylint: disab
 from services.email_downloader import download_latest_emails   # pylint: disable=import-error
 from services.event_duplicator import filter_new_events  # pylint: disable=import-error
 from services.event_recognizer import extract_event_info_with_llm  # pylint: disable=import-error
+from services.event_cleaner import filter_future_events, remove_past_events_from_db  # pylint: disable=import-error
+from services.event_recommender import run_event_recommendations  # pylint: disable=import-error
 
 def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: str = EMAIL_TEMP_DIR) -> None:
     """
     Runs the pipeline to download emails, extract events, and insert them into the database.
+    Also removes past events from the database and generates event recommendations for users.
     """
 
-    #1) Downloads latest emails
+    # 1) Clean up past events from database first
+    print("[pipeline] Removing past events from database...")
+    with SessionLocal() as db:
+        remove_past_events_from_db(db)
+
+    # 2) Downloads latest emails
     print("[pipeline] Downloading latest emails...")
     download_latest_emails(limit=limit)
 
-    # 2) Reads combined text file
+    # 3) Reads combined text file
     all_emails_path = Path(outdir) / "all_emails.txt"
 
     if not all_emails_path.exists():
@@ -28,18 +36,29 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
 
     combined_text = all_emails_path.read_text(encoding="utf-8")
 
-    # 3) Extracts events via LLM
+    # 4) Extracts events via LLM
     try:
-        print("[extract_event_info_with_llm] Extracting events via LLM...")
+        print("[pipeline] Extracting events via LLM...")
         events_raw = extract_event_info_with_llm(combined_text)
-        print(f"[extract_event_info_with_llm] LLM returned {len(events_raw)} events.")
+        print(f"[pipeline] LLM returned {len(events_raw)} events.")
     except Exception as e: # pylint: disable=broad-except
-        print(f"[extract_event_info_with_llm] Error during event extraction: {e}")
+        print(f"[pipeline] Error during event extraction: {e}")
         return
 
-    # 4) Opens DB session and insert non-duplicates
+    # 5) Filter out past events before inserting
+    print("[pipeline] Filtering out past events...")
+    events_raw = filter_future_events(events_raw)
+    print(f"[pipeline] {len(events_raw)} future events remaining.")
+
+    # 6) Opens DB session and insert non-duplicates
     with SessionLocal() as db:
+        print("[pipeline] Inserting non-duplicate events...")
         insert_non_duplicate_events(db, events_raw)
+
+    # 7) Generate event recommendations for users based on their interests
+    print("[pipeline] Generating event recommendations for users...")
+    with SessionLocal() as db:
+        run_event_recommendations(db)
 
 
 def insert_non_duplicate_events(db: Session, events_raw: List[dict]) -> None:
@@ -112,4 +131,4 @@ def insert_non_duplicate_events(db: Session, events_raw: List[dict]) -> None:
 
     # Commit all new rows at once
     db.commit()
-    print(f"[run_email_to_db_pipeline] Inserted {inserted_count} new events into DB.")
+    print(f"[insert_non_duplicate_events] Inserted {inserted_count} new events into DB.")

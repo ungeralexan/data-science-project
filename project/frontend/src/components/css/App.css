@@ -1,26 +1,70 @@
-/* App.css - Styles for the main App layout */
+/*
+  App.css - Main Application Layout Styles
+  
+  This file contains styles for the core app structure including the header,
+  navigation logo, and main content area. These elements appear on every page.
+  
+  Uses CSS variables from DarkMode.css for theme support.
+  
+  Used by: App.tsx (main application wrapper component)
+*/
 
-/* Header styling */
+/* =========================================================================
+   APPLICATION HEADER
+   ========================================================================= */
+
+/* 
+  Top navigation bar that contains the logo and NavBar component.
+  Uses sticky positioning to remain visible while scrolling.
+*/
 .app-header {
-    background: #fff;
-    color: rgba(0, 0, 0, 0.88);
-    display: flex;
-    gap: 15px;
-    padding-inline: 20px;
-    position: sticky;
-    top: 0;
-    z-index: 1100;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: var(--header-bg);               /* Theme-aware background */
+  color: var(--text-primary);                 /* Theme-aware text color */
+  display: flex;                              /* Horizontal layout for logo + nav */
+  gap: 15px;                                  /* Space between logo and navigation */
+  padding-inline: 20px;                       /* Horizontal padding on left/right edges */
+  position: sticky;                           /* Stays at top when scrolling */
+  top: 0;                                     /* Stick to the very top of viewport */
+  z-index: 1100;                              /* Above other content but below modals */
+  box-shadow: 0 2px 8px var(--shadow-color);  /* Theme-aware shadow */
+  transition: background-color 0.3s ease;     /* Smooth theme transition */
 }
 
-/* Logo/brand styling */
+/* =========================================================================
+   APPLICATION LOGO
+   ========================================================================= */
+
+/* 
+  "tuevent" brand logo in the header. 
+  Acts as a clickable link that navigates to the events page.
+*/
 .app-logo {
-    font-weight: 500;
-    font-size: 22px;
+  font-weight: 500;                           /* Medium font weight for prominence */
+  font-size: 22px;                            /* Large enough to be noticeable */
+  color: var(--text-primary);                 /* Theme-aware text color */
+  text-decoration: none;                      /* Removes default link underline */
+  cursor: pointer;                            /* Shows clickable cursor on hover */
+  transition: opacity 0.2s ease, color 0.3s ease; /* Smooth hover and theme transitions */
 }
 
-/* Main content area */
+/* Hover state for logo - slight fade for interaction feedback */
+.app-logo:hover {
+  opacity: 0.8;                               /* Reduces opacity to indicate hover */
+  color: var(--text-primary);                 /* Maintains theme color */
+}
+
+/* =========================================================================
+   MAIN CONTENT AREA
+   ========================================================================= */
+
+/* 
+  Primary content container below the header.
+  Contains all page content (Events, Settings, EventDetail, etc.)
+*/
 .app-content {
-    padding: 24px;
-    min-height: 100vh;
+  padding: 24px;                              /* Space around content for readability */
+  min-height: 100vh;                          /* Ensures content fills at least full viewport */
+  background: var(--bg-primary);              /* Theme-aware background */
+  color: var(--text-primary);                 /* Theme-aware text color */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
 }

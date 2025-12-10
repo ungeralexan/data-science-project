@@ -1,5 +1,6 @@
-import { useMemo, useState, useCallback } from "react";
+import { useMemo } from "react";
 import { useEvents } from "../hooks/useEvents";
+import { useAuth } from "../hooks/useAuth";
 import type { SortOption } from "./EventSortButton";
 import EventImage from "./EventImage";
 import LikeButton from "./LikeButton";
@@ -14,7 +15,7 @@ import "./css/EventList.css";
 
   EventList Component:
     - Fetches events using the useEvents hook.
-    - Manages liked events state to track which events the user has liked.
+    - Uses AuthContext to track liked events (shared across browsers via database).
     - Provides sorting functionality based on the selected sort option.
     - Renders the list of events, including event images, titles, dates, locations, and like buttons.
   
@@ -34,28 +35,13 @@ export default function EventList({ sortOption, showLikedOnly = false, suggested
   // -------------- Initialization --------------
 
   // Fetch events and error state using the custom useEvents hook
-  const { events, error } = useEvents();
+  const { events, error, isLoading } = useEvents();
   const navigate = useNavigate();
 
-  // State to track liked event IDs - triggers re-render when likes change
-  const [likedEventIds, setLikedEventIds] = useState<number[]>(() => {
-    return JSON.parse(localStorage.getItem("likedEvents") || "[]");
-  });
+  // Get liked event IDs from auth context (shared across browsers)
+  const { likedEventIds } = useAuth();
 
   // -------------- Helper Functions --------------
-
-  // Callback to update liked events state when a like/unlike happens
-  const handleLikeChange = useCallback((eventId: number, isLiked: boolean) => {
-
-    setLikedEventIds(prev => {
-      if (isLiked) {
-        return [...prev, eventId];
-      } else {
-        return prev.filter(id => id !== eventId);
-      }
-    });
-
-  }, []);
 
   // Helper function to parse date strings into timestamps
   const parseDate = (dateStr?: string | null) => {
@@ -183,7 +169,12 @@ export default function EventList({ sortOption, showLikedOnly = false, suggested
     return arr;
   }, [events, sortOption, showLikedOnly, likedEventIds, suggestedEventIds]); // Recompute when any filter/sort criteria change
 
-  // -------------- Check for Error --------------
+  // -------------- Check for Loading/Error --------------
+
+  // Show loading state
+  if (isLoading) {
+    return <div className="event-list-loading">Loading events...</div>;
+  }
 
   // Render error message if there was an error fetching events
   if (error) {
@@ -243,7 +234,6 @@ export default function EventList({ sortOption, showLikedOnly = false, suggested
                     eventId={event.id} 
                     initialLikeCount={event.like_count} 
                     size="small"
-                    onLikeChange={handleLikeChange}
                   />
                 </div>
               </div>

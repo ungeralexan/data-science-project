@@ -156,11 +156,11 @@ export default function EventDetail() {
               )}
             </div>
 
-            {event.location && (
-              <div className="event-detail-meta-row">
-                <EnvironmentOutlined style={{ color: '#1890ff' }} />
-                <Text strong>Location:</Text>
-                {googleMapsUrl ? (
+            <div className="event-detail-meta-row">
+              <EnvironmentOutlined className="event-detail-icon event-detail-icon--location" />
+              <Text strong>Location:</Text>
+              {displayAddress ? (
+                googleMapsUrl ? (
                   <a 
                     href={googleMapsUrl} 
                     target="_blank" 
@@ -171,37 +171,45 @@ export default function EventDetail() {
                   </a>
                 ) : (
                   <span>{displayAddress}</span>
-                )}
-              </div>
-            )}
+                )
+              ) : (
+                <Text type="secondary">No information available</Text>
+              )}
+            </div>
 
-            {event.organizer && (
-              <div className="event-detail-meta-row">
-                <TeamOutlined style={{ color: '#1890ff' }} />
-                <Text strong>Organizer:</Text>
+            <div className="event-detail-meta-row">
+              <TeamOutlined className="event-detail-icon event-detail-icon--organizer" />
+              <Text strong>Organizer:</Text>
+              {event.organizer ? (
                 <span>{event.organizer}</span>
-              </div>
-            )}
+              ) : (
+                <Text type="secondary">No information available</Text>
+              )}
+            </div>
 
-            {event.speaker && (
-              <div className="event-detail-meta-row">
-                <UserOutlined style={{ color: '#1890ff' }} />
-                <Text strong>Speaker:</Text>
+            <div className="event-detail-meta-row">
+              <UserOutlined className="event-detail-icon event-detail-icon--speaker" />
+              <Text strong>Speaker:</Text>
+              {event.speaker ? (
                 <span>{event.speaker}</span>
-              </div>
-            )}
+              ) : (
+                <Text type="secondary">No information available</Text>
+              )}
+            </div>
 
-            {event.registration_needed && (
-              <div className="event-detail-meta-row">
-                <CheckCircleOutlined style={{ color: '#52c41a' }} />
-                <Text strong>Registration:</Text>
+            <div className="event-detail-meta-row">
+              <CheckCircleOutlined className="event-detail-icon event-detail-icon--registration" />
+              <Text strong>Registration:</Text>
+              {event.registration_needed ? (
                 <Tag 
                 // If registration_needed indicates true/yes, use orange tag, else green
                 color={event.registration_needed.toLowerCase() === 'true' || event.registration_needed.toLowerCase() === 'yes' ? 'orange' : 'green'}>
                   {event.registration_needed.toLowerCase() === 'true' || event.registration_needed.toLowerCase() === 'yes' ? 'Required' : 'Not Required'}
                 </Tag>
-              </div>
-            )}
+              ) : (
+                <Text type="secondary">No information available</Text>
+              )}
+            </div>
 
             <div className="event-detail-actions">
               <LikeButton eventId={event.id} initialLikeCount={event.like_count} />

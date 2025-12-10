@@ -2,15 +2,16 @@ from typing import Optional
 import json
 from pydantic import BaseModel
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from data.database.database_events import init_db, SessionLocal, EventORM  # pylint: disable=import-error
+from data.database.database_events import init_db, SessionLocal, EventORM, UserLikeORM  # pylint: disable=import-error
 from services.event_pipeline import run_email_to_db_pipeline  # pylint: disable=import-error
 from auth.routes import auth_router  # pylint: disable=import-error
+from auth.utils import get_current_user  # pylint: disable=import-error
 
 from config import (  # pylint: disable=import-error
     CORS_ORIGINS,
@@ -140,8 +141,8 @@ async def shutdown_event():
 
 # ----- Event Like Endpoints -----
 @app.post("/api/events/{event_id}/like")
-async def like_event(event_id: int):
-    """Increment the like count for an event."""
+async def like_event(event_id: int, current_user = Depends(get_current_user)):
+    """Increment the like count for an event and record the user's like."""
 
     with SessionLocal() as db:
 
@@ -149,6 +150,20 @@ async def like_event(event_id: int):
 
         if event is None:
             raise HTTPException(status_code=404, detail="Event not found")
+        
+        # Check if user already liked this event
+        existing_like = db.query(UserLikeORM).filter(
+            UserLikeORM.user_id == current_user.user_id,
+            UserLikeORM.event_id == event_id
+        ).first()
+        
+        if existing_like:
+            # User already liked this event, return current count
+            return {"like_count": event.like_count}
+        
+        # Create new like record
+        new_like = UserLikeORM(user_id=current_user.user_id, event_id=event_id)
+        db.add(new_like)
         
         event.like_count = (event.like_count or 0) + 1
         
@@ -159,8 +174,8 @@ async def like_event(event_id: int):
 
 
 @app.post("/api/events/{event_id}/unlike")
-async def unlike_event(event_id: int):
-    """Decrement the like count for an event."""
+async def unlike_event(event_id: int, current_user = Depends(get_current_user)):
+    """Decrement the like count for an event and remove the user's like."""
     with SessionLocal() as db:
 
         event = db.query(EventORM).filter(EventORM.id == event_id).first()
@@ -168,10 +183,18 @@ async def unlike_event(event_id: int):
         if event is None:
             raise HTTPException(status_code=404, detail="Event not found")
         
-        # Ensure like_count doesn't go below 0
-        event.like_count = max((event.like_count or 0) - 1, 0)
-        db.commit()
-        db.refresh(event)
+        # Find and remove the user's like record
+        existing_like = db.query(UserLikeORM).filter(
+            UserLikeORM.user_id == current_user.user_id,
+            UserLikeORM.event_id == event_id
+        ).first()
+        
+        if existing_like:
+            db.delete(existing_like)
+            # Ensure like_count doesn't go below 0
+            event.like_count = max((event.like_count or 0) - 1, 0)
+            db.commit()
+            db.refresh(event)
         
         return {"like_count": event.like_count}
 

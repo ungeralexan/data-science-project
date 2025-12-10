@@ -47,6 +47,7 @@ SCHEMA_MULTI = {
 def extract_event_info_with_llm(email_text: str) -> dict:
     """
     Uses Gemini to extract multiple events from a text containing multiple emails.
+    The email text already includes URL content fetched during email download.
     Returns a list of dicts (one per event).
     """
     
@@ -63,10 +64,18 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     The text format is as follows:
 
     Each email starts with a line like "--------------- EMAIL: X Start ---------------"
-    followed by lines with "Subject: ..." and "From: ...", then a blank line, then the email body text,
-    and ends with a line like "--------------- EMAIL: X End ---------------".
+    followed by lines with "Subject: ..." and "From: ...", then a blank line, then the email body text.
+    
+    IMPORTANT: Each email may also include a section "--- URL CONTENT FROM THIS EMAIL ---" which contains
+    text content extracted from URLs found in that email. This webpage content provides additional context
+    about events mentioned in that specific email.
+    
+    The email ends with a line like "--------------- EMAIL: X End ---------------".
     
     Some emails describe one event, some describe multiple events, and some are not events at all.
+    
+    Use the URL content section (when present) to fill in any missing information from the email body,
+    such as exact dates, times, locations, speakers, and registration details.
     
     DEFINITION OF AN EVENT
 
@@ -87,6 +96,8 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     6. Do NOT use long sentences as titles.
     7. Do NOT include full subtitles with many clauses or questions.
     8. Do NOT summarize the whole email in the title.
+    9. When URL content is provided for an email, use it to extract additional details about events.
+    10. If the URL content provides more specific information than the email body, prefer the URL content.
 
     OUTPUT FORMAT
 
@@ -97,7 +108,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - End_Date (String or null): The ending date of the event. 
     - Start_Time (String or null): The starting time of the event. If the text contains "c.t." or "s.t.", then interpret "c.t." to start 15 minutes after the hour and "s.t." to start exactly on the hour.
     - End_Time (String or null): If the text contains "c.t." or "s.t.", then interpret "c.t." to end 15 minutes before the hour and "s.t." to end exactly on the hour.
-    - Description (String or null): A description of the event that provides more context and details. You may summarize key points from the email body.
+    - Description (String or null): A description of the event that provides more context and details. You may summarize key points from the email body and linked webpages.
     - Location (String or null): The full location/address of the event as a single string. If the event is remote or online, specify that.
     - Street (String or null): The street name only (without house number).
     - House_Number (String or null): The building/house number.
@@ -118,7 +129,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     It it possible that one event happens over multiple days; In that case, save the dates and times in a list.
     """
 
-    # User prompt with the email text
+    # User prompt with the email text (URL content is already inline with each email)
     user_prompt = f"""
 
     Extract event information from the following email text:

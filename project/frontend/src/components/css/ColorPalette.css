@@ -1,0 +1,93 @@
+/*
+  ColorPalette.css - Theme Variable Definitions
+  
+  This file defines CSS custom properties (variables) for light and dark themes.
+  These variables are used throughout all component CSS files to enable 
+  consistent theming. The theme is toggled by adding 'theme-light' or 
+  'theme-dark' class to the body element (managed by ThemeContext.tsx).
+  
+  USAGE: Reference these variables in other CSS files like:
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+  
+  Used by: All CSS files in the application
+  Imported in: App.tsx (globally available)
+*/
+
+/* =========================================================================
+   LIGHT THEME (Default)
+   ========================================================================= */
+
+body.theme-light {
+  /* Background colors - from lightest to darker */
+  --bg-primary: #ffffff;                      /* Main page background */
+  --bg-secondary: #f5f5f5;                    /* Cards, sections background */
+  --bg-tertiary: #fafafa;                     /* Subtle background variations */
+  
+  /* Text colors - from darkest to lighter */
+  --text-primary: rgba(0, 0, 0, 0.88);        /* Main text, headings */
+  --text-secondary: rgba(0, 0, 0, 0.65);      /* Secondary text, descriptions */
+  --text-tertiary: rgba(0, 0, 0, 0.45);       /* Muted text, placeholders */
+  
+  /* Border colors */
+  --border-color: #d9d9d9;                    /* Standard borders */
+  --border-light: #f0f0f0;                    /* Subtle separators */
+  
+  /* Shadow */
+  --shadow-color: rgba(0, 0, 0, 0.06);        /* Box shadows */
+  
+  /* Accent colors - for interactive elements */
+  --accent-color: #1677ff;                    /* Primary blue (links, buttons) */
+  --accent-hover: #4096ff;                    /* Hover state blue */
+  
+  /* Component-specific backgrounds */
+  --card-bg: #ffffff;                         /* Card backgrounds */
+  --header-bg: #ffffff;                       /* Header/navbar background */
+  --input-bg: #ffffff;                        /* Input field backgrounds */
+  --hover-bg: #f5f5f5;                        /* Hover state backgrounds */
+  
+  /* Status colors */
+  --error-color: #ff4d4f;                     /* Error/danger red */
+  --success-color: #52c41a;                   /* Success green */
+  --warning-color: #faad14;                   /* Warning orange */
+}
+
+/* =========================================================================
+   DARK THEME
+   ========================================================================= */
+
+body.theme-dark {
+  /* Background colors - from darkest to lighter */
+  --bg-primary: #121212;                      /* Main page background */
+  --bg-secondary: #1e1e1e;                    /* Cards, sections background */
+  --bg-tertiary: #2d2d2d;                     /* Subtle background variations */
+  
+  /* Text colors - from lightest to darker */
+  --text-primary: #e0e0e0;                    /* Main text, headings */
+  --text-secondary: #a0a0a0;                  /* Secondary text, descriptions */
+  --text-tertiary: #707070;                   /* Muted text, placeholders */
+  
+  /* Border colors */
+  --border-color: #3d3d3d;                    /* Standard borders */
+  --border-light: #2d2d2d;                    /* Subtle separators */
+  
+  /* Shadow */
+  --shadow-color: rgba(0, 0, 0, 0.3);         /* Box shadows (stronger in dark) */
+  
+  /* Accent colors - slightly lighter for dark backgrounds */
+ /* --accent-color: #60a5fa;  */                  /* Primary blue (softer) */
+  --accent-color: #60a5fa;
+  --accent-hover: #93c5fd;                    /* Hover state blue */
+  
+  /* Component-specific backgrounds */
+  --card-bg: #1e1e1e;                         /* Card backgrounds */
+  --header-bg: #1a1a1a;                       /* Header/navbar background */
+  --input-bg: #2d2d2d;                        /* Input field backgrounds */
+  --hover-bg: #2d2d2d;                        /* Hover state backgrounds */
+  
+  /* Status colors - same as light theme */
+  --error-color: #ff4d4f;                     /* Error/danger red */
+  --success-color: #52c41a;                   /* Success green */
+  --warning-color: #faad14;                   /* Warning orange */
+}

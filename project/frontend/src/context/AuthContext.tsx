@@ -52,6 +52,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [likedEventIds, setLikedEventIds] = useState<number[]>([]);
 
     // ------- Startup -------
 
@@ -74,6 +75,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }, []);
 
     // ------- Auth Functions -------
+
+    // Fetch liked events from the backend
+    const fetchLikedEvents = async (authToken: string) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/auth/liked-events`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${authToken}` },
+            });
+
+            if (response.ok) {
+                const likedIds: number[] = await response.json();
+                setLikedEventIds(likedIds);
+            }
+        } catch (error) {
+            console.error('Error fetching liked events:', error);
+        }
+    };
 
     // Validate current user info using the stored token
     // async function allows us to use await inside it
@@ -99,18 +117,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 setUser(userData);
                 setToken(authToken);
 
+                // Fetch liked events after successful authentication
+                await fetchLikedEvents(authToken);
+
             // If response not ok, clear invalid token
             } else {
                 // Token is invalid or expired
                 localStorage.removeItem(TOKEN_KEY);
                 setToken(null);
                 setUser(null);
+                setLikedEventIds([]);
             }
         } catch (error) {
             console.error('Error fetching current user:', error);
             localStorage.removeItem(TOKEN_KEY);
             setToken(null);
             setUser(null);
+            setLikedEventIds([]);
         } finally {
             setIsLoading(false);
         }
@@ -143,6 +166,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         setToken(authResponse.access_token);
         setUser(authResponse.user);
+
+        // Fetch liked events after login
+        await fetchLikedEvents(authResponse.access_token);
     };
 
     // Register function - creates new user and stores token and user info
@@ -167,6 +193,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         setToken(authResponse.access_token);
         setUser(authResponse.user);
+
+        // New user has no liked events yet
+        setLikedEventIds([]);
     };
 
     // Logout function - clears token and user info
@@ -174,6 +203,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         localStorage.removeItem(TOKEN_KEY);
         setToken(null);
         setUser(null);
+        setLikedEventIds([]);
     };
 
     // Update user profile information
@@ -224,6 +254,52 @@ export function AuthProvider({ children }: AuthProviderProps) {
         localStorage.removeItem(TOKEN_KEY);
         setToken(null);
         setUser(null);
+        setLikedEventIds([]);
+    };
+
+    // Toggle like status for an event
+    const toggleLike = async (eventId: number): Promise<{ like_count: number; isLiked: boolean }> => {
+        if (!token) {
+            throw new Error('Not authenticated');
+        }
+
+        // If event is currently liked, send unlike request, else send like request
+        const currentlyLiked = likedEventIds.includes(eventId);
+        const endpoint = currentlyLiked
+            ? `${API_BASE_URL}/api/events/${eventId}/unlike`
+            : `${API_BASE_URL}/api/events/${eventId}/like`;
+
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Failed to toggle like');
+        }
+
+        const data = await response.json();
+        const newIsLiked = !currentlyLiked;
+
+        // Update local state
+        if (newIsLiked) {
+            setLikedEventIds(prev => [...prev, eventId]);
+        } else {
+
+            // Remove eventId from likedEventIds
+            setLikedEventIds(prev => prev.filter(id => id !== eventId));
+        }
+
+        // Return updated like count and new like status
+        return { like_count: data.like_count, isLiked: newIsLiked };
+    };
+
+    // Check if an event is liked by the current user
+    const isEventLiked = (eventId: number): boolean => {
+        return likedEventIds.includes(eventId);
     };
 
     // ------- Context Value -------
@@ -234,11 +310,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         token,
         isAuthenticated: !!user && !!token,
         isLoading,
+        likedEventIds,
         login,
         register,
         logout,
         updateUser,
         deleteAccount,
+        toggleLike,
+        isEventLiked,
     };
 
     // ------- Render -------

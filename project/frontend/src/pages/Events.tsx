@@ -59,9 +59,13 @@ export default function Events() {
           </Card>
         )
       ) : (
-        <div className="events-page">
-          <Paragraph>Please log in to view personalized event recommendations.</Paragraph>
-        </div>
+        <Card className="event-recommendation-card">
+          <div className="event-list-empty">
+            <Paragraph  type="secondary">
+              Please log in to view personalized event recommendations.
+            </Paragraph>
+          </div>
+        </Card>
       )}
 
       <Space direction="vertical" size="large"> </Space>

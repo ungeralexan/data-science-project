@@ -21,6 +21,7 @@
 */
 .event-list {
   margin-top: 16px;                           /* Space below controls/header */
+  border-radius: 12px; 
   padding: 0 8px;                             /* Side padding for edge spacing */
   background: var(--card-bg);                 /* Theme-aware background */
   transition: background-color 0.3s ease;     /* Smooth theme transition */
@@ -68,11 +69,9 @@
 */
 .event-grid {
   display: grid;                              /* CSS Grid layout */
-  border-radius: 12px;                        /* Rounded corners on container */
   grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 equal columns */
   gap: 24px;                                  /* Space between cards */
   padding: 12px;                              /* Internal padding around cards */
-  background-color: var(--bg-secondary);      /* Theme-aware background */
   transition: background-color 0.3s ease;     /* Smooth theme transition */
 }
 

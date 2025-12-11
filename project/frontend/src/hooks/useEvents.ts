@@ -38,8 +38,13 @@ export function useEvents() {
 
   // Establish WebSocket connection on component mount
   useEffect(() => {
-    const host = window.location.hostname || "localhost";
-    const wsUrl = `ws://${host}:${WS_PORT}/ws/events`;
+    // Determine correct protocol (ws:// or wss://)
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+
+    // Construct WebSocket URL using same host, no port needed (Nginx proxies it)
+    const wsUrl = `${protocol}://${window.location.host}/ws/events`;
+
+    console.log("Connecting to WebSocket:", wsUrl);
     const ws = new WebSocket(wsUrl);
     socketRef.current = ws; // Store WebSocket instance in ref
 
@@ -57,7 +62,17 @@ export function useEvents() {
     // WebSocket message event handler. (event) is the incoming message event
     ws.onmessage = (event) => {
       try {
-        const data = JSON.parse(event.data) as Event[]; // Assume data is an array of Event objects
+ // Establish WebSocket connection on component mount
+  useEffect(() => {
+    const host = window.location.hostname || "localhost";
+    const wsUrl = `ws://${host}:${WS_PORT}/ws/events`;
+    const ws = new WebSocket(wsUrl);
+    socketRef.current = ws; // Store WebSocket instance in ref // Establish WebSocket connection on component mount
+  useEffect(() => {
+    const host = window.location.hostname || "localhost";
+    const wsUrl = `ws://${host}:${WS_PORT}/ws/events`;
+    const ws = new WebSocket(wsUrl);
+    socketRef.current = ws; // Store WebSocket instance in ref        const data = JSON.parse(event.data) as Event[]; // Assume data is an array of Event objects
         setEvents(data); // Update events state
         hasReceivedDataRef.current = true; // Mark that we've received data successfully
         setError(null); // Clear any errors on successful data receipt

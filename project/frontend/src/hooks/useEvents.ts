@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { Event } from "../types/Event";
+import { WS_PORT } from "../config";
 
 /*
   This custom React hook establishes a WebSocket connection to fetch event data from the backend server.
@@ -37,10 +38,18 @@ export function useEvents() {
 
   // Establish WebSocket connection on component mount
   useEffect(() => {
-    // Use secure WebSocket when page is HTTPS
-    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-    // Use same host (domain + port); Nginx proxies /ws/ to backend:8000
-    const wsUrl = `${protocol}://${window.location.host}/ws/events`;
+    // Decide URL based on environment
+    let wsUrl: string;
+
+    if (import.meta.env.DEV) {
+      // Local dev: backend on port 8000
+      wsUrl = `ws://localhost:${WS_PORT}/ws/events`;
+      // or hardcode: `ws://localhost:8000/ws/events`
+    } else {
+      // Production: use same host, Nginx proxies /ws/ to backend
+      const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+      wsUrl = `${protocol}://${window.location.host}/ws/events`;
+    }
 
     console.log("Connecting to WebSocket:", wsUrl);
     const ws = new WebSocket(wsUrl);

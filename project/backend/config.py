@@ -17,9 +17,14 @@ PASSWORD_RESET_EXPIRE_HOURS = 1
 # ----- CORS Configuration -----
 # Allowed origins for CORS requests (from frontend)
 CORS_ORIGINS = [
+    # Local
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "http://193.196.53.179:5173",
+    "http://193.196.53.179:5173", 
+
+    # Production
+    "https://tuevent.de",
+    "https://www.tuevent.de",
 ]
 
 

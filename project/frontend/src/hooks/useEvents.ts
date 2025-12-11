@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import type { Event } from "../types/Event";
-import { WS_PORT } from "../config";
 
 /*
   This custom React hook establishes a WebSocket connection to fetch event data from the backend server.
@@ -38,45 +37,29 @@ export function useEvents() {
 
   // Establish WebSocket connection on component mount
   useEffect(() => {
-    // Determine correct protocol (ws:// or wss://)
+    // Use secure WebSocket when page is HTTPS
     const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-
-    // Construct WebSocket URL using same host, no port needed (Nginx proxies it)
+    // Use same host (domain + port); Nginx proxies /ws/ to backend:8000
     const wsUrl = `${protocol}://${window.location.host}/ws/events`;
 
     console.log("Connecting to WebSocket:", wsUrl);
     const ws = new WebSocket(wsUrl);
-    socketRef.current = ws; // Store WebSocket instance in ref
+    socketRef.current = ws;
 
-    // WebSocket open event handler
     ws.onopen = () => {
-
-      // Update connection status and clear any previous errors
       setIsConnected(true);
       setError(null);
-      
-      // Request events from the server
+      // Ask backend to send events
       ws.send("get_events");
     };
 
-    // WebSocket message event handler. (event) is the incoming message event
     ws.onmessage = (event) => {
       try {
- // Establish WebSocket connection on component mount
-  useEffect(() => {
-    const host = window.location.hostname || "localhost";
-    const wsUrl = `ws://${host}:${WS_PORT}/ws/events`;
-    const ws = new WebSocket(wsUrl);
-    socketRef.current = ws; // Store WebSocket instance in ref // Establish WebSocket connection on component mount
-  useEffect(() => {
-    const host = window.location.hostname || "localhost";
-    const wsUrl = `ws://${host}:${WS_PORT}/ws/events`;
-    const ws = new WebSocket(wsUrl);
-    socketRef.current = ws; // Store WebSocket instance in ref        const data = JSON.parse(event.data) as Event[]; // Assume data is an array of Event objects
-        setEvents(data); // Update events state
-        hasReceivedDataRef.current = true; // Mark that we've received data successfully
-        setError(null); // Clear any errors on successful data receipt
-        setIsLoading(false); // Data received, no longer loading
+        const data = JSON.parse(event.data) as Event[];
+        setEvents(data);
+        hasReceivedDataRef.current = true;
+        setError(null);
+        setIsLoading(false);
       } catch (err) {
         console.error("Failed to parse event data:", err);
         setError("Failed to parse events from server.");

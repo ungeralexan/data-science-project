@@ -1,7 +1,7 @@
 import json
 from google import genai
 
-from config import IMAGE_KEYS, LLM_MODEL  # pylint: disable=import-error
+from config import IMAGE_KEYS, IMAGE_KEY_DESCRIPTIONS, LLM_MODEL  # pylint: disable=import-error
 
 # -------- LLM Event Extraction Settings --------
 
@@ -51,8 +51,12 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     Returns a list of dicts (one per event).
     """
     
-    # Generate image keys string for the prompt
+    # Generate image key strings for the prompt
     image_keys_str = ", ".join(f'"{k}"' for k in IMAGE_KEYS)
+    image_key_descriptions_str = "\n".join(
+        f"- {key}: {desc if desc else '(no description provided)'}"
+        for key, desc in IMAGE_KEY_DESCRIPTIONS.items()
+    )
     
     # System instructions
     system_instruction = f"""
@@ -121,7 +125,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Organizer (String or null): The organizer of the event if available.
     - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false.
     - URL (String or null): The URL for more information about the event if available.
-    - Image_Key (String or null): Choose one of the following image keys to represent the event: [ {image_keys_str} ].
+    - Image_Key (String or null): Choose one of the following image keys to represent the event: [ {image_keys_str} ]. Here are the image key descriptions that you should use to understand what each image key represents: {image_key_descriptions_str}
 
     Do NOT wrap in arrays or extra objects; do NOT add extra keys; do NOT use markdown fences.
     If there is no clear event, don't return anything for this email

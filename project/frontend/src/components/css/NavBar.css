@@ -60,3 +60,16 @@
 .navbar-menu .ant-menu-item a {
   color: inherit !important;
 }
+
+/* =========================================================================
+   MOBILE 
+   ========================================================================= */
+@media (max-width: 640px) {
+  .nav-label-text {
+    display: none;
+  }
+
+  .navbar-container {
+    padding: 8px 8px; /* tightens padding on small screens */
+  }
+}

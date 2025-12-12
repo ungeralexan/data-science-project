@@ -22,6 +22,8 @@
   box-shadow: 0 8px 20px var(--shadow-color); /* Theme-aware shadow */
   padding: 16px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  overflow: hidden;                           /* Prevent horizontal scroll on mobile */
 }
 
 /* =========================================================================
@@ -63,8 +65,10 @@
 
 .event-calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(140px, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 8px;
+  width: 100%;
+  min-width: 0;
 }
 
 .event-calendar-weekday {
@@ -100,6 +104,7 @@
   border: 1px solid var(--border-light);      /* Theme-aware border */
   box-sizing: border-box;
   transition: background-color 0.3s ease, border-color 0.3s ease;
+  min-width: 0;
 }
 
 .event-calendar-cell--today {
@@ -191,10 +196,11 @@
     font-size: 12px;
   }
 
-  /* Switch to a more mobile-friendly layout */
   .event-calendar-grid {
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 2px;
+    width: 100%;
+    min-width: 0;
   }
 
   .event-calendar-weekday {
@@ -244,6 +250,8 @@
   .event-calendar-event-title {
     font-size: 9px;
     line-height: 1.2;
+    white-space: normal;       /* Allow wrapping on small screens */
+    word-break: break-word;
   }
 
   .event-calendar-empty {
@@ -295,6 +303,7 @@
   .event-calendar-event {
     padding: 1px 2px;
     font-size: 8px;
+    width: 100%;
   }
 
   .event-calendar-event-time {
@@ -303,5 +312,7 @@
 
   .event-calendar-event-title {
     font-size: 8px;
+    white-space: normal;
+    word-break: break-word;
   }
 }

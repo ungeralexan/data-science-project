@@ -39,8 +39,24 @@ import './css/NavBar.css';
 
 // Navigation items for authenticated users
 const authenticatedItems: MenuProps['items'] = [
-  { key: '/events',  icon: <CalendarOutlined />,label: <Link to="/events">Events</Link> },
-  { key: '/settings',icon: <SettingOutlined />, label: <Link to="/settings">Settings</Link> },
+  {
+    key: '/events',
+    icon: <CalendarOutlined />, 
+    label: (
+      <Link to="/events" aria-label="Events">
+        <span className="nav-label-text">Events</span>
+      </Link>
+    ),
+  },
+  {
+    key: '/settings',
+    icon: <SettingOutlined />, 
+    label: (
+      <Link to="/settings" aria-label="Settings">
+        <span className="nav-label-text">Settings</span>
+      </Link>
+    ),
+  },
 ];
 
 // Navigation items for unauthenticated users (empty - they see login/register buttons)
@@ -94,8 +110,9 @@ export default function NavBar() {
             icon={<LogoutOutlined />} 
             onClick={handleLogout}
             type="text"
+            aria-label="Logout"
           >
-            Logout
+            <span className="nav-label-text">Logout</span>
           </Button>
         </Space>
       ) : (

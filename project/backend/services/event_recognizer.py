@@ -114,7 +114,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - End_Date (String or null): The ending date of the event. 
     - Start_Time (String or null): The starting time of the event. If the text contains "c.t." or "s.t.", then interpret "c.t." to start 15 minutes after the hour and "s.t." to start exactly on the hour.
     - End_Time (String or null): If the text contains "c.t." or "s.t.", then interpret "c.t." to end 15 minutes before the hour and "s.t." to end exactly on the hour.
-    - Description (String or null): A description of the event that provides more context and details. You may summarize key points from the email body and linked webpages.
+    - Description (String or null): A concise, event-focused description suitable for a calendar entry.  Summarize the purpose, content, and intended audience of the event.  Do NOT describe the email  or administrative availability.
     - Location (String or null): The full location/address of the event as a single string. If the event is remote or online, specify that.
     - Street (String or null): The street name only (without house number).
     - House_Number (String or null): The building/house number.

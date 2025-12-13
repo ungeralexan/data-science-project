@@ -104,6 +104,27 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     8. Do NOT summarize the whole email in the title.
     9. When URL content is provided for an email, use it to extract additional details about events.
     10. If the URL content provides more specific information than the email body, prefer the URL content.
+    
+
+
+
+    DESCRIPTION QUALITY RULES 
+
+    The Description must be written as if it will be shown in a calendar entry to an end user.
+
+    - Write in neutral, informative language.
+    - Describe WHAT the participant will attend or do, not what the email announces.
+    - Do NOT mention the email itself (e.g., do not write "This email announces...").
+    - Do NOT include legal, policy, or compliance framing unless it is essential to understanding the event.
+    - Focus on concrete content, structure, and purpose of the event.
+
+    A good Description answers:
+    - What is happening?
+    - Who is it for?
+    - What will participants gain or experience?
+
+
+
 
     OUTPUT FORMAT
 

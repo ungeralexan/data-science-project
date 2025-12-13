@@ -3,7 +3,7 @@ from typing import List
 
 from google import genai
 
-from data.database.database_events import EventORM  # pylint: disable=import-error
+from data.database.database_events import MainEventORM, SubEventORM  # pylint: disable=import-error
 from config import LLM_MODEL  # pylint: disable=import-error
 
 # Define the expected schema for the LLM response
@@ -19,15 +19,19 @@ BATCH_SCHEMA = {
     },
 }
 
-def filter_new_events(candidates: List[dict], existing_events: List[EventORM]) -> List[dict]:
+
+def _filter_new_events_generic(
+    candidates: List[dict], 
+    existing_events: List,
+    event_type_name: str
+) -> List[dict]:
     """
-    Uses a single LLM call to decide, for each candidate event, whether it is new
-    or already present among existing events. A single call is used as there are call limits when using Gemini.
-
-    Returns only the candidates that are considered new (i.e., not duplicates of existing events in database).
-
-    `candidates`  : list of dicts from the extractor (Title, Start_Date, ...)
-    `existing_events`: list of EventORM rows from the DB.
+    Generic function to filter new events (works for both main_events and sub_events).
+    Uses a single LLM call to decide which candidate events are new.
+    
+    `candidates`: list of dicts from the extractor
+    `existing_events`: list of ORM rows from the DB (MainEventORM or SubEventORM)
+    `event_type_name`: string for logging ("main_event" or "sub_event")
     """
 
     # If no candidates, return empty list
@@ -41,7 +45,6 @@ def filter_new_events(candidates: List[dict], existing_events: List[EventORM]) -
     # Prepare a simplified summary of existing events for the LLM
     existing_summary = []
 
-    # I add only key fields to limit the size of the prompt
     for existing_event in existing_events:
         existing_summary.append(
             {
@@ -50,14 +53,14 @@ def filter_new_events(candidates: List[dict], existing_events: List[EventORM]) -
                 "Start_Date": existing_event.start_date,
                 "End_Date": existing_event.end_date,
                 "Location": existing_event.location,
-                "Description": (existing_event.description or "")[:250], # I only send first 250 chars to limit size of prompt
+                "Description": (existing_event.description or "")[:500],
             }
         )
 
     # Prepare the prompt for the LLM
-    system_instruction = """
-    You are an assistant that checks which candidate events are already present
-    in a list of existing events.
+    system_instruction = f"""
+    You are an assistant that checks which candidate {event_type_name}s are already present
+    in a list of existing {event_type_name}s.
 
     Consider two events to be duplicates if they clearly refer to the SAME real-world event,
     even if there are small wording differences. Use information like:
@@ -80,9 +83,9 @@ def filter_new_events(candidates: List[dict], existing_events: List[EventORM]) -
 
     Example:
       [
-        {"is_new": true},
-        {"is_new": false},
-        {"is_new": true}
+        {{"is_new": true}},
+        {{"is_new": false}},
+        {{"is_new": true}}
       ]
 
     Do NOT add any extra keys, text or explanations.
@@ -116,30 +119,38 @@ def filter_new_events(candidates: List[dict], existing_events: List[EventORM]) -
     try:
         decisions = json.loads(resp.text)
 
-    # Handle possible parsing errors. In that case, all candidates are treated as new.
     except json.JSONDecodeError as e:
-        print(f"[filter_new_events] Failed to parse LLM JSON: {e}")
+        print(f"[filter_new_{event_type_name}s] Failed to parse LLM JSON: {e}")
         return candidates
 
-    # This checks if the output is valid and matches the expected length.
-    # If not, all candidates are treated as new.
     if not isinstance(decisions, list) or len(decisions) != len(candidates):
         print(
-            "[filter_new_events] LLM output length mismatch or wrong format. "
+            f"[filter_new_{event_type_name}s] LLM output length mismatch or wrong format. "
             f"Expected {len(candidates)}, got {len(decisions)}."
         )
-        
         return candidates
 
-    # I keep only the candidates marked as new
+    # Keep only the candidates marked as new
     new_events: List[dict] = []
     
-    # Collect new events based on LLM decisions
     for current_candidate, decision in zip(candidates, decisions):
-
-        # If marked as new, keep it
         if bool(decision.get("is_new")):
             new_events.append(current_candidate)
 
-    # Return the filtered list of new events
     return new_events
+
+
+def filter_new_main_events(candidates: List[dict], existing_events: List[MainEventORM]) -> List[dict]:
+    """
+    Uses a single LLM call to decide which candidate main_events are new.
+    Returns only the candidates that are considered new (not duplicates of existing main_events).
+    """
+    return _filter_new_events_generic(candidates, existing_events, "main_event")
+
+
+def filter_new_sub_events(candidates: List[dict], existing_events: List[SubEventORM]) -> List[dict]:
+    """
+    Uses a single LLM call to decide which candidate sub_events are new.
+    Returns only the candidates that are considered new (not duplicates of existing sub_events).
+    """
+    return _filter_new_events_generic(candidates, existing_events, "sub_event")

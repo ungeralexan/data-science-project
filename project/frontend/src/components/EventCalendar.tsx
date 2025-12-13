@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEvents } from "../hooks/useEvents";
+import type { EventFetchMode } from "../hooks/useEvents";
 import { useAuth } from "../hooks/useAuth";
 import type { Event } from "../types/Event";
 import "./css/EventCalendar.css";
@@ -13,8 +14,9 @@ import "./css/EventCalendar.css";
 
 // -------- Props Interface --------
 interface EventCalendarProps {
-  showLikedOnly?: boolean;
-  suggestedEventIds?: number[] | null;
+    showLikedOnly?: boolean;
+    suggestedEventIds?: (string | number)[] | null;
+    fetchMode?: EventFetchMode;  // "main_events" | "all_events" | "sub_events"
 }
 
 // -------- Constants --------
@@ -51,11 +53,11 @@ const TODAY_KEY = dateKey(new Date());
 
 // -------- Component --------
 
-export default function EventCalendar({ showLikedOnly = false, suggestedEventIds }: EventCalendarProps) {
+export default function EventCalendar({ showLikedOnly = false, suggestedEventIds, fetchMode = "main_events" }: EventCalendarProps) {
 
     // ----- State & Hooks -----
 
-    const { events, error, isLoading } = useEvents(); // Query events from backend
+    const { events, error, isLoading } = useEvents(fetchMode); // Query events from backend
     const navigate = useNavigate(); // For navigating to event details page
     const { likedEventIds } = useAuth(); // Get liked event IDs from auth context
 
@@ -72,11 +74,13 @@ export default function EventCalendar({ showLikedOnly = false, suggestedEventIds
         let result: Event[] = events;
 
         if (suggestedEventIds && suggestedEventIds.length > 0) {
-            result = result.filter((e) => suggestedEventIds.includes(e.id));
+            const suggestedSet = new Set(suggestedEventIds.map(String));
+            result = result.filter((e) => suggestedSet.has(String(e.id)));
         }
 
         if (showLikedOnly) {
-            result = result.filter((e) => likedEventIds.includes(e.id));
+            const likedSet = new Set(likedEventIds.map(String));
+            result = result.filter((e) => likedSet.has(String(e.id)));
         }
 
         return result;

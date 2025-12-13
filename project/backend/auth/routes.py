@@ -8,7 +8,7 @@ from typing import List
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.exc import OperationalError
 
-from data.database.database_events import SessionLocal, UserORM, UserLikeORM, EventORM, init_db  # pylint: disable=import-error
+from data.database.database_events import SessionLocal, UserORM, UserLikeORM, MainEventORM, SubEventORM, init_db  # pylint: disable=import-error
 from services.email_service import send_password_reset_email  # pylint: disable=import-error
 
 from .models import (
@@ -120,7 +120,7 @@ async def get_me(current_user: UserORM = Depends(get_current_user)):
     return user_orm_to_response(current_user)
 
 
-@auth_router.get("/liked-events", response_model=List[int])
+@auth_router.get("/liked-events", response_model=List[str])
 async def get_liked_events(current_user: UserORM = Depends(get_current_user)):
     """Get all event IDs liked by the current authenticated user."""
 
@@ -128,8 +128,14 @@ async def get_liked_events(current_user: UserORM = Depends(get_current_user)):
         liked_events = db.query(UserLikeORM).filter(
             UserLikeORM.user_id == current_user.user_id
         ).all()
+
+        main_events = [like.main_event_id for like in liked_events if like.main_event_id is not None]
+        sub_events = [like.sub_event_id for like in liked_events if like.sub_event_id is not None]
+
+        print(main_events)
+        print(sub_events)
         
-        return [like.event_id for like in liked_events]
+        return main_events + sub_events
 
 
 @auth_router.put("/me", response_model=UserResponse)
@@ -179,7 +185,15 @@ async def delete_me(current_user: UserORM = Depends(get_current_user)):
         user_likes = db.query(UserLikeORM).filter(UserLikeORM.user_id == current_user.user_id).all()
         
         for like in user_likes:
-            event = db.query(EventORM).filter(EventORM.id == like.event_id).first()
+
+            # Check if it's a main_event or sub_event based on which ID is set
+            if like.main_event_id is not None:
+                event = db.query(MainEventORM).filter(MainEventORM.id == like.main_event_id).first()
+            elif like.sub_event_id is not None:
+                event = db.query(SubEventORM).filter(SubEventORM.id == like.sub_event_id).first()
+            else:
+                event = None
+            
             if event and event.like_count > 0:
                 event.like_count -= 1
         

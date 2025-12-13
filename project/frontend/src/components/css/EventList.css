@@ -326,6 +326,19 @@
   border-top: 1px solid var(--border-light);  /* Theme-aware separator line */
   display: flex;                              /* Horizontal layout */
   justify-content: flex-start;                /* Left-aligned button */
+  align-items: center;                        /* Align items vertically */
+  gap: 10px;                                  /* Space between actions */
+  flex-wrap: wrap;                            /* Wrap on narrow cards */
+}
+
+.event-card-relation {
+  font-size: 12px;                            /* Compact indicator */
+  color: var(--text-secondary);               /* Muted text tone */
+  padding: 2px 6px;                           /* Small pill padding */
+  border: 1px solid var(--border-light);      /* Subtle outline */
+  border-radius: 999px;                       /* Pill shape */
+  border-color: var(--warning-color);           /* Use warning color for visibility */
+  background-color: var(--bg-secondary);      /* Theme-aware background */
 }
 
 /* =========================================================================

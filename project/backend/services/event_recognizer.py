@@ -28,12 +28,14 @@ EVENT_SCHEMA  = {
         "Registration_Needed": {"type": "BOOLEAN", "nullable": True},
         "URL": {"type": "STRING", "nullable": True},
         "Image_Key": {"type": "STRING", "nullable": True},
+        "Event_Type": {"type": "STRING", "nullable": False},  # "main_event" or "sub_event"
+        "Main_Event_Temp_Key": {"type": "STRING", "nullable": False},  # Temporary key to link sub_events to main_event
     },
     "required": [
         "Title", "Start_Date", "End_Date", "Start_Time", "End_Time",
         "Description", "Location", "Street", "House_Number", "Zip_Code", 
         "City", "Country", "Room", "Floor", "Speaker", "Organizer", 
-        "Registration_Needed", "URL", "Image_Key",
+        "Registration_Needed", "URL", "Image_Key", "Event_Type", "Main_Event_Temp_Key",
     ],
 }
 
@@ -126,6 +128,8 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false.
     - URL (String or null): The URL for more information about the event if available.
     - Image_Key (String or null): Choose one of the following image keys to represent the event: [ {image_keys_str} ]. Here are the image key descriptions that you should use to understand what each image key represents: {image_key_descriptions_str}
+    - Event_Type (String, REQUIRED): Must be either "main_event" or "sub_event". Use "main_event" for standalone events or parent events that have sub-events. Use "sub_event" for events that are part of a larger event series (e.g., individual talks in a lecture series, workshops in a conference, sessions in a multi-day event).
+    - Main_Event_Temp_Key (String, REQUIRED): A temporary identifier to link related events. For main_events, generate a unique short key (e.g., "conf2024", "lecture_series_ai"). For sub_events, use the SAME key as their parent main_event so they can be linked together. If an event is a standalone main_event with no sub_events, still provide a unique key.
 
     Do NOT wrap in arrays or extra objects; do NOT add extra keys; do NOT use markdown fences.
     If there is no clear event, don't return anything for this email

@@ -15,6 +15,8 @@ import type { User, LoginRequest, RegisterRequest, UpdateUserRequest } from '../
     - logout: A function to log out the current user.
     - updateUser: A function to update the current user's information.
     - deleteAccount: A function to delete the current user's account.
+    - toggleLike: A function to like or unlike an event.
+    - isEventLiked: A function to check if an event is liked by the user.
 */
 
 export interface AuthContextType {
@@ -22,14 +24,14 @@ export interface AuthContextType {
     token: string | null;
     isAuthenticated: boolean;
     isLoading: boolean;
-    likedEventIds: number[];  // Array of event IDs that the user has liked
+    likedEventIds: string[];  // Array of event IDs that the user has liked
     login: (data: LoginRequest) => Promise<void>;
     register: (data: RegisterRequest) => Promise<void>;
     logout: () => void;
     updateUser: (data: UpdateUserRequest) => Promise<void>;
     deleteAccount: () => Promise<void>;
-    toggleLike: (eventId: number) => Promise<{ like_count: number; isLiked: boolean }>;  // Toggle like status for an event
-    isEventLiked: (eventId: number) => boolean;  // Check if an event is liked
+    toggleLike: (eventId: string, eventType?: "main_event" | "sub_event") => Promise<{ like_count: number; isLiked: boolean }>;  // Toggle like status for an event
+    isEventLiked: (eventId: string) => boolean;  // Check if an event is liked
 }
 
 /*

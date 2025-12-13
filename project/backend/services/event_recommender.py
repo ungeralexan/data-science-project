@@ -4,7 +4,7 @@ import textwrap
 from google import genai
 from sqlalchemy.orm import Session
 
-from data.database.database_events import UserORM, EventORM  # pylint: disable=import-error
+from data.database.database_events import UserORM, MainEventORM  # pylint: disable=import-error
 from config import LLM_MODEL  # pylint: disable=import-error
 
 
@@ -15,7 +15,7 @@ from config import LLM_MODEL  # pylint: disable=import-error
 #
 #   The recommendation process:
 #   1. Collect all users with interests (either interest_keys or interest_text)
-#   2. Collect all events with their titles and descriptions
+#   2. Collect all main_events (not sub_events) with their titles and descriptions
 #   3. Send both to the LLM to match events to users based on interests
 #   4. Update each user's suggested_event_ids column with recommendations
 
@@ -55,7 +55,7 @@ def get_users_with_interests(db: Session) -> Dict[int, dict]:
 
 def get_events_for_recommendation(db: Session) -> Dict[int, dict]:
     """
-    Fetch all events with their titles and descriptions for recommendation.
+    Fetch all main_events (not sub_events) with their titles and descriptions for recommendation.
     
     Returns:
         Dictionary mapping event_id to event info:
@@ -66,7 +66,8 @@ def get_events_for_recommendation(db: Session) -> Dict[int, dict]:
             }
         }
     """
-    events = db.query(EventORM).all()
+    # Only query main_events, not sub_events
+    events = db.query(MainEventORM).all()
     events_dict = {}
     
     for event in events:

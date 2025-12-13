@@ -1,7 +1,7 @@
-from typing import List
+from typing import List, Tuple
 from datetime import datetime, date
 from sqlalchemy.orm import Session
-from data.database.database_events import EventORM # pylint: disable=import-error
+from data.database.database_events import MainEventORM, SubEventORM # pylint: disable=import-error
 
 def parse_date(date_str: str) -> date | None:
     """
@@ -80,31 +80,149 @@ def filter_future_events(events: List[dict]) -> List[dict]:
     return future_events
 
 
+def filter_future_events_with_subevents(
+    main_events: List[dict], 
+    sub_events: List[dict]
+) -> Tuple[List[dict], List[dict]]:
+    """
+    Filter main_events and sub_events with special logic:
+    - Main_events without sub_events: only keep if they are in the future
+    - Main_events with sub_events: keep if ANY of their sub_events is in the future
+      (also keep all sub_events of that main_event, including past ones)
+    """
+    
+    # Group sub_events by main_event_temp_key
+    sub_events_by_key: dict = {}
+
+    for sub in sub_events:
+
+        # Get the main_event_temp_key
+        key = sub.get("Main_Event_Temp_Key", "")
+
+        if key:
+            if key not in sub_events_by_key:
+
+                sub_events_by_key[key] = []
+
+            sub_events_by_key[key].append(sub)
+    
+
+    filtered_main_events = []
+    filtered_sub_events = []
+    
+    # Process main_events
+    for main_event in main_events:
+
+        # Get the main_event_temp_key
+        temp_key = main_event.get("Main_Event_Temp_Key", "")
+        related_subs = sub_events_by_key.get(temp_key, [])
+        
+        # If no related sub_events
+        if not related_subs:
+            # Main_event without sub_events: standard future check
+            if is_future_event(main_event):
+                filtered_main_events.append(main_event)
+            else:
+                title = main_event.get("Title", "Unknown")
+                end_date = main_event.get("End_Date") or main_event.get("Start_Date")
+                print(f"[event_cleaner] Skipping past main_event: '{title}' (date: {end_date})")
+        else:
+            # Main_event with sub_events: check if ANY sub_event is in the future
+            has_future_sub = any(is_future_event(sub) for sub in related_subs)
+            
+            if has_future_sub:
+                # Keep main_event and ALL its sub_events (including past ones)
+                filtered_main_events.append(main_event)
+                filtered_sub_events.extend(related_subs)
+            else:
+                # All sub_events are in the past, skip main_event and all sub_events
+                title = main_event.get("Title", "Unknown")
+                print(f"[event_cleaner] Skipping main_event '{title}' - all sub_events are in the past")
+    
+    # Also process orphan sub_events (sub_events without a matching main_event)
+    processed_keys = set(sub_events_by_key.keys())
+    main_event_keys = {m.get("Main_Event_Temp_Key", "") for m in main_events}
+
+    remaining_keys = processed_keys - main_event_keys
+
+    if remaining_keys:
+        print(f"[event_cleaner] Processing {len(remaining_keys)} orphan sub_events")
+    
+        # Only look at orphan sub_events
+        for key in remaining_keys:
+            for sub in sub_events_by_key[key]:
+                if is_future_event(sub):
+                    filtered_sub_events.append(sub)
+                else:
+                    title = sub.get("Title", "Unknown")
+                    end_date = sub.get("End_Date") or sub.get("Start_Date")
+                    print(f"[event_cleaner] Skipping orphan past sub_event: '{title}' (date: {end_date})")
+    
+    return filtered_main_events, filtered_sub_events
+
+
 def remove_past_events_from_db(db: Session) -> int:
     """
     Remove events from the database that have already passed.
-    Returns the number of events removed.
+    For main_events with sub_events: only remove if ALL sub_events are in the past.
+    Returns the total number of events removed.
     """
     today = date.today()
-    
-    # Get all events from DB
-    all_events = db.query(EventORM).all()
     removed_count = 0
     
-    for event in all_events:
-        # Use end_date if available, otherwise start_date
-        date_str = event.end_date or event.start_date
+    # Get all main_events from DB
+    all_main_events = db.query(MainEventORM).all()
+    
+    for main_event in all_main_events:
+        # Get all sub_events for this main_event
+        sub_events = db.query(SubEventORM).filter(SubEventORM.main_event_id == main_event.id).all()
         
-        if not date_str:
-            # No date, keep the event
-            continue
+        if not sub_events:
+            # Main_event without sub_events: standard past check
+            date_str = main_event.end_date or main_event.start_date
+            
+            if date_str:
+                parsed_date = parse_date(date_str)
+                if parsed_date is not None and parsed_date < today:
+                    print(f"[event_cleaner] Removing past main_event: '{main_event.title}' (date: {date_str})")
+                    db.delete(main_event)
+                    removed_count += 1
+        else:
+            # Main_event with sub_events: check if ALL sub_events are in the past
+            all_subs_past = True
+            
+            for sub in sub_events:
+                date_str = sub.end_date or sub.start_date
+
+                if not date_str:
+                    all_subs_past = False
+                    break
+                    
+                parsed_date = parse_date(date_str)
+
+                if parsed_date is None or parsed_date >= today:
+                    all_subs_past = False
+                    break
+            
+            if all_subs_past:
+                print(f"[event_cleaner] Removing main_event '{main_event.title}' and all its sub_events - all past")
+                # Sub_events will be deleted by cascade
+                db.delete(main_event)
+
+                removed_count += 1 + len(sub_events)
+    
+    # Also remove orphan sub_events that are in the past
+    orphan_sub_events = db.query(SubEventORM).filter(SubEventORM.main_event_id == None).all()
+    
+    for sub in orphan_sub_events:
+        date_str = sub.end_date or sub.start_date
         
-        parsed_date = parse_date(date_str)
-        
-        if parsed_date is not None and parsed_date < today:
-            print(f"[event_cleaner] Removing past event: '{event.title}' (date: {date_str})")
-            db.delete(event)
-            removed_count += 1
+        if date_str:
+            parsed_date = parse_date(date_str)
+            if parsed_date is not None and parsed_date < today:
+                print(f"[event_cleaner] Removing past orphan sub_event: '{sub.title}' (date: {date_str})")
+                db.delete(sub)
+                removed_count += 1
     
     if removed_count > 0:
         db.commit()

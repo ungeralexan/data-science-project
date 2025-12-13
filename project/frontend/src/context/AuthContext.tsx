@@ -52,7 +52,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [likedEventIds, setLikedEventIds] = useState<number[]>([]);
+    const [likedEventIds, setLikedEventIds] = useState<string[]>([]);
 
     // ------- Startup -------
 
@@ -84,9 +84,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 headers: { 'Authorization': `Bearer ${authToken}` },
             });
 
-            if (response.ok) {
-                const likedIds: number[] = await response.json();
-                setLikedEventIds(likedIds);
+            if (response.ok) { 
+                const likedIds: Array<string | number> = await response.json();
+                setLikedEventIds(likedIds.map(String));
             }
         } catch (error) {
             console.error('Error fetching liked events:', error);
@@ -258,16 +258,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
 
     // Toggle like status for an event
-    const toggleLike = async (eventId: number): Promise<{ like_count: number; isLiked: boolean }> => {
+    const toggleLike = async (eventId: string, eventType: "main_event" | "sub_event" = "main_event"): Promise<{ like_count: number; isLiked: boolean }> => {
         if (!token) {
             throw new Error('Not authenticated');
         }
 
         // If event is currently liked, send unlike request, else send like request
         const currentlyLiked = likedEventIds.includes(eventId);
+
         const endpoint = currentlyLiked
-            ? `${API_BASE_URL}/api/events/${eventId}/unlike`
-            : `${API_BASE_URL}/api/events/${eventId}/like`;
+            ? `${API_BASE_URL}/api/events/${eventType}/${eventId}/unlike`
+            : `${API_BASE_URL}/api/events/${eventType}/${eventId}/like`;
 
         const response = await fetch(endpoint, {
             method: 'POST',
@@ -298,7 +299,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
 
     // Check if an event is liked by the current user
-    const isEventLiked = (eventId: number): boolean => {
+    const isEventLiked = (eventId: string): boolean => {
         return likedEventIds.includes(eventId);
     };
 

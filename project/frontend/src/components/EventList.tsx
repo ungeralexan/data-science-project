@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 import { useEvents } from "../hooks/useEvents";
+import type { EventFetchMode } from "../hooks/useEvents";
 import { useAuth } from "../hooks/useAuth";
 import type { SortOption } from "./EventSortButton";
+import type { Event } from "../types/Event";
 import EventImage from "./EventImage";
 import LikeButton from "./LikeButton";
 import { useNavigate } from "react-router-dom";
@@ -27,16 +29,31 @@ import "./css/EventList.css";
 interface EventListProps {
   sortOption: SortOption;
   showLikedOnly?: boolean;
-  suggestedEventIds?: number[] | null;  // Filter to show only suggested events for user
+  suggestedEventIds?: (string | number)[] | null;  // Filter to show only suggested events for user
+  fetchMode?: EventFetchMode;  // "main_events" | "all_events" | "sub_events"
+  filterByMainEventId?: string;  // Filter sub_events by their parent main_event ID
+  filterBySubEventMainId?: string;  // Filter to show only the main_event for a sub_event
+  providedEvents?: Event[];  // Optionally provide events directly instead of fetching
 }
 
-export default function EventList({ sortOption, showLikedOnly = false, suggestedEventIds }: EventListProps) {
+export default function EventList({ 
+  sortOption, 
+  showLikedOnly = false, 
+  suggestedEventIds,
+  fetchMode = "main_events",
+  filterByMainEventId,
+  filterBySubEventMainId,
+  providedEvents,
+}: EventListProps) {
 
   // -------------- Initialization --------------
 
   // Fetch events and error state using the custom useEvents hook
-  const { events, error, isLoading } = useEvents();
+  const { events: fetchedEvents, error, isLoading } = useEvents(fetchMode);
   const navigate = useNavigate();
+
+  // Use provided events if available, otherwise use fetched events
+  const events = providedEvents ?? fetchedEvents;
 
   // Get liked event IDs from auth context (shared across browsers)
   const { likedEventIds } = useAuth();
@@ -80,12 +97,28 @@ export default function EventList({ sortOption, showLikedOnly = false, suggested
 
     // Filter by suggested event IDs if provided
     if (suggestedEventIds && suggestedEventIds.length > 0) {
-      filteredEvents = filteredEvents.filter(event => suggestedEventIds.includes(event.id));
+      const suggestedIdsSet = new Set(suggestedEventIds.map(String));
+      filteredEvents = filteredEvents.filter(event => suggestedIdsSet.has(String(event.id)));
+    }
+
+    // Filter sub_events by their parent main_event ID if provided
+    if (filterByMainEventId !== undefined) {
+      filteredEvents = filteredEvents.filter(
+        event => event.event_type === "sub_event" && event.main_event_id === filterByMainEventId
+      );
+    }
+
+    // Filter to show only the main_event for a sub_event if provided
+    if (filterBySubEventMainId !== undefined) {
+      filteredEvents = filteredEvents.filter(
+        event => event.event_type === "main_event" && event.id === filterBySubEventMainId
+      );
     }
 
     // Filter events if showLikedOnly is enabled (uses state instead of reading from localStorage)
     if (showLikedOnly) {
-      filteredEvents = filteredEvents.filter(event => likedEventIds.includes(event.id));
+      const likedSet = new Set(likedEventIds.map(String));
+      filteredEvents = filteredEvents.filter(event => likedSet.has(String(event.id)));
     }
 
     // Creates a copy of filtered events to sort
@@ -167,7 +200,13 @@ export default function EventList({ sortOption, showLikedOnly = false, suggested
 
     // Return the sorted array
     return arr;
-  }, [events, sortOption, showLikedOnly, likedEventIds, suggestedEventIds]); // Recompute when any filter/sort criteria change
+  }, [events, 
+    sortOption, 
+    showLikedOnly, 
+    likedEventIds,
+    filterByMainEventId, 
+    filterBySubEventMainId,
+    suggestedEventIds]); // Recompute when any filter/sort criteria change
 
   // -------------- Check for Loading/Error --------------
 
@@ -183,6 +222,12 @@ export default function EventList({ sortOption, showLikedOnly = false, suggested
 
   // -------------- Render Component --------------
 
+  const formatDateLabel = (value?: string | null) => {
+    if (!value) return null;
+    const dateObject = new Date(value);
+    return Number.isNaN(dateObject.getTime()) ? value : dateObject.toLocaleDateString();
+  };
+
   return (
 
     // Container for the event list
@@ -197,9 +242,35 @@ export default function EventList({ sortOption, showLikedOnly = false, suggested
         <div className="event-grid">
           {sortedEvents.map((event) => {
 
-            const dateObj = new Date(event.start_date); 
-            const dateLabel = isNaN(dateObj.getTime()) ? event.start_date : dateObj.toLocaleDateString();
-            const timeLabel = event.start_time || "";
+            //const dateObj = new Date(event.start_date); 
+
+            const startDateLabel = formatDateLabel(event.start_date) ?? event.start_date;
+            const endDateLabel = formatDateLabel(event.end_date);
+              
+            let dateLabel = undefined;
+            let timeLabel = undefined;
+
+            // If both start and end dates exist and are different, show range
+            if (event.start_date === event.end_date) {
+              dateLabel = startDateLabel;
+            } else {
+              dateLabel = event.start_date ? event.end_date ? `${startDateLabel} – ${endDateLabel}` : startDateLabel : "";
+            }
+
+            if (event.start_time === event.end_time) {
+              timeLabel = event.start_time;
+            } else {
+              timeLabel = event.start_time ? event.end_time ? `${event.start_time} – ${event.end_time}` : event.start_time : "";
+            }
+
+            const hasSubEvents = event.event_type === "main_event" && Array.isArray(event.sub_event_ids) && event.sub_event_ids.length > 0;
+            const hasParentEvent = event.event_type === "sub_event" && Boolean(event.main_event_id);
+
+            const relationLabel = hasSubEvents
+              ? "Has multiple dates"
+              : hasParentEvent
+                ? "This is a sub-event"
+                : null;
             
             /*
               Render individual event card with image, title, date/time, location, and description.
@@ -222,7 +293,12 @@ export default function EventList({ sortOption, showLikedOnly = false, suggested
 
                 <div className="event-card-datetime">
                   {dateLabel}
-                  {timeLabel && ` ${timeLabel}`}
+                  {timeLabel && (
+                    <>
+                      <span className="event-detail-separator"> • </span>
+                      <span>{timeLabel}</span>
+                    </>
+                  )}
                 </div>
 
                 {event.location && (
@@ -232,9 +308,13 @@ export default function EventList({ sortOption, showLikedOnly = false, suggested
                 <div className="event-card-actions">
                   <LikeButton 
                     eventId={event.id} 
-                    initialLikeCount={event.like_count} 
+                    initialLikeCount={event.like_count}
+                    eventType={event.event_type} 
                     size="small"
                   />
+                  {relationLabel && (
+                    <span className="event-card-relation">{relationLabel}</span>
+                  )}
                 </div>
               </div>
             );

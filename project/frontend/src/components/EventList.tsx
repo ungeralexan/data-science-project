@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useEvents } from "../hooks/useEvents";
 import type { EventFetchMode } from "../hooks/useEvents";
 import { useAuth } from "../hooks/useAuth";
@@ -7,6 +7,9 @@ import type { Event } from "../types/Event";
 import EventImage from "./EventImage";
 import LikeButton from "./LikeButton";
 import { useNavigate } from "react-router-dom";
+
+import { Input } from "antd";
+import { matchesEvent } from "../utils/search";
 
 import "./css/EventList.css";
 
@@ -58,6 +61,10 @@ export default function EventList({
   // Get liked event IDs from auth context (shared across browsers)
   const { likedEventIds } = useAuth();
 
+  // Search query for flexible keyword search
+  const [query, setQuery] = useState("");
+
+
   // -------------- Helper Functions --------------
 
   // Helper function to parse date strings into timestamps
@@ -94,6 +101,14 @@ export default function EventList({
 
     // Start with all events
     let filteredEvents = events;
+
+    // Flexible keyword search
+    if (query.trim()) {
+      filteredEvents = filteredEvents.filter((event) => 
+        matchesEvent(event, query)
+      );
+    }
+
 
     // Filter by suggested event IDs if provided
     if (suggestedEventIds && suggestedEventIds.length > 0) {
@@ -200,7 +215,8 @@ export default function EventList({
 
     // Return the sorted array
     return arr;
-  }, [events, 
+  }, [events,
+    query, 
     sortOption, 
     showLikedOnly, 
     likedEventIds,
@@ -232,6 +248,20 @@ export default function EventList({
 
     // Container for the event list
     <div className="event-list">
+    
+      {/* Search bar */}
+      <div className="event-list-search">
+        <Input.Search
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          allowClear
+          placeholder='Search events (e.g. erasmus "exchange rates" speaker:hu)'
+        />
+        <div className="event-list-search-meta">
+          {sortedEvents.length} / {events.length}
+        </div>
+      </div>
+
       {sortedEvents.length === 0 ? (
         <p className="event-list-empty">No events received yet.</p>
       ) : ( 

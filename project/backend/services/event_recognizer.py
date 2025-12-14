@@ -112,11 +112,11 @@ def extract_event_info_with_llm(email_text: str) -> dict:
 
     The Description must be written as if it will be shown in a calendar entry to an end user.
 
-    - Write in neutral, informative language.
-    - Describe WHAT the participant will attend or do, not what the email announces.
-    - Do NOT mention the email itself (e.g., do not write "This email announces...").
-    - Do NOT include legal, policy, or compliance framing unless it is essential to understanding the event.
-    - Focus on concrete content, structure, and purpose of the event.
+    - Write in neutral, informative language that is clear and concise.
+    - The Description must be written in a professional tone suitable for a calendar or event website.
+    - Describe **what** will happen, not **how** the email is presented (e.g., no mention of the email itself).
+    - Focus on the event content: who will be involved, what will happen, and why it's important.
+
 
     A good Description answers:
     - What is happening?

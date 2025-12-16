@@ -70,18 +70,9 @@ export function useEvents(fetchMode: EventFetchMode = "main_events") {
 
   // Establish WebSocket connection on component mount
   useEffect(() => {
-    // Decide URL based on environment
-    let wsUrl: string;
-
-    if (import.meta.env.DEV) {
-      // Local dev: backend on port 8000
-      wsUrl = `ws://localhost:${WS_PORT}/ws/events`;
-      // or hardcode: `ws://localhost:8000/ws/events`
-    } else {
-      // Production: use same host, Nginx proxies /ws/ to backend
-      const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-      wsUrl = `${protocol}://${window.location.host}/ws/events`;
-    }
+    
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const wsUrl = `${protocol}://${window.location.host}/ws/events`;
 
     console.log("Connecting to WebSocket:", wsUrl);
     const ws = new WebSocket(wsUrl);

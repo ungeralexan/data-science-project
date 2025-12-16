@@ -6,6 +6,7 @@ import EventSortControls from "../components/EventSortButton";
 import type { SortOption } from "../components/EventSortButton";
 import LikedFilterButton from "../components/LikedFilterButton";
 import ViewToggleButton from "../components/ViewToggleButton";
+import SubeventToggleButton from "../components/SubeventToggleButton";
 import { useAuth } from '../hooks/useAuth';
 import "../components/css/Events.css";
 
@@ -20,6 +21,9 @@ export default function Events() {
 
   // State to toggle between list and calendar views
   const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
+
+  // State to toggle showing subevents
+  const [showSubevents, setShowSubevents] = useState<boolean>(false);
 
   const { user } = useAuth();
 
@@ -44,9 +48,10 @@ export default function Events() {
         hasSuggestedEvents ? (
           <>
             <EventList
-              suggestedEventIds={user.suggested_event_ids}
+              suggestedEventIds={user.suggested_event_ids?.map(String)}
               sortOption={"none"}
               showLikedOnly={false}
+              fetchMode="main_events"
             />
           </>
         ) : (
@@ -85,13 +90,24 @@ export default function Events() {
           viewMode={viewMode}
           onToggle={setViewMode}
         />
+        <SubeventToggleButton
+          showSubevents={showSubevents}
+          onToggle={setShowSubevents}
+        />
       </div>
 
       {/* Toggle between list and calendar views */}
       {viewMode === "list" ? (
-        <EventList sortOption={sortOption} showLikedOnly={showLikedOnly} />
+        <EventList 
+          sortOption={sortOption} 
+          showLikedOnly={showLikedOnly} 
+          fetchMode={showSubevents ? "all_events" : "main_events"}
+        />
       ) : (
-        <EventCalendar showLikedOnly={showLikedOnly} />
+        <EventCalendar 
+          showLikedOnly={showLikedOnly} 
+          fetchMode={showSubevents ? "all_events" : "main_events"}
+        />
       )}
     </div>
   );

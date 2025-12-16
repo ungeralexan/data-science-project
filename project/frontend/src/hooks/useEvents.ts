@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import type { Event } from "../types/Event";
 import { WS_PORT } from "../config";
 
@@ -26,7 +26,9 @@ import { WS_PORT } from "../config";
                 object across re-renders without causing re-renders itself.
 */
 
-export function useEvents() {
+export type EventFetchMode = "main_events" | "all_events" | "sub_events";
+
+export function useEvents(fetchMode: EventFetchMode = "main_events") {
 
   // State variables to hold events, connection status, and error messages
   const [events, setEvents] = useState<Event[]>([]);
@@ -35,6 +37,36 @@ export function useEvents() {
   const [error, setError] = useState<string | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const hasReceivedDataRef = useRef(false); // Track if we've successfully received data (ref to avoid closure issues)
+  const currentFetchModeRef = useRef<EventFetchMode>(fetchMode);
+
+  // Function to request events based on fetch mode
+  const requestEvents = useCallback(() => {
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      let message: string;
+      switch (currentFetchModeRef.current) {
+        case "all_events":
+          message = "get_all_events";
+          break;
+        case "sub_events":
+          message = "get_sub_events";
+          break;
+        case "main_events":
+        default:
+          message = "get_events";
+          break;
+      }
+      socketRef.current.send(message);
+    }
+  }, []);
+
+  // Update current fetch mode ref when it changes
+  useEffect(() => {
+    currentFetchModeRef.current = fetchMode;
+    // If socket is open, request events for the new mode immediately
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      requestEvents();
+    }
+  }, [fetchMode, requestEvents]);
 
   // Establish WebSocket connection on component mount
   useEffect(() => {
@@ -58,8 +90,8 @@ export function useEvents() {
     ws.onopen = () => {
       setIsConnected(true);
       setError(null);
-      // Ask backend to send events
-      ws.send("get_events");
+      // Ask backend to send events based on current fetch mode
+      requestEvents();
     };
 
     ws.onmessage = (event) => {
@@ -96,7 +128,7 @@ export function useEvents() {
     return () => {
       ws.close();
     };
-  }, []); // Empty dependency array ensures this effect runs only once on mount
+  }, []); // Empty dependency array to run only once on mount
 
   // Return the current events, connection status, loading state, and error state
   // Only show error if we're not loading AND we haven't received data successfully

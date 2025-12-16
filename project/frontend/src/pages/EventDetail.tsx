@@ -8,6 +8,7 @@ import EventImage from "../components/EventImage";
 import LikeButton from "../components/LikeButton";
 import CalendarDownloadButtons from "../components/CalendarDownloadButton";
 import EventWebsiteButton from "../components/EventWebsiteButton";
+import EventList from "../components/EventList";
 import "../components/css/EventDetail.css";
 
 /*
@@ -20,7 +21,9 @@ export default function EventDetail() {
 
   const { id } = useParams<{ id: string }>(); // Get the event ID from the URL parameters
   const navigate = useNavigate(); // Hook to programmatically navigate between routes
-  const { events, error } = useEvents(); // Fetch the list of events using a custom hook
+  
+  // Fetch all events (main + sub) to find the current event regardless of type
+  const { events, error } = useEvents("all_events");
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -49,10 +52,46 @@ export default function EventDetail() {
     );
   }
 
-  const dateObj = new Date(event.start_date); // Create Date object from event's start_date
-  const dateLabel = isNaN(dateObj.getTime()) ? event.start_date : dateObj.toLocaleDateString(); // Either formatted date or original string
-  // Construct time label based on start_time and end_time. If no end_time, just show start_time
-  const timeLabel = event.start_time ? event.end_time ? `${event.start_time} – ${event.end_time}` : event.start_time : "";
+  // Determine if this is a main_event with sub_events
+  const isMainEvent = event.event_type === "main_event";
+  const hasSubEvents = isMainEvent && event.sub_event_ids && event.sub_event_ids.length > 0;
+  
+  // Get sub_events for this main_event
+  const subEvents = hasSubEvents 
+    ? events.filter(e => e.event_type === "sub_event" && e.main_event_id === event.id)
+    : [];
+
+  // For sub_events, get the parent main_event
+  const isSubEvent = event.event_type === "sub_event";
+  const parentMainEvent = isSubEvent && event.main_event_id
+    ? events.find(e => e.event_type === "main_event" && e.id === event.main_event_id)
+    : null;
+
+  const formatDateLabel = (value?: string | null) => {
+    if (!value) return null;
+    const dateObject = new Date(value);
+    return Number.isNaN(dateObject.getTime()) ? value : dateObject.toLocaleDateString();
+  };
+
+  // Format date and time labels
+  const startDateLabel = formatDateLabel(event.start_date) ?? event.start_date;
+  const endDateLabel = formatDateLabel(event.end_date);
+  
+  let dateLabel = undefined;
+  let timeLabel = undefined;
+
+  // If both start and end dates exist and are different, show range
+  if (event.start_date === event.end_date) {
+    dateLabel = startDateLabel;
+  } else {
+    dateLabel = event.start_date ? event.end_date ? `${startDateLabel} – ${endDateLabel}` : startDateLabel : "";
+  }
+
+  if (event.start_time === event.end_time) {
+    timeLabel = event.start_time;
+  } else {
+    timeLabel = event.start_time ? event.end_time ? `${event.start_time} – ${event.end_time}` : event.start_time : "";
+  }
 
   // Build formatted address from individual address fields
   const buildFormattedAddress = () => {
@@ -111,6 +150,14 @@ export default function EventDetail() {
   const formattedAddress = buildFormattedAddress();
   const googleMapsUrl = buildGoogleMapsUrl();
 
+  // Normalize registration_needed which may arrive as string or boolean
+  const registrationRaw = event.registration_needed;
+  const registrationNormalized = typeof registrationRaw === "string"
+    ? registrationRaw.toLowerCase()
+    : typeof registrationRaw === "boolean"
+      ? (registrationRaw ? "true" : "false")
+      : "";
+
   // Use formatted address if available, otherwise fall back to location field
   const displayAddress = formattedAddress || event.location;
 
@@ -136,7 +183,6 @@ export default function EventDetail() {
             <div className="event-detail-meta-row">
               <Text strong>Date:</Text> 
 
-              {/* Display the formatted date*/}
               <span>{dateLabel}</span>
 
               {/* 
@@ -200,11 +246,11 @@ export default function EventDetail() {
             <div className="event-detail-meta-row">
               <CheckCircleOutlined className="event-detail-icon event-detail-icon--registration" />
               <Text strong>Registration:</Text>
-              {event.registration_needed ? (
-                <Tag 
-                // If registration_needed indicates true/yes, use orange tag, else green
-                color={event.registration_needed.toLowerCase() === 'true' || event.registration_needed.toLowerCase() === 'yes' ? 'orange' : 'green'}>
-                  {event.registration_needed.toLowerCase() === 'true' || event.registration_needed.toLowerCase() === 'yes' ? 'Required' : 'Not Required'}
+              {registrationNormalized ? (
+                <Tag
+                  // If registration_needed indicates true/yes, use orange tag, else green
+                  color={registrationNormalized === 'true' || registrationNormalized === 'yes' ? 'orange' : 'green'}>
+                  {registrationNormalized === 'true' || registrationNormalized === 'yes' ? 'Required' : 'Not Required'}
                 </Tag>
               ) : (
                 <Text type="secondary">No information available</Text>
@@ -212,7 +258,7 @@ export default function EventDetail() {
             </div>
 
             <div className="event-detail-actions">
-              <LikeButton eventId={event.id} initialLikeCount={event.like_count} />
+              <LikeButton eventId={event.id} initialLikeCount={event.like_count} eventType={event.event_type} />
             </div>
           </div>
         </div>
@@ -240,6 +286,34 @@ export default function EventDetail() {
         <CalendarDownloadButtons event={event} />
         <EventWebsiteButton url={event.url} />
       </div>
+
+      {/* If this is a main_event, show its sub_events list */}
+      {isMainEvent && subEvents.length > 0 && (
+        <div className="event-detail-subevents">
+          <Title level={4} className="event-detail-subevent-section">Sub Events</Title>
+          <EventList
+            sortOption="date-asc"
+            fetchMode="all_events"
+            providedEvents={subEvents}
+            filterByMainEventId={event.id}
+          />
+        </div>
+      )}
+
+      {/* If this is a sub_event, show a small card/list for its parent main_event */}
+      {isSubEvent && parentMainEvent && (
+        <div className="event-detail-parent">
+
+          <Title level={4} className="event-detail-subevent-section">Parent Event</Title>
+
+          <EventList
+            sortOption="date-asc"
+            fetchMode="all_events"
+            providedEvents={[parentMainEvent]}
+            filterBySubEventMainId={parentMainEvent.id}
+          />
+        </div>
+      )}
     </div>
   );
 }

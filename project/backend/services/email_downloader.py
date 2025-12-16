@@ -34,7 +34,7 @@ URL_REQUEST_TIMEOUT = 10
 # Maximum number of URLs to fetch per email
 MAX_URLS_PER_EMAIL = 3
 # Maximum content length per URL (characters)
-MAX_CONTENT_LENGTH = 5000
+MAX_CONTENT_LENGTH = 10000
 
 # URL patterns to skip (social media, unsubscribe links, etc.)
 SKIP_URL_PATTERNS = [

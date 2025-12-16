@@ -166,6 +166,12 @@
   border: none;
 }
 
+/* ----------- Sub Event Title -----------*/
+
+.event-detail-subevent-section {
+  margin-top: 12px;
+}
+
 /* ----------- Mobile -----------*/
 
 /* Mobile: stack image above content */

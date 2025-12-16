@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 import json
 from pydantic import BaseModel
 
@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from data.database.database_events import init_db, SessionLocal, EventORM, UserLikeORM  # pylint: disable=import-error
+from data.database.database_events import init_db, SessionLocal, MainEventORM, SubEventORM, UserLikeORM  # pylint: disable=import-error
 from services.event_pipeline import run_email_to_db_pipeline  # pylint: disable=import-error
 from auth.routes import auth_router  # pylint: disable=import-error
 from auth.utils import get_current_user  # pylint: disable=import-error
@@ -47,8 +47,9 @@ app.include_router(auth_router)
 class Event(BaseModel):
     """
     Event data model representing an event with optional details.
+    Used for both main_events and sub_events.
     """
-    id: int
+    id: str
     title: str
     start_date: str
     end_date: str
@@ -69,12 +70,59 @@ class Event(BaseModel):
     url: Optional[str] = None
     image_key: Optional[str] = None
     like_count: int = 0
+    event_type: str = "main_event"  # "main_event" or "sub_event"
+    main_event_id: Optional[str] = None  # For sub_events, reference to parent main_event
+    sub_event_ids: Optional[List[str]] = None  # For main_events, list of child sub_event IDs
 
 
 # ---- Utility functions -----
-def orm_to_pydantic(event: EventORM) -> Event:
+def main_event_orm_to_pydantic(event: MainEventORM) -> Event:
     """
-    Converts an EventORM (SQLAlchemy ORM model) instance to a Pydantic Event model.
+    Converts a MainEventORM (SQLAlchemy ORM model) instance to a Pydantic Event model.
+    """
+    # sub_event_ids is stored as JSON/array in the DB but we need list for pydantic model. 
+    sub_event_ids_value = event.sub_event_ids
+
+    if isinstance(sub_event_ids_value, str):
+        try:
+            sub_event_ids_value = json.loads(sub_event_ids_value)
+        except Exception: # pylint: disable=broad-except
+            sub_event_ids_value = []
+
+    if sub_event_ids_value is None:
+        sub_event_ids_value = []
+
+    return Event(
+        id = event.id,
+        title = event.title,
+        start_date = event.start_date,
+        end_date = event.end_date,
+        start_time = event.start_time,
+        end_time = event.end_time,
+        location = event.location,
+        street = event.street,
+        house_number = event.house_number,
+        zip_code = event.zip_code,
+        city = event.city,
+        country = event.country,
+        room = event.room,
+        floor = event.floor,
+        description = event.description,
+        speaker = event.speaker,
+        organizer = event.organizer,
+        registration_needed = event.registration_needed,
+        url = event.url,
+        image_key = event.image_key,
+        like_count = event.like_count or 0,
+        event_type = "main_event",
+        main_event_id = None,
+        sub_event_ids = sub_event_ids_value,
+    )
+
+
+def sub_event_orm_to_pydantic(event: SubEventORM) -> Event:
+    """
+    Converts a SubEventORM (SQLAlchemy ORM model) instance to a Pydantic Event model.
     """
     return Event(
         id = event.id,
@@ -98,6 +146,9 @@ def orm_to_pydantic(event: EventORM) -> Event:
         url = event.url,
         image_key = event.image_key,
         like_count = event.like_count or 0,
+        event_type = "sub_event",
+        main_event_id = event.main_event_id,
+        sub_event_ids = None,
     )
 
 
@@ -128,7 +179,7 @@ async def startup_event():
     )
 
     #4) Start the scheduler
-    scheduler.start()
+    #scheduler.start()
     print("Scheduler started, email download job scheduled.")
 
 # ----- Shutdown tasks -----
@@ -140,29 +191,42 @@ async def shutdown_event():
 
 
 # ----- Event Like Endpoints -----
-@app.post("/api/events/{event_id}/like")
-async def like_event(event_id: int, current_user = Depends(get_current_user)):
+@app.post("/api/events/{event_type}/{event_id}/like")
+async def like_event(event_id: str, event_type: str, current_user = Depends(get_current_user)):
     """Increment the like count for an event and record the user's like."""
 
     with SessionLocal() as db:
 
-        event = db.query(EventORM).filter(EventORM.id == event_id).first()
+        # Query the appropriate table based on event_type
+        if event_type == "sub_event":
+            event = db.query(SubEventORM).filter(SubEventORM.id == event_id).first()
+        else:
+            event = db.query(MainEventORM).filter(MainEventORM.id == event_id).first()
 
         if event is None:
             raise HTTPException(status_code=404, detail="Event not found")
         
         # Check if user already liked this event
-        existing_like = db.query(UserLikeORM).filter(
-            UserLikeORM.user_id == current_user.user_id,
-            UserLikeORM.event_id == event_id
-        ).first()
+        if event_type == "sub_event":
+            existing_like = db.query(UserLikeORM).filter(
+                UserLikeORM.user_id == current_user.user_id,
+                UserLikeORM.sub_event_id == event_id
+            ).first()
+        else:
+            existing_like = db.query(UserLikeORM).filter(
+                UserLikeORM.user_id == current_user.user_id,
+                UserLikeORM.main_event_id == event_id
+            ).first()
         
         if existing_like:
             # User already liked this event, return current count
             return {"like_count": event.like_count}
         
         # Create new like record
-        new_like = UserLikeORM(user_id=current_user.user_id, event_id=event_id)
+        if event_type == "sub_event":
+            new_like = UserLikeORM(user_id=current_user.user_id, sub_event_id=event_id)
+        else:
+            new_like = UserLikeORM(user_id=current_user.user_id, main_event_id=event_id)
         db.add(new_like)
         
         event.like_count = (event.like_count or 0) + 1
@@ -173,21 +237,31 @@ async def like_event(event_id: int, current_user = Depends(get_current_user)):
         return {"like_count": event.like_count}
 
 
-@app.post("/api/events/{event_id}/unlike")
-async def unlike_event(event_id: int, current_user = Depends(get_current_user)):
+@app.post("/api/events/{event_type}/{event_id}/unlike")
+async def unlike_event(event_id: str, event_type: str, current_user = Depends(get_current_user)):
     """Decrement the like count for an event and remove the user's like."""
     with SessionLocal() as db:
 
-        event = db.query(EventORM).filter(EventORM.id == event_id).first()
+        # Query the appropriate table based on event_type
+        if event_type == "sub_event":
+            event = db.query(SubEventORM).filter(SubEventORM.id == event_id).first()
+        else:
+            event = db.query(MainEventORM).filter(MainEventORM.id == event_id).first()
 
         if event is None:
             raise HTTPException(status_code=404, detail="Event not found")
         
         # Find and remove the user's like record
-        existing_like = db.query(UserLikeORM).filter(
-            UserLikeORM.user_id == current_user.user_id,
-            UserLikeORM.event_id == event_id
-        ).first()
+        if event_type == "sub_event":
+            existing_like = db.query(UserLikeORM).filter(
+                UserLikeORM.user_id == current_user.user_id,
+                UserLikeORM.sub_event_id == event_id
+            ).first()
+        else:
+            existing_like = db.query(UserLikeORM).filter(
+                UserLikeORM.user_id == current_user.user_id,
+                UserLikeORM.main_event_id == event_id
+            ).first()
         
         if existing_like:
             db.delete(existing_like)
@@ -216,13 +290,30 @@ async def websocket_events(websocket: WebSocket):
         while True: # Infinite loop to keep the connection open
             message = await websocket.receive_text() # Wait for a message from the client
 
-            # Handle "get_events" message
-            if message == "get_events":
-                with SessionLocal() as db: # Create a new database session
-                    rows = db.query(EventORM).all() # Query all events from the database
-                    events_payload = [orm_to_pydantic(event).model_dump() for event in rows] # Convert ORM objects to Pydantic models and then to dicts
+            # Handle "get_events" or "get_main_events" message - returns main events only
+            if message in ("get_events", "get_main_events"):
+                with SessionLocal() as db:
+                    rows = db.query(MainEventORM).all()
+                    events_payload = [main_event_orm_to_pydantic(event).model_dump() for event in rows]
+                await websocket.send_text(json.dumps(events_payload))
+            
+            # Handle "get_sub_events" message - returns sub events only
+            elif message == "get_sub_events":
+                with SessionLocal() as db:
+                    rows = db.query(SubEventORM).all()
+                    events_payload = [sub_event_orm_to_pydantic(event).model_dump() for event in rows]
+                await websocket.send_text(json.dumps(events_payload))
+            
+            # Handle "get_all_events" message - returns both main and sub events
+            elif message == "get_all_events":
+                with SessionLocal() as db:
+                    main_rows = db.query(MainEventORM).all()
+                    sub_rows = db.query(SubEventORM).all()
+                    events_payload = (
+                        [main_event_orm_to_pydantic(e).model_dump() for e in main_rows] +
+                        [sub_event_orm_to_pydantic(e).model_dump() for e in sub_rows]
+                    )
 
-                # Send the events data back to the client as JSON
                 await websocket.send_text(json.dumps(events_payload))
 
     # Handle WebSocket disconnection

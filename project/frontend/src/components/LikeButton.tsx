@@ -15,13 +15,14 @@ import "./css/LikeButton.css";
 */
 
 interface LikeButtonProps {
-  eventId: number;
+  eventId: string;
   initialLikeCount: number;
   size?: "small" | "default";  // Different size for /events vs /events:id page
-  onLikeChange?: (eventId: number, isLiked: boolean) => void;  // Callback when like status changes
+  onLikeChange?: (eventId: string, isLiked: boolean) => void;  // Callback when like status changes
+  eventType?: "main_event" | "sub_event";  // Type of event for correct API endpoint
 }
 
-export default function LikeButton({ eventId, initialLikeCount, size = "default", onLikeChange }: LikeButtonProps) {
+export default function LikeButton({ eventId, initialLikeCount, size = "default", onLikeChange, eventType = "main_event" }: LikeButtonProps) {
   
   const { isAuthenticated, isEventLiked, toggleLike } = useAuth();
   
@@ -48,8 +49,8 @@ export default function LikeButton({ eventId, initialLikeCount, size = "default"
     setIsLoading(true);
     
     try {
-      // Use the toggleLike function from auth context
-      const result = await toggleLike(eventId);
+      // Use the toggleLike function from auth context, passing eventType
+      const result = await toggleLike(eventId, eventType);
       
       // Update local like count state
       setLikeCount(result.like_count);

@@ -43,9 +43,7 @@ export default function Events() {
 
       {userExists ? (
         <Title level={2}>Hi {user.first_name}! Here are your event recommendations</Title>
-      ) : (
-        <Title level={2}>Welcome!</Title>
-      )}
+      ) : null }
 
       {userExists ? (
         hasSuggestedEvents ? (
@@ -66,17 +64,8 @@ export default function Events() {
             </div>
           </Card>
         )
-      ) : (
-        <Card className="event-recommendation-card">
-          <div className="event-list-empty">
-            <Paragraph  type="secondary">
-              Please log in to view personalized event recommendations.
-            </Paragraph>
-          </div>
-        </Card>
-      )}
+      ) : null}
 
-      <Space direction="vertical" size="large"> </Space>
 
       <Title level={2}>All Events</Title>
 

@@ -12,6 +12,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import WelcomePopup from "./components/WelcomePopup";
 import './components/css/App.css';
 import './components/css/ColorPalette.css';
 import './components/css/AntDesignOverrides.css';
@@ -50,7 +51,8 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <Layout>
-
+          
+          <WelcomePopup />
           <Layout.Header className="app-header">
             <Link to="/events" className="app-logo">
               tuevent

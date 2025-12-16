@@ -51,6 +51,10 @@ body.theme-light {
   --error-color: #ff4d4f;                     /* Error/danger red */
   --success-color: #52c41a;                   /* Success green */
   --warning-color: #faad14;                   /* Warning orange */
+
+  /* Overlay for modals/popups */
+  --overlay-bg: rgba(0, 0, 0, 0.45);
+
 }
 
 /* =========================================================================
@@ -90,4 +94,8 @@ body.theme-dark {
   --error-color: #ff4d4f;                     /* Error/danger red */
   --success-color: #52c41a;                   /* Success green */
   --warning-color: #faad14;                   /* Warning orange */
+
+  /* Overlay for modals/popups (slightly stronger in dark mode) */
+  --overlay-bg: rgba(0, 0, 0, 0.65);
+
 }

@@ -41,8 +41,7 @@ const EventSortControls: React.FC<EventSortControlsProps> = ({
 }) => {
   return (
     <div className="event-list-controls">
-      <label className="event-list-sort-label">
-        <select
+      <select
           className="event-list-sort-select"
           value={sortOption}
 
@@ -62,7 +61,6 @@ const EventSortControls: React.FC<EventSortControlsProps> = ({
           <option value="time-asc">Start time (earliest → latest)</option>
           <option value="time-desc">Start time (latest → earliest)</option>
         </select>
-      </label>
     </div>
   );
 };

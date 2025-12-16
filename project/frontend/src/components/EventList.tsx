@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useEvents } from "../hooks/useEvents";
 import type { EventFetchMode } from "../hooks/useEvents";
 import { useAuth } from "../hooks/useAuth";
@@ -8,7 +8,6 @@ import EventImage from "./EventImage";
 import LikeButton from "./LikeButton";
 import { useNavigate } from "react-router-dom";
 
-import { Input } from "antd";
 import { matchesEvent } from "../utils/search";
 
 import "./css/EventList.css";
@@ -37,6 +36,7 @@ interface EventListProps {
   filterByMainEventId?: string;  // Filter sub_events by their parent main_event ID
   filterBySubEventMainId?: string;  // Filter to show only the main_event for a sub_event
   providedEvents?: Event[];  // Optionally provide events directly instead of fetching
+  searchQuery?: string;  // Optional search query provided by parent
 }
 
 export default function EventList({ 
@@ -47,6 +47,7 @@ export default function EventList({
   filterByMainEventId,
   filterBySubEventMainId,
   providedEvents,
+  searchQuery = "",
 }: EventListProps) {
 
   // -------------- Initialization --------------
@@ -61,9 +62,7 @@ export default function EventList({
   // Get liked event IDs from auth context (shared across browsers)
   const { likedEventIds } = useAuth();
 
-  // Search query for flexible keyword search
-  const [query, setQuery] = useState("");
-
+  const normalizedQuery = searchQuery.trim();
 
   // -------------- Helper Functions --------------
 
@@ -103,9 +102,9 @@ export default function EventList({
     let filteredEvents = events;
 
     // Flexible keyword search
-    if (query.trim()) {
+    if (normalizedQuery) {
       filteredEvents = filteredEvents.filter((event) => 
-        matchesEvent(event, query)
+        matchesEvent(event, normalizedQuery)
       );
     }
 
@@ -216,7 +215,7 @@ export default function EventList({
     // Return the sorted array
     return arr;
   }, [events,
-    query, 
+    normalizedQuery, 
     sortOption, 
     showLikedOnly, 
     likedEventIds,
@@ -248,19 +247,6 @@ export default function EventList({
 
     // Container for the event list
     <div className="event-list">
-    
-      {/* Search bar */}
-      <div className="event-list-search">
-        <Input.Search
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          allowClear
-          placeholder='Search events (e.g. erasmus "exchange rates" speaker:hu)'
-        />
-        <div className="event-list-search-meta">
-          {sortedEvents.length} / {events.length}
-        </div>
-      </div>
 
       {sortedEvents.length === 0 ? (
         <p className="event-list-empty">No events received yet.</p>

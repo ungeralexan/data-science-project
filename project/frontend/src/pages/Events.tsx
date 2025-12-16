@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Typography, Card, Space } from 'antd';
+import { Typography, Card, Space, Input } from 'antd';
 import EventList from '../components/EventList';
 import EventCalendar from '../components/EventCalendar';
 import EventSortControls from "../components/EventSortButton";
@@ -24,6 +24,9 @@ export default function Events() {
 
   // State to toggle showing subevents
   const [showSubevents, setShowSubevents] = useState<boolean>(false);
+
+  // State for search query across events
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const { user } = useAuth();
 
@@ -94,6 +97,15 @@ export default function Events() {
           showSubevents={showSubevents}
           onToggle={setShowSubevents}
         />
+
+        <div className="events-page-search">
+          <Input.Search
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            allowClear
+            placeholder='Search events'
+          />
+        </div>
       </div>
 
       {/* Toggle between list and calendar views */}
@@ -102,6 +114,7 @@ export default function Events() {
           sortOption={sortOption} 
           showLikedOnly={showLikedOnly} 
           fetchMode={showSubevents ? "all_events" : "main_events"}
+          searchQuery={searchQuery}
         />
       ) : (
         <EventCalendar 

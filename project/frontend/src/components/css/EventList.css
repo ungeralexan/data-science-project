@@ -165,16 +165,9 @@
   display: flex;                              /* Horizontal layout */
   justify-content: flex-start;                /* Left-aligned controls */
   align-items: center;                        /* Vertically centered */
-  margin-bottom: 16px;                        /* Space before event grid */
-  padding: 0 8px;                             /* Side padding matching list */
+  margin-bottom: 6px;                        /* Space before event grid */
+  padding: 0 0px;                             /* Side padding matching list */
   flex-wrap: wrap;                            /* Wrap on small screens */
-  gap: 8px;                                   /* Space between label and dropdown */
-}
-
-/* "Sort by:" label text */
-.event-list-sort-label {
-  font-size: 14px;                            /* Standard label size */
-  color: var(--text-primary);                 /* Theme-aware text color */
 }
 
 /* 
@@ -182,8 +175,7 @@
   Allows users to sort events by title, date, or time.
 */
 .event-list-sort-select {
-  padding: 8px 12px;                          /* Internal spacing */
-  font-size: 14px;                            /* Readable font size */
+  padding: 4.5px 12px;                          /* Internal spacing */
   border: 1px solid var(--border-color);      /* Theme-aware border */
   border-radius: 6px;                         /* Rounded corners */
   background-color: var(--input-bg);          /* Theme-aware background */

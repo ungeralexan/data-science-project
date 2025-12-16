@@ -77,7 +77,15 @@
   gap: 16px;                                  /* Space between control elements */
   align-items: center;                        /* Vertically align controls */
   flex-wrap: wrap;                            /* Wrap to next line on small screens */
-  margin-bottom: 16px;                        /* Space before event content */
+  margin-bottom: 6px;                        /* Space before event content */
+}
+
+.events-page-search {
+  margin-bottom: 6px;                        /* Space below search input */
+}
+
+.events-page-search .ant-input-search {
+  width: 100%;                                /* Full width within the container */
 }
 
 /* =========================================================================

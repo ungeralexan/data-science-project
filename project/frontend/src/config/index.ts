@@ -16,3 +16,4 @@ import parameters from './parameters.json';
 export const API_BASE_URL: string = parameters.API_BASE_URL;
 export const WS_PORT: number = parameters.WS_PORT;
 export const POSSIBLE_INTEREST_KEYWORDS: string[] = parameters.POSSIBLE_INTEREST_KEYWORDS;
+export const LOCAL: boolean = parameters.LOCAL;

@@ -131,9 +131,6 @@ async def get_liked_events(current_user: UserORM = Depends(get_current_user)):
 
         main_events = [like.main_event_id for like in liked_events if like.main_event_id is not None]
         sub_events = [like.sub_event_id for like in liked_events if like.sub_event_id is not None]
-
-        print(main_events)
-        print(sub_events)
         
         return main_events + sub_events
 

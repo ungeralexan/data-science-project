@@ -146,7 +146,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Floor (String or null): The floor number if specified.
     - Speaker (String or null): The speaker of the event if available.
     - Organizer (String or null): The organizer of the event if available.
-    - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false.
+    - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false. Only return true or false if the email or URL content explicitly mentions registration is required or not required; otherwise return null.
     - URL (String or null): The URL for more information about the event if available.
     - Image_Key (String or null): Choose one of the following image keys to represent the event: [ {image_keys_str} ]. Here are the image key descriptions that you should use to understand what each image key represents: {image_key_descriptions_str}
     - Event_Type (String, REQUIRED): Must be either "main_event" or "sub_event". Use "main_event" for standalone events or parent events that have sub-events. Use "sub_event" for events that are part of a larger event series (e.g., individual talks in a lecture series, workshops in a conference, sessions in a multi-day event).

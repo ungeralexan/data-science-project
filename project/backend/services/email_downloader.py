@@ -156,7 +156,7 @@ def format_url_content_block(url_contents: dict[str, str]) -> str:
     return "\n".join(lines)
 
 # -------- Email download function --------
-def download_latest_emails(limit: int = 50) -> None:
+def download_latest_emails(limit: int = 10) -> None:
     """
     Download the latest `limit` emails, save each as a separate .txt file,
     and also return ONE big string with all emails concatenated.

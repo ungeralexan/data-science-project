@@ -25,6 +25,7 @@ export interface AuthContextType {
     isAuthenticated: boolean;
     isLoading: boolean;
     likedEventIds: string[];  // Array of event IDs that the user has liked
+    goingEventIds: string[];
     login: (data: LoginRequest) => Promise<void>;
     register: (data: RegisterRequest) => Promise<void>;
     logout: () => void;
@@ -32,6 +33,8 @@ export interface AuthContextType {
     deleteAccount: () => Promise<void>;
     toggleLike: (eventId: string, eventType?: "main_event" | "sub_event") => Promise<{ like_count: number; isLiked: boolean }>;  // Toggle like status for an event
     isEventLiked: (eventId: string) => boolean;  // Check if an event is liked
+    toggleGoing: (eventId: string, eventType?: "main_event" | "sub_event") => Promise<{ going_count: number; isGoing: boolean }>;
+    isEventGoing: (eventId: string) => boolean;
 }
 
 /*

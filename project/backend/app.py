@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from data.database.database_events import init_db, SessionLocal, MainEventORM, SubEventORM, UserLikeORM  # pylint: disable=import-error
+from data.database.database_events import init_db, SessionLocal, MainEventORM, SubEventORM, UserLikeORM, UserGoingORM  # pylint: disable=import-error
 from services.event_pipeline import run_email_to_db_pipeline  # pylint: disable=import-error
 from auth.routes import auth_router  # pylint: disable=import-error
 from auth.utils import get_current_user  # pylint: disable=import-error
@@ -70,6 +70,7 @@ class Event(BaseModel):
     url: Optional[str] = None
     image_key: Optional[str] = None
     like_count: int = 0
+    going_count: int = 0
     event_type: str = "main_event"  # "main_event" or "sub_event"
     main_event_id: Optional[str] = None  # For sub_events, reference to parent main_event
     sub_event_ids: Optional[List[str]] = None  # For main_events, list of child sub_event IDs
@@ -114,6 +115,7 @@ def main_event_orm_to_pydantic(event: MainEventORM) -> Event:
         url = event.url,
         image_key = event.image_key,
         like_count = event.like_count or 0,
+        going_count = event.going_count or 0,
         event_type = "main_event",
         main_event_id = None,
         sub_event_ids = sub_event_ids_value,
@@ -146,6 +148,7 @@ def sub_event_orm_to_pydantic(event: SubEventORM) -> Event:
         url = event.url,
         image_key = event.image_key,
         like_count = event.like_count or 0,
+        going_count = event.going_count or 0,
         event_type = "sub_event",
         main_event_id = event.main_event_id,
         sub_event_ids = None,
@@ -272,6 +275,73 @@ async def unlike_event(event_id: str, event_type: str, current_user = Depends(ge
         
         return {"like_count": event.like_count}
 
+@app.post("/api/events/{event_type}/{event_id}/going")
+async def going_event(event_id: str, event_type: str, current_user = Depends(get_current_user)):
+    with SessionLocal() as db:
+        if event_type == "sub_event":
+            event = db.query(SubEventORM).filter(SubEventORM.id == event_id).first()
+        else:
+            event = db.query(MainEventORM).filter(MainEventORM.id == event_id).first()
+
+        if event is None:
+            raise HTTPException(status_code=404, detail="Event not found")
+
+        if event_type == "sub_event":
+            existing = db.query(UserGoingORM).filter(
+                UserGoingORM.user_id == current_user.user_id,
+                UserGoingORM.sub_event_id == event_id
+            ).first()
+        else:
+            existing = db.query(UserGoingORM).filter(
+                UserGoingORM.user_id == current_user.user_id,
+                UserGoingORM.main_event_id == event_id
+            ).first()
+
+        if existing:
+            return {"going_count": event.going_count}
+
+        new_row = UserGoingORM(
+            user_id=current_user.user_id,
+            sub_event_id=event_id if event_type == "sub_event" else None,
+            main_event_id=event_id if event_type != "sub_event" else None,
+        )
+        db.add(new_row)
+
+        event.going_count = (event.going_count or 0) + 1
+        db.commit()
+        db.refresh(event)
+        return {"going_count": event.going_count}
+
+
+@app.post("/api/events/{event_type}/{event_id}/ungoing")
+async def ungoing_event(event_id: str, event_type: str, current_user = Depends(get_current_user)):
+    with SessionLocal() as db:
+        if event_type == "sub_event":
+            event = db.query(SubEventORM).filter(SubEventORM.id == event_id).first()
+        else:
+            event = db.query(MainEventORM).filter(MainEventORM.id == event_id).first()
+
+        if event is None:
+            raise HTTPException(status_code=404, detail="Event not found")
+
+        if event_type == "sub_event":
+            existing = db.query(UserGoingORM).filter(
+                UserGoingORM.user_id == current_user.user_id,
+                UserGoingORM.sub_event_id == event_id
+            ).first()
+        else:
+            existing = db.query(UserGoingORM).filter(
+                UserGoingORM.user_id == current_user.user_id,
+                UserGoingORM.main_event_id == event_id
+            ).first()
+
+        if existing:
+            db.delete(existing)
+            event.going_count = max((event.going_count or 0) - 1, 0)
+            db.commit()
+            db.refresh(event)
+
+        return {"going_count": event.going_count}
 
 # ----- WebSocket endpoint -----
 @app.websocket("/ws/events")

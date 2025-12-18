@@ -1,0 +1,36 @@
+/*
+  ShareButton.css - Share Event Button
+
+  Minimal icon-only button.
+  Uses neutral styling and works well in card/action rows.
+*/
+
+.share-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 12px;
+  border-radius: 20px;
+
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+
+  color: var(--text-secondary);
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.share-button:hover {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.share-button--small {
+  padding: 4px 8px;
+}
+
+.share-button--small .anticon {
+  font-size: 12px;
+}

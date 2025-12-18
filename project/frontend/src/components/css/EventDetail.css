@@ -101,6 +101,11 @@
 .event-detail-actions {
   margin-top: 16px;
   padding-top: 12px;
+
+  display: flex;
+  gap: 12px;       
+  align-items: center;
+  flex-wrap: wrap; 
 }
 
 /* ----------- Icons -----------*/

@@ -31,7 +31,7 @@ CORS_ORIGINS = [
 # ----- Scheduler Configuration -----
 SCHEDULER_TIMEZONE = "Europe/Berlin"
 EMAIL_PIPELINE_CRON_HOURS = "*/6"  # Run every 3 hours
-EMAIL_PIPELINE_DEFAULT_LIMIT = 50  # Process up to 15 emails per run
+EMAIL_PIPELINE_DEFAULT_LIMIT = 10  # Process up to 15 emails per run
 
 
 # ----- SMTP Email Configuration -----

@@ -67,6 +67,7 @@ class MainEventORM(Base):
     url = Column(String, nullable=True)
     image_key = Column(String, nullable=True)
     like_count = Column(Integer, default=0, nullable=False)
+    going_count = Column(Integer, default=0, nullable=False)
     main_event_temp_key = Column(String, nullable=True)  # Temporary key for linking, cleared after processing
     sub_event_ids = Column(JSON, nullable=True)  # Array of sub_event IDs
 
@@ -75,6 +76,9 @@ class MainEventORM(Base):
     
     # Relationship to users who liked this event
     liked_by_users = relationship("UserLikeORM", back_populates="main_event", foreign_keys="UserLikeORM.main_event_id")
+
+    # Relationship to users who are going to this event
+    going_by_users = relationship("UserGoingORM", back_populates="main_event", foreign_keys="UserGoingORM.main_event_id")
 
 
 # Define the SubEventORM class which represents the "sub_events" table in the database.
@@ -103,6 +107,7 @@ class SubEventORM(Base):
     url = Column(String, nullable=True)
     image_key = Column(String, nullable=True)
     like_count = Column(Integer, default=0, nullable=False)
+    going_count = Column(Integer, default=0, nullable=False)
     main_event_temp_key = Column(String, nullable=True)  # Temporary key for linking, cleared after processing
     main_event_id = Column(String, ForeignKey("main_events.id", ondelete="CASCADE"), nullable=True)
 
@@ -111,6 +116,9 @@ class SubEventORM(Base):
     
     # Relationship to users who liked this event
     liked_by_users = relationship("UserLikeORM", back_populates="sub_event", foreign_keys="UserLikeORM.sub_event_id")
+
+    # Relationship to users who are going to this event
+    going_by_users = relationship("UserGoingORM", back_populates="sub_event", foreign_keys="UserGoingORM.sub_event_id")
 
 
 # Define the UserORM class which represents the "users" table in the database.
@@ -153,6 +161,27 @@ class UserLikeORM(Base):
     user = relationship("UserORM", back_populates="liked_events")
     main_event = relationship("MainEventORM", back_populates="liked_by_users", foreign_keys=[main_event_id])
     sub_event = relationship("SubEventORM", back_populates="liked_by_users", foreign_keys=[sub_event_id])
+
+# Define the UserGoingORM class which represents the "user_going" table in the database.
+# This table stores which users are going to which events (both main_events and sub_events).
+class UserGoingORM(Base):
+    __tablename__ = "user_going"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False)
+    main_event_id = Column(String, ForeignKey("main_events.id", ondelete="CASCADE"), nullable=True)
+    sub_event_id = Column(String, ForeignKey("sub_events.id", ondelete="CASCADE"), nullable=True)
+
+    __table_args__ = (
+        UniqueConstraint("user_id", "main_event_id", name="unique_user_main_event_going"),
+        UniqueConstraint("user_id", "sub_event_id", name="unique_user_sub_event_going"),
+    )
+
+    user = relationship("UserORM")
+    main_event = relationship("MainEventORM", back_populates="going_by_users", foreign_keys=[main_event_id])
+    sub_event = relationship("SubEventORM", back_populates="going_by_users", foreign_keys=[sub_event_id])
+
+
 
 # Function to initialize the database and create tables.
 def init_db() -> None:

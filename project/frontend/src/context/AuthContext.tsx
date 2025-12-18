@@ -53,6 +53,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [token, setToken] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [likedEventIds, setLikedEventIds] = useState<string[]>([]);
+    const [goingEventIds, setGoingEventIds] = useState<string[]>([]);
 
     // ------- Startup -------
 
@@ -93,6 +94,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     };
 
+    // Fetch going events from the backend
+    const fetchGoingEvents = async (authToken: string) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/auth/going-events`, {
+            method: "GET",
+            headers: { Authorization: `Bearer ${authToken}` },
+            });
+            if (response.ok) {
+            const ids: Array<string | number> = await response.json();
+            setGoingEventIds(ids.map(String));
+            }
+        } catch (e) {
+            console.error("Error fetching going events:", e);
+        }
+    };
+
+    
     // Validate current user info using the stored token
     // async function allows us to use await inside it
     
@@ -120,6 +138,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 // Fetch liked events after successful authentication
                 await fetchLikedEvents(authToken);
 
+                // Fetch going events
+                await fetchGoingEvents(authToken);
+
             // If response not ok, clear invalid token
             } else {
                 // Token is invalid or expired
@@ -127,6 +148,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 setToken(null);
                 setUser(null);
                 setLikedEventIds([]);
+                setGoingEventIds([]);
             }
         } catch (error) {
             console.error('Error fetching current user:', error);
@@ -134,6 +156,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             setToken(null);
             setUser(null);
             setLikedEventIds([]);
+            setGoingEventIds([]);
         } finally {
             setIsLoading(false);
         }
@@ -169,6 +192,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         // Fetch liked events after login
         await fetchLikedEvents(authResponse.access_token);
+        
+        // Fetch going events after login
+        await fetchGoingEvents(authResponse.access_token);
+
     };
 
     // Register function - creates new user and stores token and user info
@@ -196,6 +223,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         // New user has no liked events yet
         setLikedEventIds([]);
+
+        // New user has no going events yet
+        setGoingEventIds([]);
     };
 
     // Logout function - clears token and user info
@@ -204,6 +234,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setToken(null);
         setUser(null);
         setLikedEventIds([]);
+        setGoingEventIds([]);
     };
 
     // Update user profile information
@@ -255,6 +286,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setToken(null);
         setUser(null);
         setLikedEventIds([]);
+        setGoingEventIds([]);
     };
 
     // Toggle like status for an event
@@ -303,6 +335,41 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return likedEventIds.includes(eventId);
     };
 
+    const toggleGoing = async (
+        eventId: string,
+        eventType: "main_event" | "sub_event" = "main_event"
+        ): Promise<{ going_count: number; isGoing: boolean }> => {
+        if (!token) throw new Error("Not authenticated");
+
+        const currentlyGoing = goingEventIds.includes(eventId);
+
+        const endpoint = currentlyGoing
+            ? `${API_BASE_URL}/api/events/${eventType}/${eventId}/ungoing`
+            : `${API_BASE_URL}/api/events/${eventType}/${eventId}/going`;
+
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || "Failed to toggle going");
+        }
+
+        const data = await response.json();
+        const newIsGoing = !currentlyGoing;
+
+        setGoingEventIds((prev) =>
+            newIsGoing ? [...prev, eventId] : prev.filter((id) => id !== eventId)
+        );
+
+        return { going_count: data.going_count, isGoing: newIsGoing };
+    };
+
+    const isEventGoing = (eventId: string) => goingEventIds.includes(eventId);
+
+
     // ------- Context Value -------
 
     // value = AuthContextType object to provide to children components
@@ -319,6 +386,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         deleteAccount,
         toggleLike,
         isEventLiked,
+        goingEventIds,
+        toggleGoing,
+        isEventGoing,
     };
 
     // ------- Render -------

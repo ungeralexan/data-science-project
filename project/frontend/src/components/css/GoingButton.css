@@ -1,0 +1,51 @@
+/*
+  GoingButton.css - "Going" Button Styles
+
+  Similar to LikeButton, but represents attendance intent.
+  Uses accent color instead of pink.
+*/
+
+.going-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+
+  background: var(--card-bg);
+  color: var(--text-secondary);
+
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.going-button:hover {
+  border-color: var(--success-color);
+  color: var(--success-color);
+}
+
+.going-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Active (user is going) */
+.going-button--active {
+  border-color: var(--success-color);
+  color: var(--success-color);
+}
+
+/* Count */
+.going-button__count {
+  font-weight: 500;
+}
+
+/* Small variant for event cards */
+.going-button--small {
+  padding: 4px 10px;
+  font-size: 12px;
+  gap: 4px;
+}

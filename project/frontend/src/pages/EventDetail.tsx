@@ -6,6 +6,8 @@ import { UserOutlined, TeamOutlined, CheckCircleOutlined, EnvironmentOutlined } 
 import { useEvents } from "../hooks/useEvents";
 import EventImage from "../components/EventImage";
 import LikeButton from "../components/LikeButton";
+import GoingButton from "../components/GoingButton";
+import ShareButton from "../components/ShareButton";
 import CalendarDownloadButtons from "../components/CalendarDownloadButton";
 import EventWebsiteButton from "../components/EventWebsiteButton";
 import EventList from "../components/EventList";
@@ -16,7 +18,6 @@ import "../components/css/EventDetail.css";
 */
 
 const { Title, Paragraph, Text } = Typography;
-
 export default function EventDetail() {
 
   const { id } = useParams<{ id: string }>(); // Get the event ID from the URL parameters
@@ -259,6 +260,8 @@ export default function EventDetail() {
 
             <div className="event-detail-actions">
               <LikeButton eventId={event.id} initialLikeCount={event.like_count} eventType={event.event_type} />
+              <GoingButton eventId={event.id} initialGoingCount={event.going_count} eventType={event.event_type} />
+              <ShareButton title={event.title} url={`${window.location.origin}/events/${event.id}`} />
             </div>
           </div>
         </div>

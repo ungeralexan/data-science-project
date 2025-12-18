@@ -6,6 +6,8 @@ import type { SortOption } from "./EventSortButton";
 import type { Event } from "../types/Event";
 import EventImage from "./EventImage";
 import LikeButton from "./LikeButton";
+import GoingButton from "./GoingButton";
+import ShareButton from "./ShareButton";
 import { useNavigate } from "react-router-dom";
 
 import { matchesEvent } from "../utils/search";
@@ -328,6 +330,19 @@ export default function EventList({
                     eventType={event.event_type} 
                     size="small"
                   />
+                  <GoingButton
+                    eventId={event.id}
+                    initialGoingCount={event.going_count}
+                    eventType={event.event_type}
+                    size="small"
+                  />
+
+                  <ShareButton
+                    title={event.title}
+                    url={`${window.location.origin}/events/${event.id}`}
+                    size="small"
+                  />
+
                   {relationLabel && (
                     <span className="event-card-relation">{relationLabel}</span>
                   )}

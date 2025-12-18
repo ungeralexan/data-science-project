@@ -8,7 +8,7 @@ from typing import List
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.exc import OperationalError
 
-from data.database.database_events import SessionLocal, UserORM, UserLikeORM, MainEventORM, SubEventORM, init_db  # pylint: disable=import-error
+from data.database.database_events import SessionLocal, UserORM, UserLikeORM, MainEventORM, SubEventORM, init_db, UserGoingORM  # pylint: disable=import-error
 from services.email_service import send_password_reset_email  # pylint: disable=import-error
 
 from .models import (
@@ -133,6 +133,14 @@ async def get_liked_events(current_user: UserORM = Depends(get_current_user)):
         sub_events = [like.sub_event_id for like in liked_events if like.sub_event_id is not None]
         
         return main_events + sub_events
+
+@auth_router.get("/going-events", response_model=List[str])
+async def get_going_events(current_user: UserORM = Depends(get_current_user)):
+    with SessionLocal() as db:
+        rows = db.query(UserGoingORM).filter(UserGoingORM.user_id == current_user.user_id).all()
+        main_ids = [r.main_event_id for r in rows if r.main_event_id is not None]
+        sub_ids = [r.sub_event_id for r in rows if r.sub_event_id is not None]
+        return main_ids + sub_ids
 
 
 @auth_router.put("/me", response_model=UserResponse)

@@ -22,6 +22,7 @@ export type Event = {
   url?: string;
   image_key?: string;
   like_count: number;
+  going_count: number;
   event_type: "main_event" | "sub_event";  // Type of event
   main_event_id?: string | null;  // For sub_events: reference to parent main_event
   sub_event_ids?: string[] | null;  // For main_events: list of child sub_event IDs

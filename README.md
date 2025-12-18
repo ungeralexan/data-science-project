@@ -27,7 +27,7 @@ Events are extracted automatically using LLM-based parsing and displayed in a cl
 ---
 
 ## Table of Contents
-- [Tech Stack](#tech-stack)
+- [Tech Stack](docs/tech-stack.md)
 - [Features](#features)
 - [Project Structure](docs/project-structure.md)
 - [Configuration](#configuration)

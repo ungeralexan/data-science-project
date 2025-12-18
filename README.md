@@ -22,7 +22,7 @@ A Data Science project that automatically extracts events from Tübingen univers
 - [Configuration](#configuration)
 - [API Endpoints](#api-endpoints)
 - [Running the Project](#running-the-project)
-- [Email Pipeline Flow](#email-pipeline-flow)
+- [Email Pipeline](email-pipeline.md)
 - [Authentication Flow](#authentication-flow)
 - [Development & Contributing](#development--contributing)
 - [Testing](#testing)

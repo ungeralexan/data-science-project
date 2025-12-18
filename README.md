@@ -13,9 +13,20 @@ A Data Science project that automatically extracts events from Tübingen univers
 ---
 
 
-## Table of Contents
+## Project Goal
 
-- [Project Goal](#project-goal)
+Turn unstructured university mailing-list messages into a **centralized, personalized event feed**, so students no longer miss:
+- Talks & lectures
+- Workshops & training sessions
+- Career fairs & networking events
+- Student group activities
+- Department announcements
+
+Events are extracted automatically using LLM-based parsing and displayed in a clean, responsive frontend.
+
+---
+
+## Table of Contents
 - [Tech Stack](#tech-stack)
 - [Features](#features)
 - [Project Structure](docs/project-structure.md)
@@ -28,18 +39,6 @@ A Data Science project that automatically extracts events from Tübingen univers
 - [Testing](#testing)
 
 
----
-
-## Project Goal
-
-Turn unstructured university mailing-list messages into a **centralized, personalized event feed**, so students no longer miss:
-- Talks & lectures
-- Workshops & training sessions
-- Career fairs & networking events
-- Student group activities
-- Department announcements
-
-Events are extracted automatically using LLM-based parsing and displayed in a clean, responsive frontend.
 
 ---
 

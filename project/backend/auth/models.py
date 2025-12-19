@@ -14,6 +14,9 @@ class UserCreate(BaseModel):
     password: str
     first_name: str
     last_name: str
+    interest_keys: list[str]  # Required during registration
+    interest_text: Optional[str] = None  # Optional additional description
+    theme_preference: Optional[str] = "light"  # Default theme is light
 
 
 class UserLogin(BaseModel):
@@ -30,6 +33,7 @@ class UserUpdate(BaseModel):
     last_name: Optional[str] = None
     interest_keys: Optional[list[str]] = None
     interest_text: Optional[str] = None
+    theme_preference: Optional[str] = None  # 'light' or 'dark'
 
 
 class UserResponse(BaseModel):
@@ -41,6 +45,7 @@ class UserResponse(BaseModel):
     interest_keys: Optional[list] = None
     interest_text: Optional[str] = None
     suggested_event_ids: Optional[list] = None
+    theme_preference: str = "light"  # User's theme preference
 
 
 class TokenResponse(BaseModel):

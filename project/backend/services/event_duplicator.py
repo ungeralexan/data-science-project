@@ -4,7 +4,7 @@ from typing import List
 from google import genai
 
 from data.database.database_events import MainEventORM, SubEventORM  # pylint: disable=import-error
-from config import LLM_MODEL  # pylint: disable=import-error
+from config import RECOGNITION_LLM_MODEL  # pylint: disable=import-error
 
 # Define the expected schema for the LLM response
 # It should be a list of objects with a single boolean field "is_new"
@@ -107,7 +107,7 @@ def _filter_new_events_generic(
 
     # Generate the response
     resp = client.models.generate_content(
-        model = LLM_MODEL,
+        model = RECOGNITION_LLM_MODEL,
         contents = f"{system_instruction}\n\n{user_prompt}",
         config = {
             "response_mime_type": "application/json",

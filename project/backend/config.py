@@ -6,7 +6,6 @@ All settings and parameters (except secrets) are defined here.
 # ----- Database Configuration -----
 DATABASE_URL = "sqlite:///./data/database/tuevent_database.db"
 
-
 # ----- JWT Authentication Configuration -----
 JWT_SECRET_KEY = "RANDOMKEYFORJWTSECRETCHANGEINPRODUCTION"
 JWT_ALGORITHM = "HS256"
@@ -31,7 +30,7 @@ CORS_ORIGINS = [
 # ----- Scheduler Configuration -----
 SCHEDULER_TIMEZONE = "Europe/Berlin"
 EMAIL_PIPELINE_CRON_HOURS = "*/6"  # Run every 3 hours
-EMAIL_PIPELINE_DEFAULT_LIMIT = 10  # Process up to 15 emails per run
+EMAIL_PIPELINE_DEFAULT_LIMIT = 15  # Process up to 15 emails per run
 
 
 # ----- SMTP Email Configuration -----
@@ -45,9 +44,10 @@ IMAP_HOST = "mailserv.uni-tuebingen.de"
 IMAP_PORT = 993
 EMAIL_TEMP_DIR = "data/temp_emails"
 
-
 # ----- LLM Configuration -----
-LLM_MODEL = "gemini-2.5-flash"
+RECOGNITION_LLM_MODEL = "gemini-3-flash-preview" #"gemini-2.5-flash"
+#RECOMMENDATION_LLM_MODEL = "google/gemini-2.0-flash-exp:free"
+RECOMMENDATION_LLM_MODEL = "gpt-oss-120b:free"
 
 # Image keys for event categorization, with optional descriptions (can be empty).
 IMAGE_KEY_DESCRIPTIONS = {

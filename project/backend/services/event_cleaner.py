@@ -161,20 +161,20 @@ def filter_future_events_with_subevents(
     return filtered_main_events, filtered_sub_events
 
 
-def remove_past_events_from_db(db: Session) -> int:
+def archive_past_events_in_db(db: Session) -> int:
     """
-    Remove events from the database that have already passed.
-    For main_events with sub_events: only remove if ALL sub_events are in the past.
-    Returns the total number of events removed.
+    Archive events in the database that have already passed by setting archived_event=True.
+    For main_events with sub_events: only archive if ALL sub_events are in the past.
+    Returns the total number of events archived.
     """
     today = date.today()
-    removed_count = 0
+    archived_count = 0
     
-    # Get all main_events from DB
-    all_main_events = db.query(MainEventORM).all()
+    # Get all non-archived main_events from DB
+    all_main_events = db.query(MainEventORM).filter(MainEventORM.archived_event == False).all()
     
     for main_event in all_main_events:
-        # Get all sub_events for this main_event
+        # Get all sub_events for this main_event (including already archived ones for the check)
         sub_events = db.query(SubEventORM).filter(SubEventORM.main_event_id == main_event.id).all()
         
         if not sub_events:
@@ -184,9 +184,9 @@ def remove_past_events_from_db(db: Session) -> int:
             if date_str:
                 parsed_date = parse_date(date_str)
                 if parsed_date is not None and parsed_date < today:
-                    print(f"[event_cleaner] Removing past main_event: '{main_event.title}' (date: {date_str})")
-                    db.delete(main_event)
-                    removed_count += 1
+                    print(f"[event_cleaner] Archiving past main_event: '{main_event.title}' (date: {date_str})")
+                    main_event.archived_event = True
+                    archived_count += 1
         else:
             # Main_event with sub_events: check if ALL sub_events are in the past
             all_subs_past = True
@@ -205,14 +205,21 @@ def remove_past_events_from_db(db: Session) -> int:
                     break
             
             if all_subs_past:
-                print(f"[event_cleaner] Removing main_event '{main_event.title}' and all its sub_events - all past")
-                # Sub_events will be deleted by cascade
-                db.delete(main_event)
-
-                removed_count += 1 + len(sub_events)
+                print(f"[event_cleaner] Archiving main_event '{main_event.title}' and all its sub_events - all past")
+                # Archive main_event and all its sub_events
+                main_event.archived_event = True
+                archived_count += 1
+                
+                for sub in sub_events:
+                    if not sub.archived_event:
+                        sub.archived_event = True
+                        archived_count += 1
     
-    # Also remove orphan sub_events that are in the past
-    orphan_sub_events = db.query(SubEventORM).filter(SubEventORM.main_event_id == None).all()
+    # Also archive orphan sub_events that are in the past
+    orphan_sub_events = db.query(SubEventORM).filter(
+        SubEventORM.main_event_id == None,
+        SubEventORM.archived_event == False
+    ).all()
     
     for sub in orphan_sub_events:
         date_str = sub.end_date or sub.start_date
@@ -220,12 +227,22 @@ def remove_past_events_from_db(db: Session) -> int:
         if date_str:
             parsed_date = parse_date(date_str)
             if parsed_date is not None and parsed_date < today:
-                print(f"[event_cleaner] Removing past orphan sub_event: '{sub.title}' (date: {date_str})")
-                db.delete(sub)
-                removed_count += 1
+                print(f"[event_cleaner] Archiving past orphan sub_event: '{sub.title}' (date: {date_str})")
+                sub.archived_event = True
+                archived_count += 1
     
-    if removed_count > 0:
+    if archived_count > 0:
         db.commit()
-        print(f"[event_cleaner] Removed {removed_count} past events from database.")
+        print(f"[event_cleaner] Archived {archived_count} past events in database.")
     
-    return removed_count
+    return archived_count
+
+
+def remove_past_events_from_db(db: Session) -> int:
+    """
+    Archive events from the database that have already passed.
+    This function is kept for backward compatibility but now calls archive_past_events_in_db.
+    For main_events with sub_events: only archive if ALL sub_events are in the past.
+    Returns the total number of events archived.
+    """
+    return archive_past_events_in_db(db)

@@ -1,9 +1,10 @@
 // src/pages/Register.tsx
 import { useState } from 'react';
-import { Form, Input, Button, Typography, Card, message, Space } from 'antd';
+import { Form, Input, Button, Typography, Card, message, Space, Select, Divider } from 'antd';
 import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { POSSIBLE_INTEREST_KEYWORDS } from '../config';
 import '../components/css/AuthPages.css';
 
 /*
@@ -11,7 +12,8 @@ import '../components/css/AuthPages.css';
     
     The page includes:  
     - A title and subtitle inviting users to sign up.  
-    - A form with fields for first name, last name, email, password, and confirm password, including validation rules.  
+    - A form with fields for first name, last name, email, password, confirm password, and interests.
+    - Interest keywords are mandatory, interest text is optional.
     - A submit button that triggers the registration process.  
     - A link for users who already have an account to navigate to the login page.
 
@@ -27,6 +29,8 @@ interface RegisterFormValues {
     confirmPassword: string;
     first_name: string;
     last_name: string;
+    interest_keys: string[];
+    interest_text?: string;
 }
 
 export default function Register() {
@@ -47,10 +51,12 @@ export default function Register() {
                 password: values.password,
                 first_name: values.first_name,
                 last_name: values.last_name,
+                interest_keys: values.interest_keys,
+                interest_text: values.interest_text || '',
             });
 
-            messageApi.success('Registration successful!');
-            navigate('/');
+            messageApi.success('Registration successful! Generating your event recommendations...');
+            navigate('/events');
         } catch (error) {
             messageApi.error(error instanceof Error ? error.message : 'Registration failed');
         } finally {
@@ -160,6 +166,41 @@ export default function Register() {
                             <Input.Password
                                 prefix={<LockOutlined />}
                                 placeholder="Confirm Password"
+                            />
+                        </Form.Item>
+
+                        <Divider>Your Interests</Divider>
+                        
+                        <Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
+                            Select your interests to receive personalized event recommendations. You can change these later in Settings.
+                        </Text>
+
+                        <Form.Item
+                            name="interest_keys"
+                            label="Interest Keywords"
+                            rules={[
+                                { required: true, message: 'Please select at least one interest' },
+                                { type: 'array', min: 1, message: 'Please select at least one interest' },
+                            ]}
+                        >
+                            <Select
+                                mode="multiple"
+                                placeholder="Select your interests"
+                                options={POSSIBLE_INTEREST_KEYWORDS.map(keyword => ({ 
+                                    label: keyword, 
+                                    value: keyword 
+                                }))}
+                                allowClear
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="interest_text"
+                            label="Additional Interests (Optional)"
+                        >
+                            <Input.TextArea 
+                                rows={3} 
+                                placeholder="Describe any additional interests not covered above..." 
                             />
                         </Form.Item>
 

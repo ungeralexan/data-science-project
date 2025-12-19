@@ -79,7 +79,7 @@ export default function NavBar() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/events');
   };
 
   /*

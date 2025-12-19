@@ -14,6 +14,7 @@ export interface User {
     interest_keys?: string[] | null;
     interest_text?: string | null;
     suggested_event_ids?: number[] | null;
+    theme_preference: string;  // 'light' or 'dark'
 }
 
 // A login request requires email and password
@@ -22,12 +23,14 @@ export interface LoginRequest {
     password: string;
 }
 
-// A registration request requires email, password, first name, and last name
+// A registration request requires email, password, first name, last name, and interests
 export interface RegisterRequest {
     email: string;
     password: string;
     first_name: string;
     last_name: string;
+    interest_keys: string[];
+    interest_text?: string;
 }
 
 // A user update request may include any of the user fields, all optional
@@ -39,6 +42,7 @@ export interface UpdateUserRequest {
     last_name?: string;
     interest_keys?: string[];
     interest_text?: string;
+    theme_preference?: string;  // 'light' or 'dark'
 }
 
 // Response from the backend upon successful authentication

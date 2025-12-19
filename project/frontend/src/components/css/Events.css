@@ -100,6 +100,17 @@
   margin-bottom: 24px;                        /* Space below before event list */
 }
 
+/* Loading state for recommendations - centered content */
+.event-recommendation-card .event-list-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  min-height: 150px;
+}
+
 /* =========================================================================
    MOBILE RESPONSIVE
    ========================================================================= */

@@ -71,3 +71,16 @@
 .settings-danger-divider {
   margin: 12px 0;                             /* Tight vertical spacing */
 }
+
+/* =========================================================================
+   BUTTON OVERRIDES
+   ========================================================================= */
+
+/* 
+  Ensure disabled buttons with countdown timer have white text.
+  This applies to the "Update Interests" button during cooldown.
+*/
+.ant-btn-primary:disabled,
+.ant-btn-primary[disabled] {
+  color: white !important;                    /* White text on disabled primary button */
+}

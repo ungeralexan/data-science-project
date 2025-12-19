@@ -10,7 +10,7 @@ from config import EMAIL_TEMP_DIR, EMAIL_PIPELINE_DEFAULT_LIMIT  # pylint: disab
 from services.email_downloader import download_latest_emails   # pylint: disable=import-error
 from services.event_duplicator import filter_new_main_events, filter_new_sub_events  # pylint: disable=import-error
 from services.event_recognizer import extract_event_info_with_llm  # pylint: disable=import-error
-from services.event_cleaner import filter_future_events_with_subevents, remove_past_events_from_db  # pylint: disable=import-error
+from services.event_cleaner import filter_future_events_with_subevents, archive_past_events_in_db  # pylint: disable=import-error
 from services.event_recommender import run_event_recommendations  # pylint: disable=import-error
 
 def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: str = EMAIL_TEMP_DIR) -> None:
@@ -19,14 +19,14 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
     Also removes past events from the database and generates event recommendations for users.
     """
 
-    # 1) Clean up past events from database first
-    print("[pipeline] Removing past events from database...")
+    # 1) Archive past events in database first
+    print("[pipeline] Archiving past events in database...")
     with SessionLocal() as db:
-        remove_past_events_from_db(db)
+        archive_past_events_in_db(db)
 
     # 2) Downloads latest emails
     print("[pipeline] Downloading latest emails...")
-    download_latest_emails(limit=limit)
+    #download_latest_emails(limit=limit)
 
     # 3) Reads combined text file
     all_emails_path = Path(outdir) / "all_emails.txt"
@@ -52,13 +52,13 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
     sub_events_raw = [e for e in events_raw if e.get("Event_Type") == "sub_event"]
     print(f"[pipeline] Found {len(main_events_raw)} main_events and {len(sub_events_raw)} sub_events.")
     
-    main_events_raw, sub_events_raw = filter_future_events_with_subevents(main_events_raw, sub_events_raw)
-    print(f"[pipeline] After filtering: {len(main_events_raw)} main_events and {len(sub_events_raw)} sub_events remaining.")
+    main_events_raw_filtered, sub_events_raw_filtered = filter_future_events_with_subevents(main_events_raw, sub_events_raw)
+    print(f"[pipeline] After filtering: {len(main_events_raw_filtered)} main_events and {len(sub_events_raw_filtered)} sub_events remaining.")
 
     # 6) Opens DB session and insert non-duplicates
     with SessionLocal() as db:
         print("[pipeline] Inserting non-duplicate events...")
-        insert_non_duplicate_events(db, main_events_raw, sub_events_raw)
+        insert_non_duplicate_events(db, main_events_raw_filtered, sub_events_raw_filtered)
         
     # 7) Generate event recommendations for users based on their interests
     print("[pipeline] Generating event recommendations for users...")

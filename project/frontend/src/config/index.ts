@@ -13,7 +13,21 @@ import parameters from './parameters.json';
         import { API_BASE_URL, WS_PORT } from '../config';
 */
 
-export const API_BASE_URL: string = parameters.API_BASE_URL;
-export const WS_PORT: number = parameters.WS_PORT;
-export const POSSIBLE_INTEREST_KEYWORDS: string[] = parameters.POSSIBLE_INTEREST_KEYWORDS;
-export const LOCAL: boolean = parameters.LOCAL;
+// Type assertion to allow access to all properties from parameters.json
+const params = parameters as typeof parameters & {
+    PAGINATION: { EVENTS_PER_PAGE: number };
+};
+
+export const API_BASE_URL: string = params.API_BASE_URL;
+export const WS_PORT: number = params.WS_PORT;
+export const POSSIBLE_INTEREST_KEYWORDS: string[] = params.POSSIBLE_INTEREST_KEYWORDS;
+export const LOCAL: boolean = params.LOCAL;
+
+// Storage keys for localStorage
+export const STORAGE_KEYS = params.STORAGE_KEYS;
+
+// Timeouts and intervals (in milliseconds)
+export const TIMEOUTS = params.TIMEOUTS;
+
+// Pagination settings
+export const PAGINATION = params.PAGINATION;

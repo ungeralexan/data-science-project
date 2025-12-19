@@ -1,5 +1,5 @@
 // src/pages/Settings.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Typography, Form, Input, Button, Card, Space, Divider, Select, App, Switch } from 'antd';
 import { MailOutlined, LockOutlined, UserOutlined, ExclamationCircleOutlined, BulbOutlined } from '@ant-design/icons';
@@ -53,7 +53,7 @@ function SettingsContent() {
     // ----- State and hooks -----
 
     // Authentication context and navigation
-    const { user, updateUser, deleteAccount } = useAuth();
+    const { user, updateUser, deleteAccount, triggerRecommendations, isRecommendationLoading, recommendationCooldownRemaining } = useAuth();
     const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const { message: messageApi, modal } = App.useApp();
@@ -66,6 +66,22 @@ function SettingsContent() {
     const [profileForm] = Form.useForm();
     const [passwordForm] = Form.useForm();
     const [interestsForm] = Form.useForm();
+
+    // Update form values when user changes (fixes stale data after navigation)
+    useEffect(() => {
+        if (user) {
+            profileForm.setFieldsValue({
+                first_name: user.first_name || '',
+                last_name: user.last_name || '',
+                email: user.email || '',
+            });
+
+            interestsForm.setFieldsValue({
+                interest_keys: user.interest_keys || [],
+                interest_text: user.interest_text || '',
+            });
+        }
+    }, [user, profileForm, interestsForm]);
 
     // ----- Functions -----
 
@@ -112,6 +128,7 @@ function SettingsContent() {
     // Handle interests update
     const handleInterestsUpdate = async (values: InterestsFormValues) => {
         setInterestsLoading(true);
+        
         try {
 
             await updateUser({
@@ -120,6 +137,17 @@ function SettingsContent() {
             });
 
             messageApi.success('Interests updated successfully!');
+            
+            // Trigger on-demand event recommendations
+            messageApi.info('Generating personalized event recommendations...');
+
+            try {
+                await triggerRecommendations();
+                messageApi.success('Event recommendations updated!');
+            } catch (recError) {
+                console.error('Error generating recommendations:', recError);
+                messageApi.warning('Could not generate recommendations. Please try again later.');
+            }
         } catch (error) {
             messageApi.error(error instanceof Error ? error.message : 'Failed to update interests');
         } finally {
@@ -239,6 +267,7 @@ function SettingsContent() {
                         form={interestsForm}
                         layout="vertical"
                         onFinish={handleInterestsUpdate}
+
                         initialValues={{
                             interest_keys: user?.interest_keys || [],
                             interest_text: user?.interest_text || '',
@@ -272,8 +301,17 @@ function SettingsContent() {
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" loading={interestsLoading}>
-                                Update Interests
+                            <Button 
+                                type="primary" 
+                                htmlType="submit" 
+                                loading={interestsLoading || isRecommendationLoading}
+                                disabled={recommendationCooldownRemaining > 0 || isRecommendationLoading}
+                            >
+                                {recommendationCooldownRemaining > 0 
+                                    ? `Please wait ${recommendationCooldownRemaining}s` 
+                                    : isRecommendationLoading 
+                                        ? 'Generating Recommendations...'
+                                        : 'Update Interests'}
                             </Button>
                         </Form.Item>
                     </Form>

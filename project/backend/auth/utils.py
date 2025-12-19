@@ -134,6 +134,7 @@ def user_orm_to_response(user: UserORM) -> UserResponse:
         interest_keys=user.interest_keys,
         interest_text=user.interest_text,
         suggested_event_ids=user.suggested_event_ids,
+        theme_preference=user.theme_preference or "light",
     )
 
 

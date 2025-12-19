@@ -1,7 +1,7 @@
 import json
 from google import genai
 
-from config import IMAGE_KEYS, IMAGE_KEY_DESCRIPTIONS, LLM_MODEL  # pylint: disable=import-error
+from config import IMAGE_KEYS, IMAGE_KEY_DESCRIPTIONS, RECOGNITION_LLM_MODEL  # pylint: disable=import-error
 
 # -------- LLM Event Extraction Settings --------
 
@@ -83,52 +83,44 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     Use the URL content section (when present) to fill in any missing information from the email body,
     such as exact dates, times, locations, speakers, and registration details.
     
-    DEFINITION OF AN EVENT
+    I) DEFINITION OF AN EVENT:
 
     An event is a scheduled occurrence. It is NOT a invitation to participate in a study, survey, or non-event activity.
 
-    RULES:
+    II) General RULES:
 
-    1. Translate any non English text into English, except for names (e.g. building names, street names, institution names)!
-    2. Change the time and date formats to match MM/DD/YYYY and HH:MM AM/PM. If unsure, use null. 
-    3. When reading emails, pay special attention to lines that indicate event details, for example (in German emails):
+    II.1. Translate any non English text into English, except for names (e.g. building names, street names, institution names)!
+    II.2. Change the time and date formats to match MM/DD/YYYY and HH:MM AM/PM. If unsure, use null. 
+    II.3. When reading emails, pay special attention to lines that indicate event details, for example (in German emails):
 
         - "Datum:" (date)
         - "Uhrzeit:" (time)
         - "Ort:" (location)
 
-    4. If the email clearly contains a headline, workshop name, lecture title, or event title, USE THAT as the basis for the Title field.
-    5. If there is no explicit title, generate a SHORT, CONCISE event title (about 4 to 6 words) that would look good as a calendar headline.
-    6. Do NOT use long sentences as titles.
-    7. Do NOT include full subtitles with many clauses or questions.
-    8. Do NOT summarize the whole email in the title.
-    9. When URL content is provided for an email, use it to extract additional details about events.
-    10. If the URL content provides more specific information than the email body, prefer the URL content.
+    II.4. If the email clearly contains a headline, workshop name, lecture title, or event title, USE THAT as the basis for the Title field.
+    II.5. If there is no explicit title, generate a SHORT, CONCISE event title (about 4 to 6 words) that would look good as a calendar headline.
+    II.6. Do NOT use long sentences as titles.
+    II.7. Do NOT include full subtitles with many clauses or questions.
+    II.8. Do NOT summarize the whole email in the title.
+    II.9. When URL content is provided for an email, use it to extract additional details about events.
+    II.10. If the URL content provides more specific information than the email body, prefer the URL content.
     
-
-
-
-    DESCRIPTION QUALITY RULES 
+    III) DESCRIPTION QUALITY RULES:
 
     The Description must be written as if it will be shown in a calendar entry to an end user.
 
-    - Write in neutral, informative language that is clear and concise.
-    - The Description must be written in a professional tone suitable for a calendar or event website.
-    - Describe **what** will happen, not **how** the email is presented (e.g., no mention of the email itself).
-    - Focus on the event content: who will be involved, what will happen, and why it's important.
-
+    III.1 Describe what will happen, not how the email is presented. (No mention of the email itself.)
+    III.2 Write in neutral, informative language that is clear and concise.
+    III.3 Focus on the event content: who will be involved, what will happen, and why it's important.
 
     A good Description answers:
     - What is happening?
     - Who is it for?
     - What will participants gain or experience?
 
+    IV) OUTPUT FORMAT:
 
-
-
-    OUTPUT FORMAT
-
-    You must return ONLY a JSON ARRAY ([]) of event objects. Each object in the array must follow this schema:
+    IV.1. You must return ONLY a JSON ARRAY ([]) of event objects. Each object in the array must follow this schema:
 
     - Title (String): The title or name of the event. 
     - Start_Date (String or null): The starting date of the event.
@@ -152,10 +144,13 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Event_Type (String, REQUIRED): Must be either "main_event" or "sub_event". Use "main_event" for standalone events or parent events that have sub-events. Use "sub_event" for events that are part of a larger event series (e.g., individual talks in a lecture series, workshops in a conference, sessions in a multi-day event).
     - Main_Event_Temp_Key (String, REQUIRED): A temporary identifier to link related events. For main_events, generate a unique short key (e.g., "conf2024", "lecture_series_ai"). For sub_events, use the SAME key as their parent main_event so they can be linked together. If an event is a standalone main_event with no sub_events, still provide a unique key.
 
-    Do NOT wrap in arrays or extra objects; do NOT add extra keys; do NOT use markdown fences.
-    If there is no clear event, don't return anything for this email
-
-    It it possible that one event happens over multiple days; In that case, save the dates and times in a list.
+    IV.2. Do NOT wrap in arrays or extra objects.
+    IV.3. Do NOT add extra keys.
+    IV.4. Do NOT use markdown fences. 
+    IV.5. If there is no clear event, don't return anything for this email
+    IV.6. Do NOT wrap any characters (such as German umlauts ä, ö, ü) in angle brackets like <ä> or <ü>.
+    IV.7. Do NOT use XML-like or HTML-like tags in your output.
+    IV.8. It it possible that one event happens over multiple days; In that case, save the dates and times in a list.
     """
 
     # User prompt with the email text (URL content is already inline with each email)
@@ -178,7 +173,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
 
     # Make the LLM call to generate content with the specified schema
     resp = client.models.generate_content(
-        model=LLM_MODEL,
+        model=RECOGNITION_LLM_MODEL,
         contents=contents,
         config={
             "response_mime_type": "application/json",

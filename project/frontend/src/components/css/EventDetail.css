@@ -120,6 +120,11 @@
   color: var(--accent-color);
 }
 
+/* Room icon - blue color for room/floor */
+.event-detail-icon--room {
+  color: var(--accent-color);
+}
+
 /* Organizer icon - blue color for team/organization */
 .event-detail-icon--organizer {
   color: var(--accent-color);

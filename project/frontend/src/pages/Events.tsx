@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Typography, Card, Space, Input } from 'antd';
+import { Typography, Card, Input, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import EventList from '../components/EventList';
 import EventCalendar from '../components/EventCalendar';
 import EventSortControls from "../components/EventSortButton";
@@ -28,7 +29,7 @@ export default function Events() {
   // State for search query across events
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const { user } = useAuth();
+  const { user, isRecommendationLoading } = useAuth();
 
   const userExists = user !== null;
 
@@ -46,7 +47,16 @@ export default function Events() {
       ) : null }
 
       {userExists ? (
-        hasSuggestedEvents ? (
+        isRecommendationLoading ? (
+          <Card className="event-recommendation-card">
+            <div className="event-list-loading">
+              <Spin indicator={<LoadingOutlined spin />} size="large" />
+              <Paragraph type="secondary" style={{ marginTop: 16 }}>
+                Your event recommendations will appear momentarily...
+              </Paragraph>
+            </div>
+          </Card>
+        ) : hasSuggestedEvents ? (
           <>
             <EventList
               suggestedEventIds={user.suggested_event_ids?.map(String)}
@@ -104,6 +114,7 @@ export default function Events() {
           showLikedOnly={showLikedOnly} 
           fetchMode={showSubevents ? "all_events" : "main_events"}
           searchQuery={searchQuery}
+          enablePagination={true}
         />
       ) : (
         <EventCalendar 

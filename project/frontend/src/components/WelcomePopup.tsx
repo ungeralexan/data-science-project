@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { STORAGE_KEYS } from "../config";
 import "./css/WelcomePopup.css";
 
 type Props = {
   storageKey?: string;
 };
 
-const DEFAULT_STORAGE_KEY = "tuevent_welcome_seen_v1";
+// Default storage key from centralized config
+const DEFAULT_STORAGE_KEY = STORAGE_KEYS.WELCOME_POPUP_SEEN;
 
 export default function WelcomePopup({ storageKey = DEFAULT_STORAGE_KEY }: Props) {
   const navigate = useNavigate();

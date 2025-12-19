@@ -1,5 +1,5 @@
 
-from sqlalchemy import create_engine, Column, Integer, String, Text, JSON, ForeignKey, UniqueConstraint, event
+from sqlalchemy import create_engine, Column, Integer, String, Text, JSON, ForeignKey, UniqueConstraint, Boolean, event
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 import uuid
 
@@ -68,6 +68,7 @@ class MainEventORM(Base):
     image_key = Column(String, nullable=True)
     like_count = Column(Integer, default=0, nullable=False)
     going_count = Column(Integer, default=0, nullable=False)
+    archived_event = Column(Boolean, default=False, nullable=False)  # Flag for archived/past events
     main_event_temp_key = Column(String, nullable=True)  # Temporary key for linking, cleared after processing
     sub_event_ids = Column(JSON, nullable=True)  # Array of sub_event IDs
 
@@ -108,6 +109,7 @@ class SubEventORM(Base):
     image_key = Column(String, nullable=True)
     like_count = Column(Integer, default=0, nullable=False)
     going_count = Column(Integer, default=0, nullable=False)
+    archived_event = Column(Boolean, default=False, nullable=False)  # Flag for archived/past events
     main_event_temp_key = Column(String, nullable=True)  # Temporary key for linking, cleared after processing
     main_event_id = Column(String, ForeignKey("main_events.id", ondelete="CASCADE"), nullable=True)
 
@@ -134,6 +136,7 @@ class UserORM(Base):
     interest_keys = Column(JSON, nullable=True)  # List of interest keywords
     interest_text = Column(Text, nullable=True)  # Free-form interest description
     suggested_event_ids = Column(JSON, nullable=True)  # List of suggested main_event IDs
+    theme_preference = Column(String, nullable=False, default="light")  # User's theme preference: 'light' or 'dark'
 
     # Relationship to liked events - cascade delete when user is deleted
     liked_events = relationship("UserLikeORM", back_populates="user", cascade="all, delete-orphan", passive_deletes=True)

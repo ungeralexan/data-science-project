@@ -27,6 +27,8 @@
         "Gaming",
         "Health",
         "International Exchange",
+        "Languages",
+        "Music",
         "Networking",
         "Parties",
         "Photography",
@@ -39,5 +41,17 @@
         "Sports",
         "Study Groups",
         "Travel"
-    ]
+    ],
+    "STORAGE_KEYS": {
+        "AUTH_TOKEN": "auth_token",
+        "THEME": "app_theme",
+        "WELCOME_POPUP_SEEN": "tuevent_welcome_seen_v1"
+    },
+    "TIMEOUTS": {
+        "PASSWORD_RESET_REDIRECT_MS": 2000,
+        "RECOMMENDATION_COOLDOWN_MS": 30000
+    },
+    "PAGINATION": {
+        "EVENTS_PER_PAGE": 2
+    }
 }

@@ -17,7 +17,18 @@ import type { User, LoginRequest, RegisterRequest, UpdateUserRequest } from '../
     - deleteAccount: A function to delete the current user's account.
     - toggleLike: A function to like or unlike an event.
     - isEventLiked: A function to check if an event is liked by the user.
+    - triggerRecommendations: A function to trigger on-demand event recommendations.
+    - isRecommendationLoading: A boolean indicating if recommendations are being generated.
+    - recommendationCooldownRemaining: Seconds remaining before user can request recommendations again.
 */
+
+// Response from the recommendation API
+export interface RecommendationResponse {
+    success: boolean;
+    message: string;
+    has_events: boolean;
+    recommended_event_ids: number[];
+}
 
 export interface AuthContextType {
     user: User | null; 
@@ -35,6 +46,9 @@ export interface AuthContextType {
     isEventLiked: (eventId: string) => boolean;  // Check if an event is liked
     toggleGoing: (eventId: string, eventType?: "main_event" | "sub_event") => Promise<{ going_count: number; isGoing: boolean }>;
     isEventGoing: (eventId: string) => boolean;
+    triggerRecommendations: () => Promise<RecommendationResponse>;  // Trigger on-demand recommendations
+    isRecommendationLoading: boolean;  // Whether recommendations are being generated
+    recommendationCooldownRemaining: number;  // Seconds remaining in cooldown
 }
 
 /*

@@ -4,6 +4,7 @@ import { Route, Routes, Link } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import ScrollToTop from './components/ScrollToTop';
 import NavBar from './components/NavBar'
 import Events from './pages/Events';
 import Settings from './pages/Settings';
@@ -50,6 +51,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
+        <ScrollToTop />
         <Layout>
           
           <WelcomePopup />

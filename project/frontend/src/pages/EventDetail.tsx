@@ -1,7 +1,7 @@
 // src/pages/EventDetail.tsx
 import { useParams, useNavigate } from "react-router-dom";
 import { Typography, Button, Tag } from "antd";
-import { UserOutlined, TeamOutlined, CheckCircleOutlined, EnvironmentOutlined } from "@ant-design/icons";
+import { UserOutlined, TeamOutlined, CheckCircleOutlined, EnvironmentOutlined, HomeOutlined } from "@ant-design/icons";
 
 import { useEvents } from "../hooks/useEvents";
 import EventImage from "../components/EventImage";
@@ -106,12 +106,11 @@ export default function EventDetail() {
     }
     
     // Room and floor info
-    if (event.room || event.floor) {
-
-      //If both room and floor exist, join them with a comma
-      const roomFloor = [event.room, event.floor ? `Floor ${event.floor}` : null].filter(Boolean).join(", ");
-      if (roomFloor) parts.push(roomFloor);
-    }
+    //if (event.room || event.floor) {
+    //If both room and floor exist, join them with a comma
+    //  const roomFloor = [event.room, event.floor ? `Floor ${event.floor}` : null].filter(Boolean).join(", ");
+    //  if (roomFloor) parts.push(roomFloor);
+    //}
     
     // City with zip code
     if (event.city || event.zip_code) {
@@ -205,8 +204,10 @@ export default function EventDetail() {
 
             <div className="event-detail-meta-row">
               <EnvironmentOutlined className="event-detail-icon event-detail-icon--location" />
-              <Text strong>Location:</Text>
+              <Text strong>Address:</Text>
               {displayAddress ? (
+
+                // If googleMapsUrl exists, render the address as a clickable link
                 googleMapsUrl ? (
                   <a 
                     href={googleMapsUrl} 
@@ -223,6 +224,25 @@ export default function EventDetail() {
                 <Text type="secondary">No information available</Text>
               )}
             </div>
+
+            <div className="event-detail-meta-row">
+              <HomeOutlined className="event-detail-icon event-detail-icon--room" />
+              <Text strong>Room:</Text>
+              {event.room ? (
+                <span>{event.room}</span>
+              ) : (
+                <Text type="secondary">No information available</Text>
+              )}
+
+              <span className="event-detail-separator">•</span>
+
+              <Text strong>Floor:</Text>
+              {event.floor ? (
+                <span>{event.floor}</span>
+              ) : (
+                <Text type="secondary">No information available</Text>
+              )}
+             </div>
 
             <div className="event-detail-meta-row">
               <TeamOutlined className="event-detail-icon event-detail-icon--organizer" />

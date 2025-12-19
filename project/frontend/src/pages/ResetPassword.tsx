@@ -4,7 +4,7 @@ import { Form, Input, Button, Typography, Card, message, Space, Alert } from 'an
 import { LockOutlined } from '@ant-design/icons';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import '../components/css/AuthPages.css';
-import { API_BASE_URL } from '../config';
+import { API_BASE_URL, TIMEOUTS } from '../config';
 
 /*
     Reset Password page component that allows users to set a new password using a reset token.
@@ -74,11 +74,11 @@ export default function ResetPassword() {
             if (response.ok) {
                 setSuccess(true);
                 messageApi.success('Password reset successfully!');
-                // Redirect to login after 2 seconds
+                // Redirect to login after configured timeout
 
                 setTimeout(() => {
                     navigate('/login');
-                }, 2000);
+                }, TIMEOUTS.PASSWORD_RESET_REDIRECT_MS);
                 
             } else {
                 messageApi.error(data.detail || 'Failed to reset password');

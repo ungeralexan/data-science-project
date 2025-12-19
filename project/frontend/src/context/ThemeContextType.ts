@@ -11,6 +11,7 @@ export interface ThemeContextType {
     theme: Theme;
     toggleTheme: () => void;
     setTheme: (theme: Theme) => void;
+    setSaveCallback: (callback: ((theme: Theme) => Promise<void>) | null) => void;
 }
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

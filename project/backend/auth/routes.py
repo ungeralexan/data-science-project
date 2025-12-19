@@ -10,6 +10,7 @@ from sqlalchemy.exc import OperationalError
 
 from data.database.database_events import SessionLocal, UserORM, UserLikeORM, MainEventORM, SubEventORM, init_db, UserGoingORM  # pylint: disable=import-error
 from services.email_service import send_password_reset_email  # pylint: disable=import-error
+from services.event_recommender import run_single_user_recommendations  # pylint: disable=import-error
 
 from .models import (
     UserCreate,
@@ -66,11 +67,25 @@ async def register(user_data: UserCreate):
                 password=hashed_password,
                 first_name=user_data.first_name,
                 last_name=user_data.last_name,
+                interest_keys=user_data.interest_keys,
+                interest_text=user_data.interest_text or "",
+                theme_preference=user_data.theme_preference or "light",
             )
 
             db.add(new_user)
             db.commit()
             db.refresh(new_user)
+            
+            # Generate initial event recommendations for the new user
+            user_id = new_user.user_id
+            
+        # Run recommendations in a separate session to avoid conflicts
+        with SessionLocal() as db:
+            run_single_user_recommendations(db, user_id)
+            
+        # Refresh user to get updated recommendations
+        with SessionLocal() as db:
+            new_user = db.query(UserORM).filter(UserORM.user_id == user_id).first()
             
             # Create access token
             access_token = create_access_token(new_user.user_id)
@@ -170,6 +185,8 @@ async def update_me(user_update: UserUpdate, current_user: UserORM = Depends(get
             user.interest_keys = user_update.interest_keys
         if user_update.interest_text is not None:
             user.interest_text = user_update.interest_text
+        if user_update.theme_preference is not None:
+            user.theme_preference = user_update.theme_preference
         
         db.commit()
         db.refresh(user)
@@ -257,3 +274,18 @@ async def reset_password(request: PasswordReset):
         db.commit()
         
         return {"message": "Password reset successfully"}
+
+
+@auth_router.post("/generate-recommendations")
+async def generate_recommendations(current_user: UserORM = Depends(get_current_user)):
+    """
+    Generate event recommendations for the current user on-demand.
+    This endpoint triggers the LLM to analyze the user's interests and recommend events.
+    """
+    with SessionLocal() as db:
+        result = run_single_user_recommendations(db, current_user.user_id)
+        
+        if not result["success"]:
+            raise HTTPException(status_code=400, detail=result["message"])
+        
+        return result

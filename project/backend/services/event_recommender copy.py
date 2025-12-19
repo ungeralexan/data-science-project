@@ -1,8 +1,7 @@
 import json
 from typing import Dict, List
 import textwrap
-#from google import genai
-from openai import OpenAI
+from google import genai
 from sqlalchemy.orm import Session
 
 from data.database.database_events import UserORM, MainEventORM  # pylint: disable=import-error
@@ -113,7 +112,7 @@ def recommend_events_with_llm(
           that best match their interests.
         - Consider both the interest keywords and the free text description when matching.
         - Only recommend events that are genuinely relevant to the user's interests.
-        - If no events match a user's interests very well, recommend fewer or no events for that user.
+        - If no events match a user's interests well, recommend fewer or no events for that user.
 
         OUTPUT FORMAT:
         Return a JSON ARRAY where each item is an object with:
@@ -149,51 +148,47 @@ def recommend_events_with_llm(
         secrets = json.load(f)
     
     # Create Gemini client and make request
-    #client = genai.Client(api_key=secrets["GEMINI_API_KEY"])
-    
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=secrets["OPENROUTER_API_KEY"],
-    )
+    client = genai.Client(api_key=secrets["GEMINI_API_KEY"])
 
     # Define the response schema (Gemini does not support additionalProperties)
+    response_schema = {
+        "type": "ARRAY",
+        "items": {
+            "type": "OBJECT",
+            "properties": {
+                "user_id": {"type": "INTEGER"},
+                "recommended_event_ids": {
+                    "type": "ARRAY",
+                    "items": {"type": "INTEGER"}
+                }
+            },
+            "required": ["user_id", "recommended_event_ids"]
+        }
+    }
     
     try:
-        # Call OpenRouter / Gemini 2.0 Flash Experimental (free)
-        completion = client.chat.completions.create(
+        resp = client.models.generate_content(
             model=RECOMMENDATION_LLM_MODEL,
-            messages=[
-                {"role": "system", "content": system_instruction},
-                {"role": "user", "content": user_prompt},
-            ],
-            # You *can* try to enforce JSON with response_format, but it's optional:
-            response_format={"type": "json_object"},
-            extra_body={"reasoning": {"enabled": True}},
+            contents=f"{system_instruction}\n\n{user_prompt}",
+            config={
+                "response_mime_type": "application/json",
+                "response_schema": response_schema,
+            },
         )
+        
+        # Parse response
+        recommendations_list = json.loads(resp.text)
 
-        raw_content = completion.choices[0].message.content
-
-        # Defensive cleanup: strip possible code fences if the model ignores instructions
-        cleaned = raw_content.strip()
-        if cleaned.startswith("```"):
-            # Handle ```json ... ``` or ``` ... ```
-            cleaned = cleaned.strip("`")
-            # In case the first line is 'json'
-            cleaned_lines = cleaned.splitlines()
-            if cleaned_lines and cleaned_lines[0].strip().lower() == "json":
-                cleaned = "\n".join(cleaned_lines[1:]).strip()
-
-        # Parse JSON
-        recommendations_list = json.loads(cleaned)
-
-        recommendations: Dict[int, List[int]] = {}
+        recommendations = {}
 
         # Loop over recommendations
         for item in recommendations_list:
+
             # Validate item structure
             if not isinstance(item, dict):
                 continue
 
+            # Extract user ID and event IDs
             user_id = item.get("user_id")
             event_ids = item.get("recommended_event_ids", [])
 
@@ -208,9 +203,9 @@ def recommend_events_with_llm(
 
             # Only add if there are valid recommendations
             recommendations[int(user_id)] = valid_event_ids
-
+        
         return recommendations
-
+        
     except Exception as e:  # pylint: disable=broad-except
         print(f"[recommend_events_with_llm] Error calling LLM: {e}")
         return {}
@@ -244,11 +239,8 @@ def run_event_recommendations(db: Session) -> None:
     Steps:
     1. Get all users with interests
     2. Get all events
-    3. Loop over users one at a time, generating recommendations for each
-    4. Update each user's record after processing
-    
-    This approach processes users individually to avoid overwhelming the LLM
-    with too many users at once and to provide more focused recommendations.
+    3. Use LLM to generate recommendations
+    4. Update user records with recommendations
     """
     print("[run_event_recommendations] Starting event recommendation pipeline...")
     
@@ -260,7 +252,7 @@ def run_event_recommendations(db: Session) -> None:
         print("[run_event_recommendations] No users with interests found. Skipping recommendations.")
         return
     
-    # Step 2: Get all events (shared across all users)
+    # Step 2: Get all events
     events_dict = get_events_for_recommendation(db)
     print(f"[run_event_recommendations] Found {len(events_dict)} events for recommendation.")
     
@@ -268,35 +260,17 @@ def run_event_recommendations(db: Session) -> None:
         print("[run_event_recommendations] No events found. Skipping recommendations.")
         return
     
-    # Step 3: Process each user individually
-    total_updated = 0
-    total_users = len(users_dict)
+    # Step 3: Get recommendations from LLM
+    print("[run_event_recommendations] Calling LLM for event recommendations...")
+    recommendations = recommend_events_with_llm(users_dict, events_dict)
+    print(f"[run_event_recommendations] LLM returned recommendations for {len(recommendations)} users.")
     
-    for idx, (user_id, user_interests) in enumerate(users_dict.items(), 1):
-        print(f"[run_event_recommendations] Processing user {user_id} ({idx}/{total_users})...")
-        
-        # Create single-user dictionary for LLM
-        single_user_dict = {user_id: user_interests}
-        
-        try:
-            # Get recommendations from LLM for this single user
-            recommendations = recommend_events_with_llm(single_user_dict, events_dict)
-            
-            # Update user record
-            recommended_ids = recommendations.get(user_id, [])
-            user = db.query(UserORM).filter(UserORM.user_id == user_id).first()
-            
-            if user:
-                user.suggested_event_ids = recommended_ids
-                db.commit()
-                total_updated += 1
-                print(f"[run_event_recommendations] User {user_id} got {len(recommended_ids)} recommendations.")
-            
-        except Exception as e:  # pylint: disable=broad-except
-            print(f"[run_event_recommendations] Error processing user {user_id}: {e}")
-            continue
-    
-    print(f"[run_event_recommendations] Pipeline complete. Updated {total_updated}/{total_users} users.")
+    # Step 4: Update user records
+    if recommendations:
+        updated_count = update_user_recommendations(db, recommendations)
+        print(f"[run_event_recommendations] Updated {updated_count} user records with recommendations.")
+    else:
+        print("[run_event_recommendations] No recommendations generated.")
 
 
 def run_single_user_recommendations(db: Session, user_id: int) -> dict:

@@ -1,10 +1,12 @@
 // src/context/AuthContext.tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import type { ReactNode } from 'react';
 import type { User, LoginRequest, RegisterRequest, UpdateUserRequest, AuthResponse } from '../types/User';
 import { AuthContext } from './AuthContextType';
-import type { AuthContextType } from './AuthContextType';
-import { API_BASE_URL } from '../config';
+import type { AuthContextType, RecommendationResponse } from './AuthContextType';
+import { ThemeContext } from './ThemeContextType';
+import type { Theme } from './ThemeContextType';
+import { API_BASE_URL, STORAGE_KEYS, TIMEOUTS } from '../config';
 
 /*
     In this file, we implement the AuthProvider component that uses React Context
@@ -37,8 +39,8 @@ import { API_BASE_URL } from '../config';
     const value = localStorage.getItem('key'): Retrieves the value stored under 'key'.
 */
 
-// Token storage key
-const TOKEN_KEY = 'auth_token';
+// Token storage key (from centralized config)
+const TOKEN_KEY = STORAGE_KEYS.AUTH_TOKEN;
 
 // A ReactNode can be anything (Strings, numbers, arrays, null, ....) 
 // Children are the nested components inside AuthProvider (Routes, Pages, etc)
@@ -54,6 +56,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [isLoading, setIsLoading] = useState(true);
     const [likedEventIds, setLikedEventIds] = useState<string[]>([]);
     const [goingEventIds, setGoingEventIds] = useState<string[]>([]);
+    
+    // Recommendation-related state
+    const [isRecommendationLoading, setIsRecommendationLoading] = useState(false);
+    const [recommendationCooldownRemaining, setRecommendationCooldownRemaining] = useState(0);
+    const cooldownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    // Access theme context to sync theme preferences
+    const themeContext = useContext(ThemeContext);
 
     // ------- Startup -------
 
@@ -74,6 +84,47 @@ export function AuthProvider({ children }: AuthProviderProps) {
             setIsLoading(false);
         }
     }, []);
+
+    // ------- Theme Sync -------
+
+    // Save theme preference to backend helper function
+    const saveThemePreference = useCallback(async (newTheme: Theme): Promise<void> => {
+        if (!token) return;
+        
+        try {
+            await fetch(`${API_BASE_URL}/api/auth/me`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ theme_preference: newTheme }),
+            });
+        } catch (error) {
+            console.error('Failed to save theme preference:', error);
+        }
+    }, [token]);
+
+    // Sync theme with user data when user changes (login/logout/refresh)
+    useEffect(() => {
+        if (themeContext) {
+            if (user) {
+
+                // User is logged in - set backend save callback
+                themeContext.setSaveCallback(saveThemePreference);
+
+                // User is logged in - sync theme from user data and enable saving
+                const userTheme = (user.theme_preference === 'dark' || user.theme_preference === 'light') 
+                    ? user.theme_preference 
+                    : 'light';
+                    
+                themeContext.setTheme(userTheme as Theme);
+            } else {
+                // User logged out - disable backend saving
+                themeContext.setSaveCallback(null);
+            }
+        }
+    }, [user, saveThemePreference]);
 
     // ------- Auth Functions -------
 
@@ -370,6 +421,85 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const isEventGoing = (eventId: string) => goingEventIds.includes(eventId);
 
 
+    // ------- Recommendation Functions -------
+
+    // Start the cooldown timer
+    const startCooldownTimer = useCallback(() => {
+        const cooldownMs = TIMEOUTS.RECOMMENDATION_COOLDOWN_MS;
+        const cooldownSeconds = Math.ceil(cooldownMs / 1000);
+        
+        setRecommendationCooldownRemaining(cooldownSeconds);
+        
+        // Clear any existing interval
+        if (cooldownIntervalRef.current) {
+            clearInterval(cooldownIntervalRef.current);
+        }
+        
+        // Start countdown
+        cooldownIntervalRef.current = setInterval(() => {
+            setRecommendationCooldownRemaining(prev => {
+                if (prev <= 1) {
+                    if (cooldownIntervalRef.current) {
+                        clearInterval(cooldownIntervalRef.current);
+                        cooldownIntervalRef.current = null;
+                    }
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+    }, []);
+
+    // Cleanup cooldown timer on unmount
+    useEffect(() => {
+        return () => {
+            if (cooldownIntervalRef.current) {
+                clearInterval(cooldownIntervalRef.current);
+            }
+        };
+    }, []);
+
+    // Trigger on-demand event recommendations
+    const triggerRecommendations = async (): Promise<RecommendationResponse> => {
+        if (!token) {
+            throw new Error('Not authenticated');
+        }
+
+        // Start the cooldown timer immediately
+        startCooldownTimer();
+        setIsRecommendationLoading(true);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/auth/generate-recommendations`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            const data: RecommendationResponse = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to generate recommendations');
+            }
+
+            // Update user's suggested_event_ids in state
+            if (user) {
+                setUser({
+                    ...user,
+                    suggested_event_ids: data.recommended_event_ids,
+                });
+            }
+
+            return data;
+        } catch (error) {
+            console.error('Error generating recommendations:', error);
+            throw error;
+        } finally {
+            setIsRecommendationLoading(false);
+        }
+    };
+
     // ------- Context Value -------
 
     // value = AuthContextType object to provide to children components
@@ -389,6 +519,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         goingEventIds,
         toggleGoing,
         isEventGoing,
+        triggerRecommendations,
+        isRecommendationLoading,
+        recommendationCooldownRemaining,
     };
 
     // ------- Render -------

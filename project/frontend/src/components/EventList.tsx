@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { Pagination } from "antd";
 import { useEvents } from "../hooks/useEvents";
 import type { EventFetchMode } from "../hooks/useEvents";
 import { useAuth } from "../hooks/useAuth";
@@ -11,6 +12,7 @@ import ShareButton from "./ShareButton";
 import { useNavigate } from "react-router-dom";
 
 import { matchesEvent } from "../utils/search";
+import { PAGINATION } from "../config";
 
 import "./css/EventList.css";
 
@@ -39,6 +41,7 @@ interface EventListProps {
   filterBySubEventMainId?: string;  // Filter to show only the main_event for a sub_event
   providedEvents?: Event[];  // Optionally provide events directly instead of fetching
   searchQuery?: string;  // Optional search query provided by parent
+  enablePagination?: boolean;  // Enable pagination with page controls
 }
 
 export default function EventList({ 
@@ -50,6 +53,7 @@ export default function EventList({
   filterBySubEventMainId,
   providedEvents,
   searchQuery = "",
+  enablePagination = false,
 }: EventListProps) {
 
   // -------------- Initialization --------------
@@ -65,6 +69,10 @@ export default function EventList({
   const { likedEventIds } = useAuth();
 
   const normalizedQuery = searchQuery.trim();
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventsPerPage = PAGINATION.EVENTS_PER_PAGE;
 
   // -------------- Helper Functions --------------
 
@@ -225,6 +233,35 @@ export default function EventList({
     filterBySubEventMainId,
     suggestedEventIds]); // Recompute when any filter/sort criteria change
 
+  // Reset to page 1 when filters change
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [normalizedQuery, sortOption, showLikedOnly, filterByMainEventId, filterBySubEventMainId, suggestedEventIds]);
+
+  // -------------- Pagination --------------
+
+  // Calculate total pages and get events for current page
+  const totalEvents = sortedEvents.length;
+  const totalPages = Math.ceil(totalEvents / eventsPerPage);
+  
+  const paginatedEvents = useMemo(() => {
+    if (!enablePagination) {
+      return sortedEvents;
+    }
+    const startIndex = (currentPage - 1) * eventsPerPage;
+    const endIndex = startIndex + eventsPerPage;
+
+    return sortedEvents.slice(startIndex, endIndex);
+    
+  }, [sortedEvents, currentPage, eventsPerPage, enablePagination]);
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top of event list when page changes
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // -------------- Check for Loading/Error --------------
 
   // Show loading state
@@ -251,14 +288,15 @@ export default function EventList({
     <div className="event-list">
 
       {sortedEvents.length === 0 ? (
-        <p className="event-list-empty">No events received yet.</p>
+        <p className="event-list-empty">No events found.</p>
       ) : ( 
         
         /*
           Render the grid of event cards.
         */
+        <>
         <div className="event-grid">
-          {sortedEvents.map((event) => {
+          {paginatedEvents.map((event) => {
 
             //const dateObj = new Date(event.start_date); 
 
@@ -351,6 +389,22 @@ export default function EventList({
             );
           })}
         </div>
+
+        {/* Pagination controls */}
+        {enablePagination && totalPages > 1 && (
+          <div className="event-list-pagination">
+            <Pagination
+              current={currentPage}
+              total={totalEvents}
+              pageSize={eventsPerPage}
+              onChange={handlePageChange}
+              showSizeChanger={false}
+              showQuickJumper={totalPages > 10}
+              showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} events`}
+            />
+          </div>
+        )}
+        </>
       )}
     </div>
   );

@@ -173,13 +173,13 @@ async def startup_event():
         print(f"Error during initial pipeline run: {e}")
 
     #3) Schedule periodic email downloads and processing
-    scheduler.add_job(
-        run_email_to_db_pipeline,
-        trigger = CronTrigger(hour=EMAIL_PIPELINE_CRON_HOURS),  # every 6 hours
-        kwargs = {"limit": EMAIL_PIPELINE_DEFAULT_LIMIT}, # process up to 15 emails each run
-        id="email_pipeline_job",
-        replace_existing = True,
-    )
+    #scheduler.add_job(
+    #    run_email_to_db_pipeline,
+    #    trigger = CronTrigger(hour=EMAIL_PIPELINE_CRON_HOURS),  # every 6 hours
+    #    kwargs = {"limit": EMAIL_PIPELINE_DEFAULT_LIMIT}, # process up to 15 emails each run
+    #    id="email_pipeline_job",
+    #    replace_existing = True,
+    #)
 
     #4) Start the scheduler
     #scheduler.start()
@@ -360,25 +360,25 @@ async def websocket_events(websocket: WebSocket):
         while True: # Infinite loop to keep the connection open
             message = await websocket.receive_text() # Wait for a message from the client
 
-            # Handle "get_events" or "get_main_events" message - returns main events only
+            # Handle "get_events" or "get_main_events" message - returns non-archived main events only
             if message in ("get_events", "get_main_events"):
                 with SessionLocal() as db:
-                    rows = db.query(MainEventORM).all()
+                    rows = db.query(MainEventORM).filter(MainEventORM.archived_event == False).all()
                     events_payload = [main_event_orm_to_pydantic(event).model_dump() for event in rows]
                 await websocket.send_text(json.dumps(events_payload))
             
-            # Handle "get_sub_events" message - returns sub events only
+            # Handle "get_sub_events" message - returns non-archived sub events only
             elif message == "get_sub_events":
                 with SessionLocal() as db:
-                    rows = db.query(SubEventORM).all()
+                    rows = db.query(SubEventORM).filter(SubEventORM.archived_event == False).all()
                     events_payload = [sub_event_orm_to_pydantic(event).model_dump() for event in rows]
                 await websocket.send_text(json.dumps(events_payload))
             
-            # Handle "get_all_events" message - returns both main and sub events
+            # Handle "get_all_events" message - returns both main and sub events (non-archived only)
             elif message == "get_all_events":
                 with SessionLocal() as db:
-                    main_rows = db.query(MainEventORM).all()
-                    sub_rows = db.query(SubEventORM).all()
+                    main_rows = db.query(MainEventORM).filter(MainEventORM.archived_event == False).all()
+                    sub_rows = db.query(SubEventORM).filter(SubEventORM.archived_event == False).all()
                     events_payload = (
                         [main_event_orm_to_pydantic(e).model_dump() for e in main_rows] +
                         [sub_event_orm_to_pydantic(e).model_dump() for e in sub_rows]

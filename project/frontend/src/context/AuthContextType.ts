@@ -20,7 +20,12 @@ import type { User, LoginRequest, RegisterRequest, UpdateUserRequest } from '../
     - triggerRecommendations: A function to trigger on-demand event recommendations.
     - isRecommendationLoading: A boolean indicating if recommendations are being generated.
     - recommendationCooldownRemaining: Seconds remaining before user can request recommendations again.
+    - theme: The current theme ('light' or 'dark').
+    - toggleTheme: A function to toggle between light and dark themes.
 */
+
+// Theme type definition
+export type Theme = 'light' | 'dark';
 
 // Response from the recommendation API
 export interface RecommendationResponse {
@@ -49,6 +54,8 @@ export interface AuthContextType {
     triggerRecommendations: () => Promise<RecommendationResponse>;  // Trigger on-demand recommendations
     isRecommendationLoading: boolean;  // Whether recommendations are being generated
     recommendationCooldownRemaining: number;  // Seconds remaining in cooldown
+    theme: Theme;  // Current theme ('light' or 'dark')
+    toggleTheme: () => void;  // Toggle between light and dark themes
 }
 
 /*

@@ -87,6 +87,10 @@ def extract_event_info_with_llm(email_text: str) -> dict:
 
     An event is a scheduled occurrence. It is NOT a invitation to participate in a study, survey, or non-event activity.
 
+    There are main events and sub events. Main events are the primary events, while sub events are part of a larger event series. (e.g., 
+    individual talks in a lecture series, workshops in a conference, sessions in a multi-day event).
+    There cannot be a sub event without a main event! 
+    
     II) General RULES:
 
     II.1. Translate any non English text into English, except for names (e.g. building names, street names, institution names)!
@@ -141,8 +145,8 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false. Only return true or false if the email or URL content explicitly mentions registration is required or not required; otherwise return null.
     - URL (String or null): The URL for more information about the event if available.
     - Image_Key (String or null): Choose one of the following image keys to represent the event: [ {image_keys_str} ]. Here are the image key descriptions that you should use to understand what each image key represents: {image_key_descriptions_str}
-    - Event_Type (String, REQUIRED): Must be either "main_event" or "sub_event". Use "main_event" for standalone events or parent events that have sub-events. Use "sub_event" for events that are part of a larger event series (e.g., individual talks in a lecture series, workshops in a conference, sessions in a multi-day event).
-    - Main_Event_Temp_Key (String, REQUIRED): A temporary identifier to link related events. For main_events, generate a unique short key (e.g., "conf2024", "lecture_series_ai"). For sub_events, use the SAME key as their parent main_event so they can be linked together. If an event is a standalone main_event with no sub_events, still provide a unique key.
+    - Event_Type (String, REQUIRED): Must be either "main_event" or "sub_event". Use "main_event" for standalone events or parent events that have sub-events. Use "sub_event" for events that are part of a larger event series (e.g., individual talks in a lecture series, workshops in a conference, sessions in a multi-day event). 
+    - Main_Event_Temp_Key (String, REQUIRED): A temporary identifier to link related events. For main_events, generate a unique short key (e.g., "conf2024", "lecture_series_ai"). For sub_events, use the SAME key as their parent main_event so they can be linked together. If an event is a standalone main_event with no sub_events, still provide a unique key. Sub events must have a corresponding main event with the same Main_Event_Temp_Key.
 
     IV.2. Do NOT wrap in arrays or extra objects.
     IV.3. Do NOT add extra keys.

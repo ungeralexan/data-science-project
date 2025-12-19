@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Pagination } from "antd";
 import { useEvents } from "../hooks/useEvents";
 import type { EventFetchMode } from "../hooks/useEvents";
@@ -35,6 +35,7 @@ import "./css/EventList.css";
 interface EventListProps {
   sortOption: SortOption;
   showLikedOnly?: boolean;
+  showGoingOnly?: boolean;
   suggestedEventIds?: (string | number)[] | null;  // Filter to show only suggested events for user
   fetchMode?: EventFetchMode;  // "main_events" | "all_events" | "sub_events"
   filterByMainEventId?: string;  // Filter sub_events by their parent main_event ID
@@ -47,6 +48,7 @@ interface EventListProps {
 export default function EventList({ 
   sortOption, 
   showLikedOnly = false, 
+  showGoingOnly = false,
   suggestedEventIds,
   fetchMode = "main_events",
   filterByMainEventId,
@@ -66,7 +68,7 @@ export default function EventList({
   const events = providedEvents ?? fetchedEvents;
 
   // Get liked event IDs from auth context (shared across browsers)
-  const { likedEventIds } = useAuth();
+  const { likedEventIds, goingEventIds } = useAuth();
 
   const normalizedQuery = searchQuery.trim();
 
@@ -143,6 +145,12 @@ export default function EventList({
     if (showLikedOnly) {
       const likedSet = new Set(likedEventIds.map(String));
       filteredEvents = filteredEvents.filter(event => likedSet.has(String(event.id)));
+    }
+
+    // Filter events if showGoingOnly is enabled (uses state instead of reading from localStorage)
+    if (showGoingOnly) {
+      const goingSet = new Set(goingEventIds.map(String));
+      filteredEvents = filteredEvents.filter(event => goingSet.has(String(event.id)));
     }
 
     // Creates a copy of filtered events to sort
@@ -229,14 +237,16 @@ export default function EventList({
     sortOption, 
     showLikedOnly, 
     likedEventIds,
+    showGoingOnly,
+    goingEventIds,
     filterByMainEventId, 
     filterBySubEventMainId,
     suggestedEventIds]); // Recompute when any filter/sort criteria change
 
   // Reset to page 1 when filters change
-  useMemo(() => {
+  useEffect(() => {
     setCurrentPage(1);
-  }, [normalizedQuery, sortOption, showLikedOnly, filterByMainEventId, filterBySubEventMainId, suggestedEventIds]);
+  }, [normalizedQuery, sortOption, showLikedOnly, showGoingOnly, filterByMainEventId, filterBySubEventMainId, suggestedEventIds]);
 
   // -------------- Pagination --------------
 
@@ -283,7 +293,6 @@ export default function EventList({
   };
 
   return (
-
     // Container for the event list
     <div className="event-list">
 
@@ -368,6 +377,7 @@ export default function EventList({
                     eventType={event.event_type} 
                     size="small"
                   />
+
                   <GoingButton
                     eventId={event.id}
                     initialGoingCount={event.going_count}
@@ -392,15 +402,18 @@ export default function EventList({
 
         {/* Pagination controls */}
         {enablePagination && totalPages > 1 && (
+
           <div className="event-list-pagination">
+
+            {/* Use Ant Design's light/dark algorithms; colors still come from CSS variables */}
             <Pagination
-              current={currentPage}
-              total={totalEvents}
-              pageSize={eventsPerPage}
-              onChange={handlePageChange}
-              showSizeChanger={false}
-              showQuickJumper={totalPages > 10}
-              showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} events`}
+                current={currentPage}
+                total={totalEvents}
+                pageSize={eventsPerPage}
+                onChange={handlePageChange}
+                showSizeChanger={false}
+                showQuickJumper={totalPages > 10}
+                showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} events`}
             />
           </div>
         )}

@@ -369,7 +369,7 @@ def run_single_user_recommendations(db: Session, user_id: int) -> dict:
     # Step 3: Get recommendations from LLM
     print(f"[run_single_user_recommendations] Calling LLM for user {user_id}...")
     recommendations = recommend_events_with_llm(users_dict, events_dict)
-    
+
     # Step 4: Update user record
     recommended_ids = recommendations.get(user_id, [])
     user.suggested_event_ids = recommended_ids

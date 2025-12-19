@@ -6,6 +6,7 @@ import EventCalendar from '../components/EventCalendar';
 import EventSortControls from "../components/EventSortButton";
 import type { SortOption } from "../components/EventSortButton";
 import LikedFilterButton from "../components/LikedFilterButton";
+import GoingFilterButton from "../components/GoingFilterButton";
 import ViewToggleButton from "../components/ViewToggleButton";
 import SubeventToggleButton from "../components/SubeventToggleButton";
 import { useAuth } from '../hooks/useAuth';
@@ -19,6 +20,9 @@ export default function Events() {
 
   // State to hold whether to show only liked events
   const [showLikedOnly, setShowLikedOnly] = useState<boolean>(false);
+
+  // State to hold whether to show only going events
+  const [showGoingOnly, setShowGoingOnly] = useState<boolean>(false);
 
   // State to toggle between list and calendar views
   const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
@@ -88,6 +92,10 @@ export default function Events() {
           showLikedOnly={showLikedOnly}
           onChange={setShowLikedOnly}
         />
+        <GoingFilterButton
+          showGoingOnly={showGoingOnly}
+          onChange={setShowGoingOnly}
+        />
         <ViewToggleButton
           viewMode={viewMode}
           onToggle={setViewMode}
@@ -112,6 +120,7 @@ export default function Events() {
         <EventList 
           sortOption={sortOption} 
           showLikedOnly={showLikedOnly} 
+          showGoingOnly={showGoingOnly}
           fetchMode={showSubevents ? "all_events" : "main_events"}
           searchQuery={searchQuery}
           enablePagination={true}
@@ -119,6 +128,7 @@ export default function Events() {
       ) : (
         <EventCalendar 
           showLikedOnly={showLikedOnly} 
+          showGoingOnly={showGoingOnly}
           fetchMode={showSubevents ? "all_events" : "main_events"}
         />
       )}

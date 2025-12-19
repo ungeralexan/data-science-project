@@ -1,12 +1,13 @@
 // src/context/AuthContext.tsx
-import { useState, useEffect, useRef, useCallback, useContext } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import type { User, LoginRequest, RegisterRequest, UpdateUserRequest, AuthResponse } from '../types/User';
 import { AuthContext } from './AuthContextType';
-import type { AuthContextType, RecommendationResponse } from './AuthContextType';
-import { ThemeContext } from './ThemeContextType';
-import type { Theme } from './ThemeContextType';
+import type { AuthContextType, RecommendationResponse, Theme } from './AuthContextType';
 import { API_BASE_URL, STORAGE_KEYS, TIMEOUTS } from '../config';
+
+// Theme storage key (from centralized config)
+const THEME_KEY = STORAGE_KEYS.THEME;
 
 /*
     In this file, we implement the AuthProvider component that uses React Context
@@ -62,8 +63,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [recommendationCooldownRemaining, setRecommendationCooldownRemaining] = useState(0);
     const cooldownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-    // Access theme context to sync theme preferences
-    const themeContext = useContext(ThemeContext);
+    // Theme state - initialize from localStorage or default to 'light'
+    const [theme, setThemeState] = useState<Theme>(() => {
+        const stored = localStorage.getItem(THEME_KEY);
+        return (stored === 'dark' || stored === 'light') ? stored : 'light';
+    });
 
     // ------- Startup -------
 
@@ -85,46 +89,49 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     }, []);
 
-    // ------- Theme Sync -------
+    // ------- Theme Management -------
 
-    // Save theme preference to backend helper function
-    const saveThemePreference = useCallback(async (newTheme: Theme): Promise<void> => {
-        if (!token) return;
-        
-        try {
-            await fetch(`${API_BASE_URL}/api/auth/me`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({ theme_preference: newTheme }),
-            });
-        } catch (error) {
-            console.error('Failed to save theme preference:', error);
-        }
-    }, [token]);
-
-    // Sync theme with user data when user changes (login/logout/refresh)
+    // Apply theme class to document body whenever theme changes
     useEffect(() => {
-        if (themeContext) {
-            if (user) {
+        document.body.classList.remove('theme-light', 'theme-dark');
+        document.body.classList.add(`theme-${theme}`);
+        localStorage.setItem(THEME_KEY, theme);
+    }, [theme]);
 
-                // User is logged in - set backend save callback
-                themeContext.setSaveCallback(saveThemePreference);
+    // Sync theme from user data when user logs in
+    useEffect(() => {
+        if (user) {
+            const userTheme = (user.theme_preference === 'dark' || user.theme_preference === 'light') 
+                ? user.theme_preference 
+                : 'light';
+            setThemeState(userTheme as Theme);
+        }
+    }, [user]);
 
-                // User is logged in - sync theme from user data and enable saving
-                const userTheme = (user.theme_preference === 'dark' || user.theme_preference === 'light') 
-                    ? user.theme_preference 
-                    : 'light';
-                    
-                themeContext.setTheme(userTheme as Theme);
-            } else {
-                // User logged out - disable backend saving
-                themeContext.setSaveCallback(null);
+    // Toggle theme and save to backend if logged in
+    const toggleTheme = useCallback(async () => {
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setThemeState(newTheme);
+        
+        // Keep user object in sync immediately to avoid future updates overwriting the theme
+        setUser(prev => prev ? { ...prev, theme_preference: newTheme } : prev);
+        
+        // Save to backend if user is logged in
+        if (token) {
+            try {
+                await fetch(`${API_BASE_URL}/api/auth/me`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ theme_preference: newTheme }),
+                });
+            } catch (error) {
+                console.error('Failed to save theme preference:', error);
             }
         }
-    }, [user, saveThemePreference]);
+    }, [theme, token]);
 
     // ------- Auth Functions -------
 
@@ -509,19 +516,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
         isAuthenticated: !!user && !!token,
         isLoading,
         likedEventIds,
+        goingEventIds,
         login,
         register,
         logout,
         updateUser,
         deleteAccount,
         toggleLike,
-        isEventLiked,
-        goingEventIds,
         toggleGoing,
+        toggleTheme,
+        isEventLiked,
         isEventGoing,
         triggerRecommendations,
         isRecommendationLoading,
         recommendationCooldownRemaining,
+        theme,
     };
 
     // ------- Render -------

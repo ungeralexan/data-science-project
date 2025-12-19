@@ -15,6 +15,7 @@ import "./css/EventCalendar.css";
 // -------- Props Interface --------
 interface EventCalendarProps {
     showLikedOnly?: boolean;
+    showGoingOnly?: boolean;
     suggestedEventIds?: (string | number)[] | null;
     fetchMode?: EventFetchMode;  // "main_events" | "all_events" | "sub_events"
 }
@@ -53,13 +54,13 @@ const TODAY_KEY = dateKey(new Date());
 
 // -------- Component --------
 
-export default function EventCalendar({ showLikedOnly = false, suggestedEventIds, fetchMode = "main_events" }: EventCalendarProps) {
+export default function EventCalendar({ showLikedOnly = false, showGoingOnly = false, suggestedEventIds, fetchMode = "main_events" }: EventCalendarProps) {
 
     // ----- State & Hooks -----
 
     const { events, error, isLoading } = useEvents(fetchMode); // Query events from backend
     const navigate = useNavigate(); // For navigating to event details page
-    const { likedEventIds } = useAuth(); // Get liked event IDs from auth context
+    const { likedEventIds, goingEventIds } = useAuth(); // Get liked/going event IDs from auth context
 
     // State to track the currently displayed month
     const [currentMonth, setCurrentMonth] = useState<Date>(() => {
@@ -83,8 +84,13 @@ export default function EventCalendar({ showLikedOnly = false, suggestedEventIds
             result = result.filter((e) => likedSet.has(String(e.id)));
         }
 
+        if (showGoingOnly) {
+            const goingSet = new Set(goingEventIds.map(String));
+            result = result.filter((e) => goingSet.has(String(e.id)));
+        }
+
         return result;
-    }, [events, showLikedOnly, suggestedEventIds, likedEventIds]);
+    }, [events, showLikedOnly, showGoingOnly, suggestedEventIds, likedEventIds, goingEventIds]);
 
     // Group events by date key for quick lookup
     const eventsByDate = useMemo(() => {

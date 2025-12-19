@@ -173,13 +173,13 @@ async def startup_event():
         print(f"Error during initial pipeline run: {e}")
 
     #3) Schedule periodic email downloads and processing
-    #scheduler.add_job(
-    #    run_email_to_db_pipeline,
-    #    trigger = CronTrigger(hour=EMAIL_PIPELINE_CRON_HOURS),  # every 6 hours
-    #    kwargs = {"limit": EMAIL_PIPELINE_DEFAULT_LIMIT}, # process up to 15 emails each run
-    #    id="email_pipeline_job",
-    #    replace_existing = True,
-    #)
+    scheduler.add_job(
+        run_email_to_db_pipeline,
+        trigger = CronTrigger(hour=EMAIL_PIPELINE_CRON_HOURS),  # every 6 hours
+        kwargs = {"limit": EMAIL_PIPELINE_DEFAULT_LIMIT}, # process up to 15 emails each run
+        id="email_pipeline_job",
+        replace_existing = True,
+    )
 
     #4) Start the scheduler
     #scheduler.start()

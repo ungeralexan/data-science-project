@@ -12,6 +12,8 @@ from data.database.database_events import SessionLocal, UserORM, UserLikeORM, Ma
 from services.email_service import send_password_reset_email  # pylint: disable=import-error
 from services.event_recommender import run_single_user_recommendations  # pylint: disable=import-error
 
+from config import DEFAULT_THEME # pylint: disable=import-error
+
 from .models import (
     UserCreate,
     UserLogin,
@@ -69,7 +71,7 @@ async def register(user_data: UserCreate):
                 last_name=user_data.last_name,
                 interest_keys=user_data.interest_keys,
                 interest_text=user_data.interest_text or "",
-                theme_preference=user_data.theme_preference or "light",
+                theme_preference=user_data.theme_preference or DEFAULT_THEME,
             )
 
             db.add(new_user)

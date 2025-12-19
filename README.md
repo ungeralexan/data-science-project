@@ -161,15 +161,13 @@ data-science-project/
             │       └── WelcomePopup.css
             │
             ├── context/            # React Context for state management
-            │   ├── AuthContext.tsx     # Authentication provider with recommendation state
-            │   ├── AuthContextType.ts
-            │   ├── ThemeContext.tsx    # Dark mode provider with backend sync
-            │   └── ThemeContextType.ts
+            │   ├── AuthContext.tsx     # Authentication provider with theme and recommendation state
+            │   └── AuthContextType.ts
             │
             ├── hooks/              # Custom React hooks
             │   ├── useAuth.ts      # Auth hook
             │   ├── useEvents.ts    # WebSocket events hook
-            │   └── useTheme.ts     # Theme hook
+            │   └── useTheme.ts     # Theme hook (accesses theme from AuthContext)
             │
             ├── types/              # TypeScript interfaces
             │   ├── User.ts

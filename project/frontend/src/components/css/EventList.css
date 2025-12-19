@@ -401,35 +401,6 @@
   border-top: 1px solid var(--border-color);
 }
 
-/* 
-  Override Ant Design pagination styling for dark mode support.
-  Ensures buttons and text adapt to the current theme.
-*/
-.event-list-pagination .ant-pagination-item,
-.event-list-pagination .ant-pagination-prev,
-.event-list-pagination .ant-pagination-next {
-  background: var(--card-bg);
-  border-color: var(--border-color);
-}
-
-.event-list-pagination .ant-pagination-item a,
-.event-list-pagination .ant-pagination-item-link {
-  color: var(--text-primary);
-}
-
-.event-list-pagination .ant-pagination-item-active {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-}
-
-.event-list-pagination .ant-pagination-item-active a {
-  color: white;
-}
-
-.event-list-pagination .ant-pagination-total-text {
-  color: var(--text-secondary);
-}
-
 /* Mobile: stack pagination elements if needed */
 @media (max-width: 576px) {
   .event-list-pagination {

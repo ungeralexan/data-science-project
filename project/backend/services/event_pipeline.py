@@ -26,7 +26,7 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
 
     # 2) Downloads latest emails
     print("[pipeline] Downloading latest emails...")
-    #download_latest_emails(limit=limit)
+    download_latest_emails(limit=limit)
 
     # 3) Reads combined text file
     all_emails_path = Path(outdir) / "all_emails.txt"

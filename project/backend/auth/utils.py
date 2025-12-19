@@ -11,6 +11,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from data.database.database_events import SessionLocal, UserORM  # pylint: disable=import-error
 from config import (  # pylint: disable=import-error
+    DEFAULT_THEME,
     JWT_SECRET_KEY,
     JWT_ALGORITHM,
     ACCESS_TOKEN_EXPIRE_DAYS,
@@ -134,7 +135,7 @@ def user_orm_to_response(user: UserORM) -> UserResponse:
         interest_keys=user.interest_keys,
         interest_text=user.interest_text,
         suggested_event_ids=user.suggested_event_ids,
-        theme_preference=user.theme_preference or "light",
+        theme_preference=user.theme_preference or DEFAULT_THEME,
     )
 
 

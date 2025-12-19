@@ -2,6 +2,9 @@
 Centralized configuration for the backend application.
 All settings and parameters (except secrets) are defined here.
 """
+# ----- General Configuration -----
+
+DEFAULT_THEME = "light"
 
 # ----- Database Configuration -----
 DATABASE_URL = "sqlite:///./data/database/tuevent_database.db"

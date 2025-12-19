@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, JSON, Forei
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 import uuid
 
-from config import DATABASE_URL  # pylint: disable=import-error
+from config import DATABASE_URL, DEFAULT_THEME  # pylint: disable=import-error
 
 #
 #   This file sets up the database connection and defines ORM models for events and users.
@@ -136,7 +136,7 @@ class UserORM(Base):
     interest_keys = Column(JSON, nullable=True)  # List of interest keywords
     interest_text = Column(Text, nullable=True)  # Free-form interest description
     suggested_event_ids = Column(JSON, nullable=True)  # List of suggested main_event IDs
-    theme_preference = Column(String, nullable=False, default="light")  # User's theme preference: 'light' or 'dark'
+    theme_preference = Column(String, nullable=False, default = DEFAULT_THEME)  # User's theme preference: 'light' or 'dark'
 
     # Relationship to liked events - cascade delete when user is deleted
     liked_events = relationship("UserLikeORM", back_populates="user", cascade="all, delete-orphan", passive_deletes=True)

@@ -4,7 +4,7 @@
   This file defines CSS custom properties (variables) for light and dark themes.
   These variables are used throughout all component CSS files to enable 
   consistent theming. The theme is toggled by adding 'theme-light' or 
-  'theme-dark' class to the body element (managed by ThemeContext.tsx).
+  'theme-dark' class to the body element (managed by AuthContext.tsx).
   
   USAGE: Reference these variables in other CSS files like:
     background-color: var(--bg-primary);
@@ -80,7 +80,6 @@ body.theme-dark {
   --shadow-color: rgba(0, 0, 0, 0.3);         /* Box shadows (stronger in dark) */
   
   /* Accent colors - slightly lighter for dark backgrounds */
- /* --accent-color: #60a5fa;  */                  /* Primary blue (softer) */
   --accent-color: #60a5fa;
   --accent-hover: #93c5fd;                    /* Hover state blue */
   
@@ -97,5 +96,4 @@ body.theme-dark {
 
   /* Overlay for modals/popups (slightly stronger in dark mode) */
   --overlay-bg: rgba(0, 0, 0, 0.65);
-
 }

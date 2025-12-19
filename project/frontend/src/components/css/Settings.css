@@ -82,5 +82,7 @@
 */
 .ant-btn-primary:disabled,
 .ant-btn-primary[disabled] {
-  color: white !important;                    /* White text on disabled primary button */
+  color: var(--text-primary);                   /* White text on disabled primary button */
+  background-color: var(--error-color);
+  border-color: var(--error-color);
 }

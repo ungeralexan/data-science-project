@@ -1,5 +1,5 @@
 // src/pages/Settings.tsx
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { Typography, Form, Input, Button, Card, Space, Divider, Select, App, Switch } from 'antd';
 import { MailOutlined, LockOutlined, UserOutlined, ExclamationCircleOutlined, BulbOutlined } from '@ant-design/icons';
@@ -67,22 +67,6 @@ function SettingsContent() {
     const [passwordForm] = Form.useForm();
     const [interestsForm] = Form.useForm();
 
-    // Update form values when user changes (fixes stale data after navigation)
-    useEffect(() => {
-        if (user) {
-            profileForm.setFieldsValue({
-                first_name: user.first_name || '',
-                last_name: user.last_name || '',
-                email: user.email || '',
-            });
-
-            interestsForm.setFieldsValue({
-                interest_keys: user.interest_keys || [],
-                interest_text: user.interest_text || '',
-            });
-        }
-    }, [user, profileForm, interestsForm]);
-
     // ----- Functions -----
 
     // Handle profile update
@@ -96,6 +80,12 @@ function SettingsContent() {
                 last_name: values.last_name,
                 email: values.email,
             });
+
+            if (user) {
+                user.first_name = values.first_name;
+                user.last_name = values.last_name;
+                user.email = values.email;
+            }
 
             messageApi.success('Profile updated successfully!');
         } catch (error) {
@@ -136,6 +126,11 @@ function SettingsContent() {
                 interest_text: values.interest_text || '',
             });
 
+            if (user) {
+                user.interest_keys = values.interest_keys || [];
+                user.interest_text = values.interest_text || '';
+            }
+
             messageApi.success('Interests updated successfully!');
             
             // Trigger on-demand event recommendations
@@ -146,6 +141,7 @@ function SettingsContent() {
                 messageApi.success('Event recommendations updated!');
             } catch (recError) {
                 console.error('Error generating recommendations:', recError);
+                
                 messageApi.warning('Could not generate recommendations. Please try again later.');
             }
         } catch (error) {

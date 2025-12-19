@@ -52,6 +52,6 @@
         "RECOMMENDATION_COOLDOWN_MS": 30000
     },
     "PAGINATION": {
-        "EVENTS_PER_PAGE": 2
+        "EVENTS_PER_PAGE": 20
     }
 }

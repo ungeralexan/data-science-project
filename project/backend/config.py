@@ -54,7 +54,10 @@ RECOMMENDATION_LLM_MODEL = "gpt-oss-120b:free"
 
 # Image keys for event categorization, with optional descriptions (can be empty).
 IMAGE_KEY_DESCRIPTIONS = {
-    "ai": "Events centered on artificial intelligence, innovation, or tech developments.",
+    # --- Tech / Data (topic) ---
+    "ai": "Use for applied AI/GenAI, AI products, AI innovation/strategy, AI ethics/policy (non-technical). Prefer ai over machine_learning when the focus is applications/impact rather than methods.",
+    "machine_learning": "Use for technical ML/DL methods: model training, architectures, algorithms, evaluation, ML research/coding.Exclude general AI innovation/product talks -> use ai. Prefer machine_learning over data_science when predictive modeling is central.",
+    "data_science": "Use for analytics & data workflows: statistics, EDA, visualization, data pipelines, dashboards, Python/R analytics. Prefer data_science over ai when the event is about data analysis rather than AI applications.",
     "art_workshop": "Workshops involving creative activities like painting, drawing, or crafting.",
     "blood_donation": "Blood donation drives or health-related volunteer events.",
     "buddy": "Buddy program meetups that connect international and local students.",
@@ -66,12 +69,11 @@ IMAGE_KEY_DESCRIPTIONS = {
     "concert_event": "Concerts, live music performances, or musical gatherings.",
     "consulting_event": "Consulting-related events, workshops, or company sessions.",
     "cultural_exchange": "Events focused on international meetups, cultural sharing, or global community activities.",
-    "data_science": "Data science lectures, workshops, or analytics-related academic events.",
     "daad": "Events related to DAAD programs, scholarships, or studying abroad.",
     "debate": "Academic debates, discussion rounds, or argumentation-focused events.",
     "erasmus": "Events related to Erasmus exchanges, international mobility, or study-abroad programs.",
     "festival": "General festival that is not related to Tuebingen.",
-    "festival_tuebingen": "Local Tuebingen festivals, city celebrations, or public cultural events.",
+    "festival_tuebingen": "Event type: local festival in Tübingen. Use only if the festival is explicitly located in Tübingen or branded as a Tübingen city/university festival",
     "film_screening": "Movie nights, film screenings, or cinema-related events.",
     "finance_event": "Events related to finance, investing, economics, or industry talks.",
     "german_course": "German language classes, language cafés, or linguistic workshops.",
@@ -81,7 +83,6 @@ IMAGE_KEY_DESCRIPTIONS = {
     "language_course": "Language learning courses or language-focused workshops.",
     "lecture_talk": "Lectures, talks, or keynote presentations by experts or professors.",
     "library": "Library-related events, study sessions, or academic resource introductions.",
-    "machine_learning": "Events about machine learning topics, courses, research talks, or tech workshops.",
     "max_plank": "Events hosted by or connected to the Max Planck Institute.",
     "museum": "Museum visits, guided tours, or cultural exhibitions.",
     "networking": "Networking events where participants meet, connect, and exchange professional contacts.",

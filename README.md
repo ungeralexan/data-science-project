@@ -311,10 +311,21 @@ Basic automated tests (unit and integration) are planned for:
 - Email pipeline components (parsing, filtering, extraction, deduplication)
 - Frontend components (critical pages like Events and Profile)
 
-> **Work in progress:** As of now, only manual end-to-end tests have been performed.  
-> See future updates in the `tests/` directory for more details.
 
+### LLM Extraction Quality Evaluation (offline benchmark)
 
+In addition to traditional unit/integration tests, we run an **offline evaluation benchmark** to measure the quality of the LLM-based event extraction (Gemini) from raw university emails.
+
+**Goal:** Verify whether the structured event data written to the database is  
+1) **correct** (no contradictions vs. email), and  
+2) **complete** (no missing fields that were clearly present),  
+and quantify systematic weaknesses to improve prompts.
+
+We create a fixed snapshot of **150–200 emails** and store inputs + outputs to ensure reproducibility:
+
+- Raw emails (plain text export)
+- Gemini extraction output (structured JSON)
+- Optional: database row representation (if persisted)
 
 
 

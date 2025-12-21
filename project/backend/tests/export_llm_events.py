@@ -69,12 +69,24 @@ def save_events_to_excel(events: List[Dict[str, Any]], timestamp: str) -> Path:
         "End_Date",
         "Start_Time",
         "End_Time",
-        "Location",
-        "Organizer",
-        "Speaker",
         "Description",
+        "Location",
+        "Street",
+        "House_Number",
+        "Zip_Code",
+        "City",
+        "Country",
+        "Room",
+        "Floor",
+        "Speaker",
+        "Organizer",
+        "Registration_Needed",
+        "URL",
         "Image_Key",
+        "Event_Type",
+        "Main_Event_Temp_Key",
     ]
+
     ws.append(headers)
 
     for idx, ev in enumerate(events, start=1):
@@ -85,11 +97,22 @@ def save_events_to_excel(events: List[Dict[str, Any]], timestamp: str) -> Path:
             ev.get("End_Date", ""),
             ev.get("Start_Time", ""),
             ev.get("End_Time", ""),
-            ev.get("Location", ""),
-            ev.get("Organizer", ""),
-            ev.get("Speaker", ""),
             ev.get("Description", ""),
+            ev.get("Location", ""),
+            ev.get("Street", ""),
+            ev.get("House_Number", ""),
+            ev.get("Zip_Code", ""),
+            ev.get("City", ""),
+            ev.get("Country", ""),
+            ev.get("Room", ""),
+            ev.get("Floor", ""),
+            ev.get("Speaker", ""),
+            ev.get("Organizer", ""),
+            ev.get("Registration_Needed", ""),
+            ev.get("URL", ""),
             ev.get("Image_Key", ""),
+            ev.get("Event_Type", ""),
+            ev.get("Main_Event_Temp_Key", ""),
         ])
 
     for col_idx, column_title in enumerate(headers, start=1):
@@ -117,6 +140,14 @@ def main():
     args = parser.parse_args()
 
     all_emails = load_all_emails_text(limit=args.limit)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+
+    # Save the exact raw input used for this extraction run (private)
+    raw_path = LOCAL_EVAL_DIR / f"all_emails_{timestamp}.txt"
+    raw_path.write_text(all_emails, encoding="utf-8")
+    print(f"[eval] Raw input saved: {raw_path}")
+
 
     print("[eval] Running LLM extraction...")
     events = extract_event_info_with_llm(all_emails)
@@ -125,7 +156,7 @@ def main():
         print("[eval] ERROR: LLM returned non-list structure")
         return
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
 
     # Always save JSON locally (gitignored)
     save_events_to_json(events, timestamp=timestamp)

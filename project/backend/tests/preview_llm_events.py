@@ -1,21 +1,3 @@
-"""
-Manual preview of LLM-based event extraction.
-
-This script:
-  1) downloads the latest emails (using the existing IMAP code),
-  2) reads the combined all_emails.txt,
-  3) runs extract_event_info_with_llm,
-  4) prints a human-readable summary of each extracted event.
-
-It does NOT:
-  - write anything to the database,
-  - run the full pipeline,
-  - change Docker behavior.
-
-Usage (from project/backend):
-
-    python -m tests.preview_llm_events
-"""
 
 from pathlib import Path
 from typing import List, Dict, Any

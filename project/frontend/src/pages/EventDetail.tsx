@@ -313,12 +313,11 @@ export default function EventDetail() {
       {/* If this is a main_event, show its sub_events list */}
       {isMainEvent && subEvents.length > 0 && (
         <div className="event-detail-subevents">
-          <Title level={4} className="event-detail-subevent-section">Sub Events</Title>
+          <Title level={4} className="event-detail-subevent-section">More dates</Title>
           <EventList
             sortOption="date-asc"
-            fetchMode="all_events"
             providedEvents={subEvents}
-            filterByMainEventId={event.id}
+            enablePagination={false}
           />
         </div>
       )}
@@ -327,7 +326,7 @@ export default function EventDetail() {
       {isSubEvent && parentMainEvent && (
         <div className="event-detail-parent">
 
-          <Title level={4} className="event-detail-subevent-section">Parent Event</Title>
+          <Title level={4} className="event-detail-subevent-section">Main event</Title>
 
           <EventList
             sortOption="date-asc"

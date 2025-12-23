@@ -331,11 +331,7 @@ export default function EventList({
             const hasSubEvents = event.event_type === "main_event" && Array.isArray(event.sub_event_ids) && event.sub_event_ids.length > 0;
             const hasParentEvent = event.event_type === "sub_event" && Boolean(event.main_event_id);
 
-            const relationLabel = hasSubEvents
-              ? "Has multiple dates"
-              : hasParentEvent
-                ? "This is a sub-event"
-                : null;
+            const relationLabel = hasSubEvents ? "Multiple dates" : null;
             
             /*
               Render individual event card with image, title, date/time, location, and description.

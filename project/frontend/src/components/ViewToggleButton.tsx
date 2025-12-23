@@ -15,7 +15,7 @@ export default function ViewToggleButton({ viewMode, onToggle, iconOnly = false}
 
   const isCalendar = viewMode === "calendar";
 
-  const label = isCalendar ? "Showing Calendar View" : "Show Calendar View";
+  const label = isCalendar ? "List View" : "Calendar View";
 
   return (
     <Button

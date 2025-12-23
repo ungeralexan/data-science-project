@@ -33,6 +33,17 @@
   color: var(--text-primary);                 /* Theme-aware text */
 }
 
+/* Loading state for recommendations - centered content */
+.event-list-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  min-height: 150px;
+}
+
 /* =========================================================================
    SEARCH BAR
    ========================================================================= */

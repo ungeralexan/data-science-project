@@ -43,7 +43,7 @@ export default function Events() {
     <div className="events-page">
 
       {userExists ? (
-        <Title level={2}>Hi {user.first_name}! Here are your event recommendations</Title>
+        <Title level={2}>Hi {user.first_name}! Event recommendations for you</Title>
       ) : null }
 
       {userExists ? (

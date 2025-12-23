@@ -78,36 +78,38 @@ export default function ForgotPassword() {
                     //Alternative to submitted state
                     ) : (
                         <>
-                            <Form
-                                name="forgot-password"
-                                onFinish={onFinish}
-                                layout="vertical"
-                                size="large"
-                            >
-                                <Form.Item
-                                    name="email"
-                                    rules={[
-                                        { required: true, message: 'Please enter your email' },
-                                        { type: 'email', message: 'Please enter a valid email' },
-                                    ]}
+                            <div className="auth-form-wrap">
+                                <Form
+                                    name="forgot-password"
+                                    onFinish={onFinish}
+                                    layout="vertical"
+                                    size="large"
                                 >
-                                    <Input
-                                        prefix={<MailOutlined />}
-                                        placeholder="Email"
-                                    />
-                                </Form.Item>
-
-                                <Form.Item>
-                                    <Button
-                                        type="primary"
-                                        htmlType="submit"
-                                        loading={loading}
-                                        block
+                                    <Form.Item
+                                        name="email"
+                                        rules={[
+                                            { required: true, message: 'Please enter your email' },
+                                            { type: 'email', message: 'Please enter a valid email' },
+                                        ]}
                                     >
-                                        Send Reset Link
-                                    </Button>
-                                </Form.Item>
-                            </Form>
+                                        <Input
+                                            prefix={<MailOutlined />}
+                                            placeholder="Email"
+                                        />
+                                    </Form.Item>
+
+                                    <Form.Item>
+                                        <Button
+                                            type="primary"
+                                            htmlType="submit"
+                                            loading={loading}
+                                            block
+                                        >
+                                            Send Reset Link
+                                        </Button>
+                                    </Form.Item>
+                                </Form>
+                            </div>
 
                             <div className="auth-text-center">
                                 <Text type="secondary">

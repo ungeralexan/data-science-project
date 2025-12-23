@@ -76,62 +76,64 @@ export default function Login() {
             <Card className="auth-card">
                 <Space direction="vertical" size="large" className="auth-space-full-width">
                     <div className="auth-text-center">
-                        <Title level={2} className="auth-title">Welcome to Tuevent</Title>
+                        <Title level={2} className="auth-title">Welcome to tuevent!</Title>
                         <Text type="secondary">Sign in to your account</Text>
                     </div>
 
                     {/* Login form */}
-                    <Form
-                        name="login"
-                        onFinish={onFinish} // onFinish is called when the form is submitted
-                        layout="vertical"
-                        size="large"
-                    >
-                        <Form.Item
-                            name="email"
-                            rules={[
-                                { required: true, message: 'Please enter your email' },
-                                { type: 'email', message: 'Please enter a valid email' },
-                            ]}
+                    <div className="auth-form-wrap">
+                        <Form
+                            name="login"
+                            onFinish={onFinish} // onFinish is called when the form is submitted
+                            layout="vertical"
+                            size="large"
                         >
-                            <Input
-                                prefix={<MailOutlined />}
-                                placeholder="Email"
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="password"
-                            rules={[
-                                { required: true, message: 'Please enter your password' },
-                            ]}
-                        >
-                            <Input.Password
-                                prefix={<LockOutlined />}
-                                placeholder="Password"
-                            />
-                        </Form.Item>
-
-                        <Form.Item>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                loading={loading}
-                                block // Makes the button take the full width of its container
+                            <Form.Item
+                                name="email"
+                                rules={[
+                                    { required: true, message: 'Please enter your email' },
+                                    { type: 'email', message: 'Please enter a valid email' },
+                                ]}
                             >
-                                Sign In
-                            </Button>
-                        </Form.Item>
+                                <Input
+                                    prefix={<MailOutlined />}
+                                    placeholder="Email"
+                                />
+                            </Form.Item>
 
-                        {/* Forgot password link */}
-                        <Form.Item className="auth-form-item-no-margin">
-                            <Link to="/forgot-password">
-                                <Button type="link" className="auth-link-button">
-                                    Forgot your password?
+                            <Form.Item
+                                name="password"
+                                rules={[
+                                    { required: true, message: 'Please enter your password' },
+                                ]}
+                            >
+                                <Input.Password
+                                    prefix={<LockOutlined />}
+                                    placeholder="Password"
+                                />
+                            </Form.Item>
+
+                            <Form.Item>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    loading={loading}
+                                    block // Makes the button take the full width of its container
+                                >
+                                    Sign In
                                 </Button>
-                            </Link>
-                        </Form.Item>
-                    </Form>
+                            </Form.Item>
+
+                            {/* Forgot password link */}
+                            <Form.Item className="auth-form-item-no-margin">
+                                <Link to="/forgot-password">
+                                    <Button type="link" className="auth-link-button">
+                                        Forgot your password?
+                                    </Button>
+                                </Link>
+                            </Form.Item>
+                        </Form>
+                    </div>
 
                     <div className="auth-text-center">
                         <Text type="secondary">

@@ -44,7 +44,7 @@
   Uses Ant Design Card component with custom shadow styling.
 */
 .auth-card {
-  width: 400px;                               /* Fixed width for consistency */
+  width: min(92vw, 420px);                               /* Fixed width for consistency */
   box-shadow: 0 4px 12px var(--shadow-color); /* Theme-aware shadow */
   background: var(--card-bg);                 /* Theme-aware background */
   border-color: var(--border-color);          /* Theme-aware border */
@@ -74,9 +74,28 @@
 /* Removes bottom margin from form items (used for dense layouts) */
 .auth-form-item-no-margin {
   margin-bottom: 0;
+  text-align: center;
 }
 
 /* Removes padding from link buttons for inline text appearance */
 .auth-link-button {
   padding: 0;
+}
+
+/* Limit form width inside card (desktop comfort) */
+.auth-form-wrap {
+  max-width: 420px;   /* sweet spot for forms */
+  margin: 0 auto;     /* center inside card */
+}
+
+.auth-interests-hint {
+  text-align: center;
+  margin-bottom: 38px;
+}
+
+
+@media (min-width: 992px) {
+  .auth-card {
+    width: 600px;            
+  }
 }

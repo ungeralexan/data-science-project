@@ -74,147 +74,154 @@ export default function Register() {
                         <Text type="secondary">Sign up for a new account</Text>
                     </div>
 
-                    <Form
-                        name="register"
-                        onFinish={onFinish}
-                        layout="vertical"
-                        size="large"
-                    >
-                        <Form.Item
-                            name="first_name"
-                            rules={[
-                                { required: true, message: 'Please enter your first name' },
-                            ]}
+                    <div className="auth-form-wrap">
+                        <Form
+                            name="register"
+                            onFinish={onFinish}
+                            layout="vertical"
+                            size="large"
                         >
-                            <Input
-                                prefix={<UserOutlined />}
-                                placeholder="First Name"
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="last_name"
-                            rules={[
-                                { required: true, message: 'Please enter your last name' },
-                            ]}
-                        >
-                            <Input
-                                prefix={<UserOutlined />}
-                                placeholder="Last Name"
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="email"
-                            rules={[
-                                { required: true, message: 'Please enter your email' },
-                                { type: 'email', message: 'Please enter a valid email' },
-                            ]}
-                        >
-                            <Input
-                                prefix={<MailOutlined />}
-                                placeholder="Email"
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="password" //Name of form
-                            rules={[
-                                { required: true, message: 'Please enter your password' },
-                                { min: 6, message: 'Password must be at least 6 characters' },
-                            ]}
-                        >
-                            <Input.Password
-                                prefix={<LockOutlined />}
-                                placeholder="Password"
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="confirmPassword"
-                            dependencies={['password']}
-                            rules={[
-                                { required: true, message: 'Please confirm your password' },
-
-                                /*
-                                    Validator to check if passwords match
-
-                                    getFieldValue is provided by Ant Design to get 
-                                    the value of other fields
-
-                                    validator() is provided by Ant Design to define
-                                    custom validation logic
-                                */
-                                ({ getFieldValue }) => ({
-
-                                    // Syntax: validator(_rule, value)
-
-                                    validator(_, value) {
-
-                                        //getFieldValue() takes the name of the field as argument
-                                        if (!value || getFieldValue('password') === value) {
-
-                                            //Promise.resolve() indicates validation success
-                                            return Promise.resolve();
-                                        }
-
-                                        return Promise.reject(new Error('Passwords do not match'));
-                                    },
-                                }),
-                            ]}
-                        >
-                            <Input.Password
-                                prefix={<LockOutlined />}
-                                placeholder="Confirm Password"
-                            />
-                        </Form.Item>
-
-                        <Divider>Your Interests</Divider>
-                        
-                        <Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
-                            Select your interests to receive personalized event recommendations. You can change these later in Settings.
-                        </Text>
-
-                        <Form.Item
-                            name="interest_keys"
-                            label="Interest Keywords"
-                            rules={[
-                                { required: true, message: 'Please select at least one interest' },
-                                { type: 'array', min: 1, message: 'Please select at least one interest' },
-                            ]}
-                        >
-                            <Select
-                                mode="multiple"
-                                placeholder="Select your interests"
-                                options={POSSIBLE_INTEREST_KEYWORDS.map(keyword => ({ 
-                                    label: keyword, 
-                                    value: keyword 
-                                }))}
-                                allowClear
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="interest_text"
-                            label="Additional Interests (Optional)"
-                        >
-                            <Input.TextArea 
-                                rows={3} 
-                                placeholder="Describe any additional interests not covered above..." 
-                            />
-                        </Form.Item>
-
-                        <Form.Item>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                loading={loading}
-                                block
+                            <Form.Item
+                                name="first_name"
+                                rules={[
+                                    { required: true, message: 'Please enter your first name' },
+                                ]}
                             >
-                                Sign Up
-                            </Button>
-                        </Form.Item>
-                    </Form>
+                                <Input
+                                    prefix={<UserOutlined />}
+                                    placeholder="First Name"
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="last_name"
+                                rules={[
+                                    { required: true, message: 'Please enter your last name' },
+                                ]}
+                            >
+                                <Input
+                                    prefix={<UserOutlined />}
+                                    placeholder="Last Name"
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="email"
+                                rules={[
+                                    { required: true, message: 'Please enter your email' },
+                                    { type: 'email', message: 'Please enter a valid email' },
+                                ]}
+                            >
+                                <Input
+                                    prefix={<MailOutlined />}
+                                    placeholder="Email"
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="password" //Name of form
+                                rules={[
+                                    { required: true, message: 'Please enter your password' },
+                                    { min: 6, message: 'Password must be at least 6 characters' },
+                                ]}
+                            >
+                                <Input.Password
+                                    prefix={<LockOutlined />}
+                                    placeholder="Password"
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="confirmPassword"
+                                dependencies={['password']}
+                                rules={[
+                                    { required: true, message: 'Please confirm your password' },
+
+                                    /*
+                                        Validator to check if passwords match
+
+                                        getFieldValue is provided by Ant Design to get 
+                                        the value of other fields
+
+                                        validator() is provided by Ant Design to define
+                                        custom validation logic
+                                    */
+                                    ({ getFieldValue }) => ({
+
+                                        // Syntax: validator(_rule, value)
+
+                                        validator(_, value) {
+
+                                            //getFieldValue() takes the name of the field as argument
+                                            if (!value || getFieldValue('password') === value) {
+
+                                                //Promise.resolve() indicates validation success
+                                                return Promise.resolve();
+                                            }
+
+                                            return Promise.reject(new Error('Passwords do not match'));
+                                        },
+                                    }),
+                                ]}
+                            >
+                                <Input.Password
+                                    prefix={<LockOutlined />}
+                                    placeholder="Confirm Password"
+                                />
+                            </Form.Item>
+
+                            <Divider>Your Interests</Divider>
+                            
+                            <div className="auth-form-wrap">
+                                <Text
+                                    type="secondary"
+                                    className="auth-interests-hint"
+                                >
+                                    Select your interests to receive personalized event recommendations. You can change these later in Settings.
+                                </Text>
+                            </div>
+
+                            <Form.Item
+                                name="interest_keys"
+                                label="Interest Keywords"
+                                rules={[
+                                    { required: true, message: 'Please select at least one interest' },
+                                    { type: 'array', min: 1, message: 'Please select at least one interest' },
+                                ]}
+                            >
+                                <Select
+                                    mode="multiple"
+                                    placeholder="Select your interests"
+                                    options={POSSIBLE_INTEREST_KEYWORDS.map(keyword => ({ 
+                                        label: keyword, 
+                                        value: keyword 
+                                    }))}
+                                    allowClear
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="interest_text"
+                                label="Additional Interests (Optional)"
+                            >
+                                <Input.TextArea 
+                                    rows={3} 
+                                    placeholder="Describe any additional interests not covered above..." 
+                                />
+                            </Form.Item>
+
+                            <Form.Item>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    loading={loading}
+                                    block
+                                >
+                                    Sign Up
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </div>
 
                     <div className="auth-text-center">
                         <Text type="secondary">

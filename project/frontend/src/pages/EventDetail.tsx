@@ -233,16 +233,7 @@ export default function EventDetail() {
               ) : (
                 <Text type="secondary">No information available</Text>
               )}
-
-              <span className="event-detail-separator">•</span>
-
-              <Text strong>Floor:</Text>
-              {event.floor ? (
-                <span>{event.floor}</span>
-              ) : (
-                <Text type="secondary">No information available</Text>
-              )}
-             </div>
+            </div>
 
             <div className="event-detail-meta-row">
               <TeamOutlined className="event-detail-icon event-detail-icon--organizer" />

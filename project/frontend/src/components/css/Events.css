@@ -75,7 +75,7 @@
 .events-page-controls {
   display: flex;                              /* Horizontal layout */
   gap: 16px;                                  /* Space between control elements */
-  align-items: center;                        /* Vertically align controls */
+  align-items center;                        /* Vertically align controls */
   flex-wrap: wrap;                            /* Wrap to next line on small screens */
   margin-bottom: 6px;                        /* Space before event content */
 }

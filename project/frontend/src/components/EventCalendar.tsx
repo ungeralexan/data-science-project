@@ -1,12 +1,14 @@
 // src/components/EventCalendar.tsx
 import { useMemo, useState } from "react";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { LeftOutlined, LoadingOutlined, RightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEvents } from "../hooks/useEvents";
 import type { EventFetchMode } from "../hooks/useEvents";
 import { useAuth } from "../hooks/useAuth";
 import type { Event } from "../types/Event";
 import "./css/EventCalendar.css";
+import Paragraph from "antd/es/typography/Paragraph";
+import Spin from "antd/es/spin";
 
 /*
     This file defines the EventCalendar component, which displays events in a monthly calendar view.
@@ -213,7 +215,14 @@ export default function EventCalendar({ showLikedOnly = false, showGoingOnly = f
     const monthLabel = currentMonth.toLocaleString(undefined, { month: "long", year: "numeric" });
 
     if (isLoading) {
-        return <div className="event-calendar">Loading calendar...</div>;
+        return (
+        <div className="event-list-loading">
+            <Spin indicator={<LoadingOutlined spin />} size="large" />
+            <Paragraph type="secondary" style={{ marginTop: 16 }}>
+                Calendar View will appear momentarily...
+            </Paragraph>
+        </div>
+        );
     }
 
     if (error) {

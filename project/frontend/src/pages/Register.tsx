@@ -37,6 +37,8 @@ export default function Register() {
 
     // State to manage loading state during registration process
     const [loading, setLoading] = useState(false);
+    const [submitButtonText, setSubmitButtonText] = useState("Sign Up");
+
     const { register } = useAuth();
     const navigate = useNavigate();
 
@@ -45,7 +47,12 @@ export default function Register() {
     const onFinish = async (values: RegisterFormValues) => {
 
         setLoading(true);
+
         try {
+
+            messageApi.success("We are now generating your event recommendations. This might take a moment ...");
+            setSubmitButtonText("Creating your account ...");
+
             await register({
                 email: values.email,
                 password: values.password,
@@ -55,12 +62,14 @@ export default function Register() {
                 interest_text: values.interest_text || '',
             });
 
-            messageApi.success('Registration successful! Generating your event recommendations...');
+            messageApi.success("Welcome aboard! You are now being redirected ...");
+
             navigate('/events');
         } catch (error) {
             messageApi.error(error instanceof Error ? error.message : 'Registration failed');
         } finally {
             setLoading(false);
+            setSubmitButtonText("Sign Up");
         }
     };
 
@@ -211,7 +220,7 @@ export default function Register() {
                                 loading={loading}
                                 block
                             >
-                                Sign Up
+                                {submitButtonText}
                             </Button>
                         </Form.Item>
                     </Form>

@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Form, Input, Button, Typography, Card, message, Space, Alert } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import '../components/css/AuthPages.css';
-import { API_BASE_URL, TIMEOUTS } from '../config';
+import '../css/AuthPages.css';
+import { API_BASE_URL, TIMEOUTS } from '../../config';
 
 /*
     Reset Password page component that allows users to set a new password using a reset token.

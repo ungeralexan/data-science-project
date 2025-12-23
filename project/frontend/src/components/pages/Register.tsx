@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Form, Input, Button, Typography, Card, message, Space, Select, Divider } from 'antd';
 import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { POSSIBLE_INTEREST_KEYWORDS } from '../config';
-import '../components/css/AuthPages.css';
+import { useAuth } from '../../hooks/useAuth';
+import { POSSIBLE_INTEREST_KEYWORDS } from '../../config';
+import '../css/AuthPages.css';
 
 /*
     Register page component that provides a form for users to create a new account.

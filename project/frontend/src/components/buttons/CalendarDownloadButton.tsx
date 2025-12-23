@@ -1,7 +1,7 @@
 // src/components/CalendarDownloadButtons.tsx
 import React from "react";
 import { Button } from "antd";
-import type { Event } from "../types/Event";
+import type { Event } from "../../types/Event";
 
 /*
     CalendarDownloadButtons.tsx provides a button to download an event's details as an ICS file for calendar applications.

@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Form, Input, Button, Typography, Card, message, Space } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import '../components/css/AuthPages.css';
+import { useAuth } from '../../hooks/useAuth';
+import '../css/AuthPages.css';
 
 /*
     Login page component that provides a form for users to sign in.

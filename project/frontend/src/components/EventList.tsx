@@ -3,12 +3,12 @@ import { Pagination, Spin } from "antd";
 import { useEvents } from "../hooks/useEvents";
 import type { EventFetchMode } from "../hooks/useEvents";
 import { useAuth } from "../hooks/useAuth";
-import type { SortOption } from "./EventSortButton";
+import type { SortOption } from "./buttons/EventSortButton";
 import type { Event } from "../types/Event";
 import EventImage from "./EventImage";
-import LikeButton from "./LikeButton";
-import GoingButton from "./GoingButton";
-import ShareButton from "./ShareButton";
+import LikeButton from "./buttons/LikeButton";
+import GoingButton from "./buttons/GoingButton";
+import ShareButton from "./buttons/ShareButton";
 import { useNavigate } from "react-router-dom";
 
 import { matchesEvent } from "../utils/search";

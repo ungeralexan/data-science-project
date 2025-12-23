@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Form, Input, Button, Typography, Card, message, Space, Alert } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import '../components/css/AuthPages.css';
-import { API_BASE_URL } from '../config';
+import '../css/AuthPages.css';
+import { API_BASE_URL } from '../../config';
 
 const { Title, Text } = Typography;
 

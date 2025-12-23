@@ -1,6 +1,6 @@
 // src/components/GoingFilterButton.tsx
 import { Button } from "antd";
-import "./css/Events.css";
+import "../css/Events.css";
 
 /*
   GoingFilterButton Component

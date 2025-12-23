@@ -1,8 +1,8 @@
 // src/components/LikeButton.tsx
 import { useState } from "react";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
-import { useAuth } from "../hooks/useAuth";
-import "./css/LikeButton.css";
+import { useAuth } from "../../hooks/useAuth";
+import "../css/LikeButton.css";
 
 /*
   LikeButton Component

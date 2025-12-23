@@ -1,7 +1,7 @@
 // src/components/LikedFilterButton.tsx
 import { Button } from "antd";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
-import "./css/Events.css";
+import "../css/Events.css";
 
 /*
   LikedFilterButton Component

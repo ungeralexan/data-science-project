@@ -1,6 +1,6 @@
 // src/components/EventSortControls.tsx
 import React from "react";
-import "./css/EventList.css"; // reuse same CSS file for controls styling
+import "../css/EventList.css"; // reuse same CSS file for controls styling
 
 /*
   EventSortControls.tsx defines a React component that provides sorting controls for the event list.

@@ -1,5 +1,5 @@
 import { ShareAltOutlined } from "@ant-design/icons"; 
-import "./css/ShareButton.css";
+import "../css/ShareButton.css";
 
 type Props = {
   title: string;

@@ -14,17 +14,23 @@ import "./css/Events.css";
 interface LikedFilterButtonProps {
   showLikedOnly: boolean;
   onChange: (showLikedOnly: boolean) => void;
+
+  iconOnly?: boolean;
 }
 
-export default function LikedFilterButton({ showLikedOnly, onChange }: LikedFilterButtonProps) {
+export default function LikedFilterButton({ showLikedOnly, onChange, iconOnly = false }: LikedFilterButtonProps) {
+  const label = showLikedOnly ? "Showing Liked" : "Show Liked Only";
   return (
     <Button
       type={showLikedOnly ? "primary" : "default"}
       icon={showLikedOnly ? <HeartFilled /> : <HeartOutlined />}
       onClick={() => onChange(!showLikedOnly)}
-      className="events-page-controls"
+      className={iconOnly ? "events-control-icon-btn" : "events-control-btn"}
+
+      aria-label={label}
+      title={label}
     >
-      {showLikedOnly ? "Showing Liked" : "Show Liked Only"}
+      {iconOnly ? null : label}
     </Button>
   );
 }

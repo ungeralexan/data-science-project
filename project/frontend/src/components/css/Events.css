@@ -88,6 +88,69 @@
   width: 100%;                                /* Full width within the container */
 }
 
+/* desktop/mobile wrappers */
+.events-page-controls--mobile {
+  display: none; /* hidden by default; shown on mobile via media query */
+}
+
+/* horizontal icon row */
+.events-page-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap; /* keep in one row */
+}
+
+/* button class for normal desktop buttons (optional, can be empty) */
+.events-control-btn {
+  /* marker class so buttons don't reuse container class */
+}
+
+/* icon-only button sizing (tap target) */
+.events-control-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 12px;
+}
+
+/* compact sort pill */
+.events-sort-compact {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--input-bg);
+  color: var(--text-primary);
+}
+
+.events-sort-compact-label {
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+/* invisible select covering the pill to open native dropdown */
+.events-sort-compact-select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* mobile search spacing below icon row */
+.events-page-search--mobile {
+  margin-top: 10px;
+}
+
 /* =========================================================================
    RECOMMENDATION CARD
    ========================================================================= */
@@ -138,11 +201,19 @@
     font-size: 24px !important;
   }
 
+    /* hide desktop controls entirely on mobile */
+  .events-page-controls--desktop {
+    display: none;
+  }
+
+  /* show mobile controls on mobile */
+  .events-page-controls--mobile {
+    display: block;
+    margin-bottom: 10px;
+  }
+
   /* Stack controls vertically on mobile */
   .events-page-controls {
-    flex-direction: column;                   /* Vertical stacking */
-    align-items: flex-start;                  /* Left align controls */
-    gap: 12px;                                /* Space between stacked controls */
     margin-bottom: 0;
   }
 }

@@ -83,7 +83,7 @@ export default function Events() {
 
       <Title level={2}>All Events</Title>
 
-      <div className="events-page-controls">
+      <div className="events-page-controls events-page-controls--desktop">
         <EventSortControls
           sortOption={sortOption}
           onChange={setSortOption}
@@ -111,6 +111,50 @@ export default function Events() {
             onChange={(e) => setSearchQuery(e.target.value)}
             allowClear
             placeholder='Search events'
+          />
+        </div>
+      </div>
+
+       {/* mobile-only icon row controls */}
+      <div className="events-page-controls--mobile">
+        {/* single horizontal row */}
+        <div className="events-page-controls-row">
+          {/* compact sort (shows “Sort” on mobile) */}
+          <EventSortControls
+            sortOption={sortOption}
+            onChange={setSortOption}
+            compact
+          />
+
+          {/* iconOnly for mobile */}
+          <LikedFilterButton
+            showLikedOnly={showLikedOnly}
+            onChange={setShowLikedOnly}
+            iconOnly
+          />
+
+          {/* iconOnly for mobile */}
+          <GoingFilterButton
+            showGoingOnly={showGoingOnly}
+            onChange={setShowGoingOnly}
+            iconOnly
+          />
+
+          {/* iconOnly for mobile */}
+          <ViewToggleButton
+            viewMode={viewMode}
+            onToggle={setViewMode}
+            iconOnly
+          />
+        </div>
+
+        {/* search shown below icon row on mobile */}
+        <div className="events-page-search events-page-search--mobile">
+          <Input.Search
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            allowClear
+            placeholder="Search events"
           />
         </div>
       </div>

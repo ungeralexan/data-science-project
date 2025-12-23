@@ -1,5 +1,6 @@
 // src/components/GoingFilterButton.tsx
 import { Button } from "antd";
+import { CheckCircleOutlined, CheckCircleFilled } from "@ant-design/icons";
 import "./css/Events.css";
 
 /*
@@ -11,16 +12,23 @@ import "./css/Events.css";
 interface GoingFilterButtonProps {
   showGoingOnly: boolean;
   onChange: (showGoingOnly: boolean) => void;
+
+  iconOnly?: boolean;
 }
 
-export default function GoingFilterButton({ showGoingOnly, onChange }: GoingFilterButtonProps) {
+export default function GoingFilterButton({ showGoingOnly, onChange, iconOnly = false }: GoingFilterButtonProps) {
+  const label = showGoingOnly ? "Showing Going" : "Show Going Only";
   return (
     <Button
       type={showGoingOnly ? "primary" : "default"}
+      icon={showGoingOnly ? <CheckCircleFilled /> : <CheckCircleOutlined />}
       onClick={() => onChange(!showGoingOnly)}
-      className="events-page-controls"
+      className={iconOnly ? "events-control-icon-btn" : "events-control-btn"}
+
+      aria-label={label}
+      title={label}
     >
-      {showGoingOnly ? "Showing Going" : "Show Going Only"}
+      {iconOnly ? null : label}
     </Button>
   );
 }

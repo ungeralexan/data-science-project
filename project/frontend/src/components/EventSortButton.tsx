@@ -1,6 +1,8 @@
 // src/components/EventSortControls.tsx
 import React from "react";
+import { SortAscendingOutlined } from "@ant-design/icons";
 import "./css/EventList.css"; // reuse same CSS file for controls styling
+import "./css/Events.css";
 
 /*
   EventSortControls.tsx defines a React component that provides sorting controls for the event list.
@@ -32,13 +34,40 @@ export type SortOption =
 interface EventSortControlsProps {
   sortOption: SortOption;
   onChange: (value: SortOption) => void; 
+  compact?: boolean;
 }
 
 // EventSortControls component definition
 const EventSortControls: React.FC<EventSortControlsProps> = ({
   sortOption,
-  onChange,
+  onChange, compact = false
 }) => {
+  if (compact) {
+    return (
+      <div className="events-sort-compact">
+        {/* icon + text “Sort” */}
+        <SortAscendingOutlined />
+        <span className="events-sort-compact-label">Sort</span>
+
+        {/* invisible select overlay to keep native dropdown behavior */}
+        <select
+          className="events-sort-compact-select"
+          value={sortOption}
+          onChange={(e) => onChange(e.target.value as SortOption)}
+          aria-label="Sort events"
+          title="Sort"
+        >
+          <option value="title-asc">Title (A → Z)</option>
+          <option value="title-desc">Title (Z → A)</option>
+          <option value="date-asc">Start date (earliest → latest)</option>
+          <option value="date-desc">Start date (latest → earliest)</option>
+          <option value="time-asc">Start time (earliest → latest)</option>
+          <option value="time-desc">Start time (latest → earliest)</option>
+        </select>
+      </div>
+    );
+  }
+
   return (
     <div className="event-list-controls">
       <select

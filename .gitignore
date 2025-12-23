@@ -57,3 +57,8 @@ project/backend/data/temp_emails/
 
 # ignore secrets.json
 **/secrets.json
+
+# Local evaluation artifacts (private university emails / extracted content)
+project/backend/local_eval/
+project/backend/local_eval/**
+

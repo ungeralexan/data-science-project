@@ -1,20 +1,22 @@
 import { useMemo, useState, useEffect } from "react";
-import { Pagination } from "antd";
+import { Pagination, Spin } from "antd";
 import { useEvents } from "../hooks/useEvents";
 import type { EventFetchMode } from "../hooks/useEvents";
 import { useAuth } from "../hooks/useAuth";
-import type { SortOption } from "./EventSortButton";
+import type { SortOption } from "./buttons/EventSortButton";
 import type { Event } from "../types/Event";
 import EventImage from "./EventImage";
-import LikeButton from "./LikeButton";
-import GoingButton from "./GoingButton";
-import ShareButton from "./ShareButton";
+import LikeButton from "./buttons/LikeButton";
+import GoingButton from "./buttons/GoingButton";
+import ShareButton from "./buttons/ShareButton";
 import { useNavigate } from "react-router-dom";
 
 import { matchesEvent } from "../utils/search";
 import { PAGINATION } from "../config";
 
 import "./css/EventList.css";
+import LoadingOutlined from "@ant-design/icons/lib/icons/LoadingOutlined";
+import Paragraph from "antd/es/typography/Paragraph";
 
 /*
   This file defines the EventList component, which displays a list of events with sorting and filtering capabilities.
@@ -276,7 +278,14 @@ export default function EventList({
 
   // Show loading state
   if (isLoading) {
-    return <div className="event-list-loading">Loading events...</div>;
+    return (
+      <div className="event-list-loading">
+        <Spin indicator={<LoadingOutlined spin />} size="large" />
+        <Paragraph type="secondary" style={{ marginTop: 16 }}>
+          Events will appear momentarily...
+        </Paragraph>
+      </div>
+    );
   }
 
   // Render error message if there was an error fetching events
@@ -295,7 +304,6 @@ export default function EventList({
   return (
     // Container for the event list
     <div className="event-list">
-
       {sortedEvents.length === 0 ? (
         <p className="event-list-empty">No events found.</p>
       ) : ( 

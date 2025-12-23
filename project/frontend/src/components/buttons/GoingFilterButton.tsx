@@ -1,7 +1,7 @@
 // src/components/GoingFilterButton.tsx
 import { Button } from "antd";
 import { CheckCircleOutlined, CheckCircleFilled } from "@ant-design/icons";
-import "./css/Events.css";
+import "../css/Events.css";
 
 /*
   GoingFilterButton Component

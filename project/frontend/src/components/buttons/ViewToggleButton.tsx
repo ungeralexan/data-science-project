@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import { CalendarOutlined, UnorderedListOutlined } from "@ant-design/icons";
-import "./css/Events.css";
+import "../css/NavBar.css";
 
 type ViewMode = "list" | "calendar";
 

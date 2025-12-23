@@ -5,10 +5,10 @@ import { Typography, Form, Input, Button, Card, Space, Divider, Select, App, Swi
 import { MailOutlined, LockOutlined, UserOutlined, ExclamationCircleOutlined, BulbOutlined } from '@ant-design/icons';
 
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { useTheme } from '../hooks/useTheme';
-import { POSSIBLE_INTEREST_KEYWORDS } from '../config';
-import '../components/css/Settings.css';
+import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../hooks/useTheme';
+import { POSSIBLE_INTEREST_KEYWORDS } from '../../config';
+import '../css/Settings.css';
 
 /*
     This is the Settings page component that allows users to manage their profile information,
@@ -20,8 +20,6 @@ import '../components/css/Settings.css';
     - handlePasswordChange: Handles changing the user's password.
     - handleInterestsUpdate: Handles updating the user's interests based on selected keywords and text.
     - handleDeleteAccount: Handles the deletion of the user's account with a confirmation modal.
-
-
 */
 
 const { Title, Text } = Typography;

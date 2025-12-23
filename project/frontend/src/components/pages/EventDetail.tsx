@@ -3,15 +3,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Typography, Button, Tag } from "antd";
 import { UserOutlined, TeamOutlined, CheckCircleOutlined, EnvironmentOutlined, HomeOutlined } from "@ant-design/icons";
 
-import { useEvents } from "../hooks/useEvents";
-import EventImage from "../components/EventImage";
-import LikeButton from "../components/LikeButton";
-import GoingButton from "../components/GoingButton";
-import ShareButton from "../components/ShareButton";
-import CalendarDownloadButtons from "../components/CalendarDownloadButton";
-import EventWebsiteButton from "../components/EventWebsiteButton";
-import EventList from "../components/EventList";
-import "../components/css/EventDetail.css";
+import { useEvents } from "../../hooks/useEvents";
+import EventImage from "../EventImage";
+import LikeButton from "../buttons/LikeButton";
+import GoingButton from "../buttons/GoingButton";
+import ShareButton from "../buttons/ShareButton";
+import CalendarDownloadButtons from "../buttons/CalendarDownloadButton";
+import EventWebsiteButton from "../buttons/EventWebsiteButton";
+import EventList from "../EventList";
+import "../css/EventDetail.css";
 
 /*
   EventDetail.tsx is the page component for displaying detailed information about a specific event.

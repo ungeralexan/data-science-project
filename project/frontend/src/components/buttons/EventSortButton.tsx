@@ -1,8 +1,8 @@
 // src/components/EventSortControls.tsx
 import React from "react";
 import { SortAscendingOutlined } from "@ant-design/icons";
-import "./css/EventList.css"; // reuse same CSS file for controls styling
-import "./css/Events.css";
+import "../css/EventList.css"; // reuse same CSS file for controls styling
+import "../css/Events.css";
 
 /*
   EventSortControls.tsx defines a React component that provides sorting controls for the event list.

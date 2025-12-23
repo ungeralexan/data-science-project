@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Typography, Card, Input, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import EventList from '../components/EventList';
-import EventCalendar from '../components/EventCalendar';
-import EventSortControls from "../components/EventSortButton";
-import type { SortOption } from "../components/EventSortButton";
-import LikedFilterButton from "../components/LikedFilterButton";
-import GoingFilterButton from "../components/GoingFilterButton";
-import ViewToggleButton from "../components/ViewToggleButton";
-import { useAuth } from '../hooks/useAuth';
-import "../components/css/Events.css";
+import EventList from '../EventList';
+import EventCalendar from '../EventCalendar';
+import EventSortControls from "../buttons/EventSortButton";
+import type { SortOption } from "../buttons/EventSortButton";
+import LikedFilterButton from "../buttons/LikedFilterButton";
+import GoingFilterButton from "../buttons/GoingFilterButton";
+import ViewToggleButton from "../buttons/ViewToggleButton";
+import { useAuth } from '../../hooks/useAuth';
+import "../css/Events.css";
 
 const { Title, Paragraph } = Typography;
 

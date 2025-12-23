@@ -124,7 +124,7 @@ export function useEvents(fetchMode: EventFetchMode = "main_events") {
         setError("WebSocket error occurred.");
       }
       
-      setIsLoading(false);
+      //setIsLoading(false);
     };
 
     // WebSocket close event handler

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
-import "./css/GoingButton.css";
+import { useAuth } from "../../hooks/useAuth";
+import "../css/GoingButton.css";
 
 interface Props {
   eventId: string;

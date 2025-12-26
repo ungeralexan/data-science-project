@@ -62,3 +62,7 @@ project/backend/data/temp_emails/
 project/backend/local_eval/
 project/backend/local_eval/**
 
+
+# --- Local evaluation outputs (may contain private email content) ---
+project/backend/tests/local_eval/
+**/tests/local_eval/

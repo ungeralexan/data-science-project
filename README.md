@@ -287,6 +287,7 @@ docker-compose up --build
 8. WebSocket Broadcast   → Frontend receives updated event list
 ```
 
+See: [docs/email-extraction.md](docs/email-extraction.md)
 ---
 
 ## Authentication Flow

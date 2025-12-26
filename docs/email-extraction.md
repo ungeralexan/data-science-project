@@ -294,7 +294,7 @@ Deduplication runs in batch and returns one decision per candidate event in the 
   {"is_new": true},
   {"is_new": false}
 ]
-
+```
 
 ### Deduplication contract enforcement (response schema)
 

@@ -274,7 +274,7 @@ docker-compose up --build
 ---
 
 
-## Email Pipeline Flow
+## Email Pipeline
 
 ```
 1. IMAP Connection       → Connect to university mail server

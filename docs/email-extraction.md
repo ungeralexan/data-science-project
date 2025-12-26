@@ -178,7 +178,7 @@ Example structure (simplified for readability):
     "Main_Event_Temp_Key": "ai_econ_series"
   }
 ]
-``
+```
 
 ---
 

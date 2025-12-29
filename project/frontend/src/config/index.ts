@@ -3,18 +3,25 @@
 
 import parameters from './parameters.json';
 
-/*
-    This module exports configuration values from parameters.json.
-    
-    All API endpoints and connection settings should be imported from here
-    to ensure consistency across the application.
-    
-    Usage:
-        import { API_BASE_URL, WS_PORT } from '../config';
-*/
+/*This module exports configuration values from parameters.json.*/
 
 // Type assertion to allow access to all properties from parameters.json
 const params = parameters as typeof parameters & {
+    API_BASE_URL: string;
+    WS_PORT: number;
+    LOCAL: boolean;
+    POSSIBLE_INTEREST_KEYWORDS: string[];
+    POSSIBLE_LANGUAGE_OPTIONS: string[];
+    STORAGE_KEYS: {
+        AUTH_TOKEN: string;
+        THEME: string;
+        WELCOME_POPUP_SEEN: string;
+        RECOMMENDATION_COOLDOWN_UNTIL: string;
+    };
+    TIMEOUTS: {
+        PASSWORD_RESET_REDIRECT_MS: number;
+        RECOMMENDATION_COOLDOWN_MS: number;
+    };
     PAGINATION: { EVENTS_PER_PAGE: number };
 };
 

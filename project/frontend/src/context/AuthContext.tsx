@@ -42,6 +42,7 @@ const THEME_KEY = STORAGE_KEYS.THEME;
 
 // Token storage key (from centralized config)
 const TOKEN_KEY = STORAGE_KEYS.AUTH_TOKEN;
+const RECO_COOLDOWN_KEY = STORAGE_KEYS.RECOMMENDATION_COOLDOWN_UNTIL;
 
 // A ReactNode can be anything (Strings, numbers, arrays, null, ....) 
 // Children are the nested components inside AuthProvider (Routes, Pages, etc)
@@ -87,6 +88,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         } else {
             setIsLoading(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // ------- Theme Management -------
@@ -431,31 +433,55 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // ------- Recommendation Functions -------
 
     // Start the cooldown timer
-    const startCooldownTimer = useCallback(() => {
-        const cooldownMs = TIMEOUTS.RECOMMENDATION_COOLDOWN_MS;
-        const cooldownSeconds = Math.ceil(cooldownMs / 1000);
-        
-        setRecommendationCooldownRemaining(cooldownSeconds);
-        
-        // Clear any existing interval
+    const startCooldownTimer = useCallback((targetExpiryMs?: number) => {
+        const now = Date.now();
+        const target = targetExpiryMs ?? now + TIMEOUTS.RECOMMENDATION_COOLDOWN_MS;
+        const remainingSeconds = Math.max(0, Math.ceil((target - now) / 1000));
+
+        // Persist target expiry so a page refresh does not reset cooldown
+        localStorage.setItem(RECO_COOLDOWN_KEY, String(target));
+        setRecommendationCooldownRemaining(remainingSeconds);
+
+        if (remainingSeconds <= 0) {
+            localStorage.removeItem(RECO_COOLDOWN_KEY);
+            return;
+        }
+
         if (cooldownIntervalRef.current) {
             clearInterval(cooldownIntervalRef.current);
         }
-        
-        // Start countdown
+
         cooldownIntervalRef.current = setInterval(() => {
-            setRecommendationCooldownRemaining(prev => {
-                if (prev <= 1) {
-                    if (cooldownIntervalRef.current) {
-                        clearInterval(cooldownIntervalRef.current);
-                        cooldownIntervalRef.current = null;
-                    }
-                    return 0;
+            const secondsLeft = Math.max(0, Math.ceil((target - Date.now()) / 1000));
+            setRecommendationCooldownRemaining(secondsLeft);
+
+            if (secondsLeft <= 0) {
+                if (cooldownIntervalRef.current) {
+                    clearInterval(cooldownIntervalRef.current);
+                    cooldownIntervalRef.current = null;
                 }
-                return prev - 1;
-            });
+                localStorage.removeItem(RECO_COOLDOWN_KEY);
+            }
         }, 1000);
     }, []);
+
+    // Restore recommendation cooldown from localStorage on mount
+    useEffect(() => {
+        const storedExpiry = localStorage.getItem(RECO_COOLDOWN_KEY);
+        if (!storedExpiry) return;
+
+        const parsed = Number.parseInt(storedExpiry, 10);
+        if (Number.isNaN(parsed)) {
+            localStorage.removeItem(RECO_COOLDOWN_KEY);
+            return;
+        }
+
+        if (parsed > Date.now()) {
+            startCooldownTimer(parsed);
+        } else {
+            localStorage.removeItem(RECO_COOLDOWN_KEY);
+        }
+    }, [startCooldownTimer]);
 
     // Cleanup cooldown timer on unmount
     useEffect(() => {

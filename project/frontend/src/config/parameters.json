@@ -57,7 +57,8 @@
     "STORAGE_KEYS": {
         "AUTH_TOKEN": "auth_token",
         "THEME": "app_theme",
-        "WELCOME_POPUP_SEEN": "tuevent_welcome_seen_v1"
+        "WELCOME_POPUP_SEEN": "tuevent_welcome_seen_v1",
+        "RECOMMENDATION_COOLDOWN_UNTIL": "tuevent_reco_cooldown_until_v1"
     },
     "TIMEOUTS": {
         "PASSWORD_RESET_REDIRECT_MS": 2000,

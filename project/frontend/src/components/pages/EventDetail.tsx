@@ -10,6 +10,8 @@ import GoingButton from "../buttons/GoingButton";
 import ShareButton from "../buttons/ShareButton";
 import CalendarDownloadButtons from "../buttons/CalendarDownloadButton";
 import EventWebsiteButton from "../buttons/EventWebsiteButton";
+import RegistrationButton from "../buttons/RegistrationButton";
+import MeetingButton from "../buttons/MeetingButton";
 import EventList from "../EventList";
 import "../css/EventDetail.css";
 
@@ -150,11 +152,18 @@ export default function EventDetail() {
   const formattedAddress = buildFormattedAddress();
   const googleMapsUrl = buildGoogleMapsUrl();
 
+  // Combine room and floor information
+  const roomFloor =
+    event.room ?
+      event.floor ? `${event.room} (${event.floor})` :
+      event.room :
+    event.floor ?
+      event.floor :
+      null;
+
   // Normalize registration_needed which may arrive as string or boolean
   const registrationRaw = event.registration_needed;
-  const registrationNormalized = typeof registrationRaw === "string"
-    ? registrationRaw.toLowerCase()
-    : typeof registrationRaw === "boolean"
+  const registrationNormalized = typeof registrationRaw === "boolean"
       ? (registrationRaw ? "true" : "false")
       : "";
 
@@ -228,8 +237,8 @@ export default function EventDetail() {
             <div className="event-detail-meta-row">
               <HomeOutlined className="event-detail-icon event-detail-icon--room" />
               <Text strong>Room:</Text>
-              {event.room ? (
-                <span>{event.room}</span>
+              {roomFloor ? (
+                <span>{roomFloor}</span>
               ) : (
                 <Text type="secondary">No information available</Text>
               )}
@@ -261,8 +270,8 @@ export default function EventDetail() {
               {registrationNormalized ? (
                 <Tag
                   // If registration_needed indicates true/yes, use orange tag, else green
-                  color={registrationNormalized === 'true' || registrationNormalized === 'yes' ? 'orange' : 'green'}>
-                  {registrationNormalized === 'true' || registrationNormalized === 'yes' ? 'Required' : 'Not Required'}
+                  color={registrationNormalized === 'true' ? 'orange' : 'green'}>
+                  {registrationNormalized === 'true' ? 'Required' : 'Not Required'}
                 </Tag>
               ) : (
                 <Text type="secondary">No information available</Text>
@@ -299,12 +308,14 @@ export default function EventDetail() {
       <div className="event-detail-buttons">
         <CalendarDownloadButtons event={event} />
         <EventWebsiteButton url={event.url} />
+        <RegistrationButton registrationUrl={event.registration_url} />
+        <MeetingButton meetingUrl={event.meeting_url} />
       </div>
 
       {/* If this is a main_event, show its sub_events list */}
       {isMainEvent && subEvents.length > 0 && (
         <div className="event-detail-subevents">
-          <Title level={4} className="event-detail-subevent-section">More dates</Title>
+          <Title level={4} className="event-detail-subevent-section">More Dates</Title>
           <EventList
             sortOption="date-asc"
             providedEvents={subEvents}
@@ -317,7 +328,7 @@ export default function EventDetail() {
       {isSubEvent && parentMainEvent && (
         <div className="event-detail-parent">
 
-          <Title level={4} className="event-detail-subevent-section">Main event</Title>
+          <Title level={4} className="event-detail-subevent-section">Main Event</Title>
 
           <EventList
             sortOption="date-asc"

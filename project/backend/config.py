@@ -32,8 +32,8 @@ CORS_ORIGINS = [
 
 # ----- Scheduler Configuration -----
 SCHEDULER_TIMEZONE = "Europe/Berlin"
-EMAIL_PIPELINE_CRON_HOURS = "*/6"  # Run every 3 hours
-EMAIL_PIPELINE_DEFAULT_LIMIT = 15  # Process up to 15 emails per run
+EMAIL_PIPELINE_CRON_HOURS = "*/6"  # Run every 6 hours
+EMAIL_PIPELINE_DEFAULT_LIMIT = 30  # Process up to 30 emails per run
 
 
 # ----- SMTP Email Configuration -----
@@ -48,8 +48,9 @@ IMAP_PORT = 993
 EMAIL_TEMP_DIR = "data/temp_emails"
 
 # ----- LLM Configuration -----
-RECOGNITION_LLM_MODEL = "gemini-3-flash-preview" #"gemini-2.5-flash"
-#RECOMMENDATION_LLM_MODEL = "google/gemini-2.0-flash-exp:free"
+#RECOGNITION_LLM_MODEL = "gemini-3-flash-preview" #Model used for event recognition and extraction
+RECOGNITION_LLM_MODEL = "gemini-2.5-flash" #Model used for event recognition and extraction
+DUPLICATION_LLM_MODEL = "gemini-2.5-flash" #Model used for event duplication detection
 RECOMMENDATION_LLM_MODEL = "gpt-oss-120b:free"
 
 # Image keys for event categorization, with optional descriptions (can be empty).

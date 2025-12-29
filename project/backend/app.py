@@ -66,8 +66,10 @@ class Event(BaseModel):
     description: Optional[str] = None
     speaker: Optional[str] = None
     organizer: Optional[str] = None
-    registration_needed: Optional[str] = None
+    registration_needed: Optional[bool] = None
     url: Optional[str] = None
+    registration_url: Optional[str] = None  # URL where users can register for the event
+    meeting_url: Optional[str] = None  # URL for online meetings (Zoom, Teams, etc.)
     image_key: Optional[str] = None
     like_count: int = 0
     going_count: int = 0
@@ -113,6 +115,8 @@ def main_event_orm_to_pydantic(event: MainEventORM) -> Event:
         organizer = event.organizer,
         registration_needed = event.registration_needed,
         url = event.url,
+        registration_url = event.registration_url,
+        meeting_url = event.meeting_url,
         image_key = event.image_key,
         like_count = event.like_count or 0,
         going_count = event.going_count or 0,
@@ -146,6 +150,8 @@ def sub_event_orm_to_pydantic(event: SubEventORM) -> Event:
         organizer = event.organizer,
         registration_needed = event.registration_needed,
         url = event.url,
+        registration_url = event.registration_url,
+        meeting_url = event.meeting_url,
         image_key = event.image_key,
         like_count = event.like_count or 0,
         going_count = event.going_count or 0,

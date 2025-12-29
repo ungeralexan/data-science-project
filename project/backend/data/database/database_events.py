@@ -63,8 +63,10 @@ class MainEventORM(Base):
     description = Column(Text, nullable=True)
     speaker = Column(String, nullable=True)
     organizer = Column(String, nullable=True)
-    registration_needed = Column(String, nullable=True)
+    registration_needed = Column(Boolean, nullable=True)
     url = Column(String, nullable=True)
+    registration_url = Column(String, nullable=True)  # URL where users can register for the event
+    meeting_url = Column(String, nullable=True)  # URL for online meetings (Zoom, Teams, etc.)
     image_key = Column(String, nullable=True)
     like_count = Column(Integer, default=0, nullable=False)
     going_count = Column(Integer, default=0, nullable=False)
@@ -104,8 +106,10 @@ class SubEventORM(Base):
     description = Column(Text, nullable=True)
     speaker = Column(String, nullable=True)
     organizer = Column(String, nullable=True)
-    registration_needed = Column(String, nullable=True)
+    registration_needed = Column(Boolean, nullable=True)
     url = Column(String, nullable=True)
+    registration_url = Column(String, nullable=True)  # URL where users can register for the event
+    meeting_url = Column(String, nullable=True)  # URL for online meetings (Zoom, Teams, etc.)
     image_key = Column(String, nullable=True)
     like_count = Column(Integer, default=0, nullable=False)
     going_count = Column(Integer, default=0, nullable=False)

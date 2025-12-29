@@ -234,15 +234,7 @@ def archive_past_events_in_db(db: Session) -> int:
     if archived_count > 0:
         db.commit()
         print(f"[event_cleaner] Archived {archived_count} past events in database.")
+    else:
+        print("[event_cleaner] No past events to archive in database.")
     
     return archived_count
-
-
-def remove_past_events_from_db(db: Session) -> int:
-    """
-    Archive events from the database that have already passed.
-    This function is kept for backward compatibility but now calls archive_past_events_in_db.
-    For main_events with sub_events: only archive if ALL sub_events are in the past.
-    Returns the total number of events archived.
-    """
-    return archive_past_events_in_db(db)

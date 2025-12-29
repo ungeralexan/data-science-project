@@ -18,8 +18,10 @@ export type Event = {
   description?: string;
   speaker?: string;
   organizer?: string;
-  registration_needed?: string;
+  registration_needed?: boolean;
   url?: string;
+  registration_url?: string;  // URL where users can register for the event
+  meeting_url?: string;  // URL for online meetings (Zoom, Teams, etc.)
   image_key?: string;
   like_count: number;
   going_count: number;

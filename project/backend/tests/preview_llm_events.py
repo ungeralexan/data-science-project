@@ -42,16 +42,22 @@ def pretty_print_events(events: List[Dict[str, Any]]) -> None:
         location = ev.get("Location") or "?"
         organizer = ev.get("Organizer") or "?"
         speaker = ev.get("Speaker") or "?"
+        url = ev.get("URL") or "?"
+        registration_url = ev.get("Registration_URL") or "?"
+        meeting_url = ev.get("Meeting_URL") or "?"
 
         print("=" * 80)
         print(f"Event #{idx}")
         print("-" * 80)
-        print(f"Title     : {title}")
-        print(f"Date      : {start_date}  ->  {end_date}")
-        print(f"Time      : {start_time}  ->  {end_time}")
-        print(f"Location  : {location}")
-        print(f"Organizer : {organizer}")
-        print(f"Speaker   : {speaker}")
+        print(f"Title           : {title}")
+        print(f"Date            : {start_date}  ->  {end_date}")
+        print(f"Time            : {start_time}  ->  {end_time}")
+        print(f"Location        : {location}")
+        print(f"Organizer       : {organizer}")
+        print(f"Speaker         : {speaker}")
+        print(f"URL             : {url}")
+        print(f"Registration URL: {registration_url}")
+        print(f"Meeting URL     : {meeting_url}")
         print("=" * 80)
         print()
 

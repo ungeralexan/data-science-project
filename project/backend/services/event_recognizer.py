@@ -27,6 +27,8 @@ EVENT_SCHEMA  = {
         "Organizer": {"type": "STRING", "nullable": True},
         "Registration_Needed": {"type": "BOOLEAN", "nullable": True},
         "URL": {"type": "STRING", "nullable": True},
+        "Registration_URL": {"type": "STRING", "nullable": True},
+        "Meeting_URL": {"type": "STRING", "nullable": True},
         "Image_Key": {"type": "STRING", "nullable": True},
         "Event_Type": {"type": "STRING", "nullable": False},  # "main_event" or "sub_event"
         "Main_Event_Temp_Key": {"type": "STRING", "nullable": False},  # Temporary key to link sub_events to main_event
@@ -35,7 +37,8 @@ EVENT_SCHEMA  = {
         "Title", "Start_Date", "End_Date", "Start_Time", "End_Time",
         "Description", "Location", "Street", "House_Number", "Zip_Code", 
         "City", "Country", "Room", "Floor", "Speaker", "Organizer", 
-        "Registration_Needed", "URL", "Image_Key", "Event_Type", "Main_Event_Temp_Key",
+        "Registration_Needed", "URL", "Registration_URL", "Meeting_URL", 
+        "Image_Key", "Event_Type", "Main_Event_Temp_Key",
     ],
 }
 
@@ -64,8 +67,8 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     system_instruction = f"""
 
     You are a multilingual assistant that extracts structured event information from university email texts. 
-    The emails may be in various languages including English and German. The input text you receive contains
-    multiple emails concatenated together.
+    The emails may be in various languages including English and German. One email might also include multiple languages. 
+    The input text you receive contains multiple emails concatenated together.
 
     The text format is as follows:
 
@@ -100,6 +103,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
         - "Datum:" (date)
         - "Uhrzeit:" (time)
         - "Ort:" (location)
+        - "Anmeldung" (registration)
 
     II.4. If the email clearly contains a headline, workshop name, lecture title, or event title, USE THAT as the basis for the Title field.
     II.5. If there is no explicit title, generate a SHORT, CONCISE event title (about 4 to 6 words) that would look good as a calendar headline.
@@ -122,15 +126,30 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Who is it for?
     - What will participants gain or experience?
 
+    IV) URL and REGISTRATION QUALITY RULES:
+
+    IV.1 There are three types of URLs you may find in the email text:
+        - General information URLs about the event (put these in the "URL" field)
+        - Registration URLs where users can sign up for the event (put these in the "Registration_URL" field)
+        - Online meeting URLs for virtual attendance (put these in the "Meeting_URL" field)
+    IV.2 If the email or URL content explicitly mentions that registration is required, set "Registration_Needed" to true.
+    IV.3 If a Registration_URL is provided, this automatically means that registration is required regardless of what the email says and the field Registration_Needed should be set to true.
+    IV.4 There can never the case that Registration_Needed is false but there is a Registration_URL.
+    IV.5 If there is no clear indication about registration requirements and also no Registration_URL provided, set "Registration_Needed" to null.
+    IV.6 Do NOT put registration links or online meeting links in the general "URL" field. This means that the url in the field "URL" cannot be the same as in "Registration_URL" or "Meeting_URL".
+    IV.7 If the event is online or hybrid and there is a link to join the virtual meeting (e.g., Zoom, Microsoft Teams, WebEx, Google Meet links, etc.), put that URL in the "Meeting_URL" field.
+    IV.8 The field registration_url and meeting_url cannot contain the same URL.
+    IV.9 If there is no URL for a field, set it to null.
+    
     IV) OUTPUT FORMAT:
 
     IV.1. You must return ONLY a JSON ARRAY ([]) of event objects. Each object in the array must follow this schema:
 
     - Title (String): The title or name of the event. 
-    - Start_Date (String or null): The starting date of the event.
-    - End_Date (String or null): The ending date of the event. 
-    - Start_Time (String or null): The starting time of the event. If the text contains "c.t." or "s.t.", then interpret "c.t." to start 15 minutes after the hour and "s.t." to start exactly on the hour.
-    - End_Time (String or null): If the text contains "c.t." or "s.t.", then interpret "c.t." to end 15 minutes before the hour and "s.t." to end exactly on the hour.
+    - Start_Date (String or null): The starting date of the event. There can only be one start date!
+    - End_Date (String or null): The ending date of the event. There can only be one end date!
+    - Start_Time (String or null): The start time of the event. There can only be one start time! If the text contains "c.t." or "s.t.", then interpret "c.t." to start 15 minutes after the hour and "s.t." to start exactly on the hour.
+    - End_Time (String or null): The end time of the event. There can only be one end time! If the text contains "c.t." or "s.t.", then interpret "c.t." to end 15 minutes before the hour and "s.t." to end exactly on the hour.
     - Description (String or null): A concise, event-focused description suitable for a calendar entry.  Summarize the purpose, content, and intended audience of the event.  Do NOT describe the email  or administrative availability.
     - Location (String or null): The full location/address of the event as a single string. If the event is remote or online, specify that.
     - Street (String or null): The street name only (without house number).
@@ -142,8 +161,10 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Floor (String or null): The floor number if specified.
     - Speaker (String or null): The speaker of the event if available.
     - Organizer (String or null): The organizer of the event if available.
-    - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false. Only return true or false if the email or URL content explicitly mentions registration is required or not required; otherwise return null.
-    - URL (String or null): The URL for more information about the event if available.
+    - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false.
+    - URL (String or null): A URL for general information about the event if available. 
+    - Registration_URL (String or null): A URL where users can register for the event if available.
+    - Meeting_URL (String or null): A URL for online meetings (Zoom, Teams, etc.) if available.
     - Image_Key (String or null): Choose one of the following image keys to represent the event: [ {image_keys_str} ]. Here are the image key descriptions that you should use to understand what each image key represents: {image_key_descriptions_str}
     - Event_Type (String, REQUIRED): Must be either "main_event" or "sub_event". Use "main_event" for standalone events or parent events that have sub-events. Use "sub_event" for events that are part of a larger event series (e.g., individual talks in a lecture series, workshops in a conference, sessions in a multi-day event). 
     - Main_Event_Temp_Key (String, REQUIRED): A temporary identifier to link related events. For main_events, generate a unique short key (e.g., "conf2024", "lecture_series_ai"). For sub_events, use the SAME key as their parent main_event so they can be linked together. If an event is a standalone main_event with no sub_events, still provide a unique key. Sub events must have a corresponding main event with the same Main_Event_Temp_Key.
@@ -186,4 +207,11 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     )
 
     # Parse and return the JSON response in the format of a list of dicts (Exp: [{"Title": "...", "Start_Date": "...", ...}, {...}, ...])
-    return json.loads(resp.text)
+    try:
+        parts = resp.candidates[0].content.parts
+        text = "".join(getattr(part, "text", "") for part in parts)
+
+        return json.loads(text)
+    except json.JSONDecodeError as e:
+        print("[event_recognizer] Failed to parse LLM JSON:", e)
+        return None

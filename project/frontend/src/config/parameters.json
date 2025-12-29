@@ -42,6 +42,18 @@
         "Study Groups",
         "Travel"
     ],
+    "POSSIBLE_LANGUAGE_OPTIONS": [
+        "German",
+        "English",
+        "Spanish",
+        "French",
+        "Chinese",
+        "Japanese",
+        "Russian",
+        "Italian",
+        "Portuguese",
+        "Arabic"
+    ],
     "STORAGE_KEYS": {
         "AUTH_TOKEN": "auth_token",
         "THEME": "app_theme",

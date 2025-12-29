@@ -61,6 +61,7 @@ class MainEventORM(Base):
     room = Column(String, nullable=True)
     floor = Column(String, nullable=True)
     description = Column(Text, nullable=True)
+    language = Column(String, nullable=True)
     speaker = Column(String, nullable=True)
     organizer = Column(String, nullable=True)
     registration_needed = Column(Boolean, nullable=True)
@@ -104,6 +105,7 @@ class SubEventORM(Base):
     room = Column(String, nullable=True)
     floor = Column(String, nullable=True)
     description = Column(Text, nullable=True)
+    language = Column(String, nullable=True)
     speaker = Column(String, nullable=True)
     organizer = Column(String, nullable=True)
     registration_needed = Column(Boolean, nullable=True)
@@ -141,7 +143,7 @@ class UserORM(Base):
     interest_text = Column(Text, nullable=True)  # Free-form interest description
     suggested_event_ids = Column(JSON, nullable=True)  # List of suggested main_event IDs
     theme_preference = Column(String, nullable=False, default = DEFAULT_THEME)  # User's theme preference: 'light' or 'dark'
-
+    language_preference = Column(String, nullable=True)  # User's preferred language
     # Relationship to liked events - cascade delete when user is deleted
     liked_events = relationship("UserLikeORM", back_populates="user", cascade="all, delete-orphan", passive_deletes=True)
 

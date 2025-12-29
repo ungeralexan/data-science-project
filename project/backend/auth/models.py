@@ -4,11 +4,9 @@ Pydantic models for authentication.
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 
-from config import DEFAULT_THEME # pylint: disable=import-error
+from config import DEFAULT_THEME, DEFAULT_PREFERENCE_LANGUAGE # pylint: disable=import-error
 
-#
 #   This file defines Pydantic models used in the authentication system.
-#
 
 class UserCreate(BaseModel):
     """Model for user registration."""
@@ -16,9 +14,10 @@ class UserCreate(BaseModel):
     password: str
     first_name: str
     last_name: str
-    interest_keys: list[str]  # Required during registration
+    interest_keys: list[str]
     interest_text: Optional[str] = None  # Optional additional description
     theme_preference: Optional[str] = DEFAULT_THEME  # Default theme is light
+    language_preference: str
 
 
 class UserLogin(BaseModel):
@@ -36,6 +35,7 @@ class UserUpdate(BaseModel):
     interest_keys: Optional[list[str]] = None
     interest_text: Optional[str] = None
     theme_preference: Optional[str] = None 
+    language_preference: Optional[str] = None
 
 
 class UserResponse(BaseModel):
@@ -48,6 +48,7 @@ class UserResponse(BaseModel):
     interest_text: Optional[str] = None
     suggested_event_ids: Optional[list] = None
     theme_preference: str = DEFAULT_THEME  # User's theme preference
+    language_preference: str = DEFAULT_PREFERENCE_LANGUAGE  # User's language preference
 
 
 class TokenResponse(BaseModel):

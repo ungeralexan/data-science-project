@@ -33,7 +33,8 @@ def get_users_with_interests(db: Session) -> Dict[int, dict]:
         {
             user_id: {
                 "interest_keys": ["keyword1", "keyword2"],
-                "interest_text": "Free text description"
+                "interest_text": "Free text description",
+                "language_preference": "English"
             }
         }
     """
@@ -48,7 +49,8 @@ def get_users_with_interests(db: Session) -> Dict[int, dict]:
         if has_keys or has_text:
             users_dict[user.user_id] = {
                 "interest_keys": user.interest_keys or [],
-                "interest_text": user.interest_text or ""
+                "interest_text": user.interest_text or "",
+                "language_preference": user.language_preference or "User doesn't have a specific language preference"
             }
     
     return users_dict
@@ -63,7 +65,8 @@ def get_events_for_recommendation(db: Session) -> Dict[int, dict]:
         {
             event_id: {
                 "title": "Event Title",
-                "description": "Event description text"
+                "description": "Event description text",
+                "language": "English"
             }
         }
     """
@@ -74,7 +77,8 @@ def get_events_for_recommendation(db: Session) -> Dict[int, dict]:
     for event in events:
         events_dict[event.id] = {
             "title": event.title or "",
-            "description": event.description or ""
+            "description": event.description or "",
+            "language": event.language or "Event doesn't have a specific language"
         }
     
     return events_dict
@@ -101,18 +105,20 @@ def recommend_events_with_llm(
     system_instruction = textwrap.dedent(
         """
         You are an event recommendation system. Your task is to match university events
-        to users based on their stated interests.
+        to users based on their stated interests and preferred language.
 
         You will receive:
         1. A dictionary of USERS with their user_id as key and their interests as value.
-           Interests include "interest_keys" (list of keywords) and "interest_text" (free text description of the users interest).
-        2. A dictionary of EVENTS with event_id as key and event info (title, description) as value.
+           Interests include "interest_keys" (list of keywords), "interest_text" (free text description of the users interest), and "language_preference" (preferred language).
+        2. A dictionary of EVENTS with event_id as key and event info (title, description, language) as value.
 
         Your task:
         - For each user, analyze their interests and find up to {max_events} events
-          that best match their interests.
-        - Consider both the interest keywords and the free text description when matching.
+          that best match their interests and preferred language.
+        - Consider both the interest keywords, the free text description, and the preferred language when matching.
         - Only recommend events that are genuinely relevant to the user's interests.
+        - If multiple events are equally relevant, prioritize those that match the user's preferred language.
+        - If no events match a user's preferred language, still recommend the most relevant events regardless of language.
         - If no events match a user's interests very well, recommend fewer or no events for that user.
 
         OUTPUT FORMAT:
@@ -134,7 +140,7 @@ def recommend_events_with_llm(
     ).format(max_events=MAX_RECOMMENDATIONS_PER_USER)
     
     user_prompt = f"""
-        USERS (with their interests):
+        USERS (with their interests and preferred language):
         {json.dumps(users_dict, indent=2)}
         
         EVENTS (available for recommendation):
@@ -337,6 +343,7 @@ def run_single_user_recommendations(db: Session, user_id: int) -> dict:
         # Clear any existing recommendations
         user.suggested_event_ids = []
         db.commit()
+        
         return {
             "success": True,
             "message": "No interests defined. Please add interests in settings.",
@@ -347,7 +354,8 @@ def run_single_user_recommendations(db: Session, user_id: int) -> dict:
     users_dict = {
         user_id: {
             "interest_keys": user.interest_keys or [],
-            "interest_text": user.interest_text or ""
+            "interest_text": user.interest_text or "",
+            "language_preference": user.language_preference or "User doesn't have a specific language preference"
         }
     }
     

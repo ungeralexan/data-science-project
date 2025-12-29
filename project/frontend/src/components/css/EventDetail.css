@@ -135,6 +135,11 @@
   color: var(--accent-color);
 }
 
+/* Language icon - purple color to indicate language */
+.event-detail-icon--language {
+  color: var(--accent-color);
+}
+
 /* Registration icon - green color to indicate status */
 .event-detail-icon--registration {
   color: var(--success-color);

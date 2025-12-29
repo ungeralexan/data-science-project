@@ -212,8 +212,6 @@ def cleanup_internal_duplicates(db: Session):
     main_events = db.query(MainEventORM).filter(
         MainEventORM.archived_event == False  # pylint: disable=singleton-comparison
     ).order_by(MainEventORM.id).all()
-    
-    print("")
 
     if main_events:
         print(f"[event_cleaner] Analyzing {len(main_events)} main_events for internal duplicates...")

@@ -5,6 +5,7 @@ All settings and parameters (except secrets) are defined here.
 # ----- General Configuration -----
 
 DEFAULT_THEME = "light"
+DEFAULT_PREFERENCE_LANGUAGE = "English"
 
 # ----- Database Configuration -----
 DATABASE_URL = "sqlite:///./data/database/tuevent_database.db"
@@ -330,8 +331,6 @@ IMAGE_KEY_DESCRIPTIONS = {
         "If overlapping: prefer festival_tuebingen when the location/branding is clearly Tübingen."
     ),
 }
-
-
 
 # Preserved flat list for callers that only need the keys.
 IMAGE_KEYS = list(IMAGE_KEY_DESCRIPTIONS.keys())

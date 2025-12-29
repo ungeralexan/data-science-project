@@ -16,9 +16,9 @@ import json
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 
-from config import EMAIL_TEMP_DIR, EMAIL_PIPELINE_DEFAULT_LIMIT  # type: ignore
-from services.email_downloader import download_latest_emails  # type: ignore
-from services.event_recognizer import extract_event_info_with_llm  # type: ignore
+from config import EMAIL_TEMP_DIR, EMAIL_PIPELINE_DEFAULT_LIMIT  # pylint: disable=import-error
+from services.email_downloader import download_latest_emails  # pylint: disable=import-error
+from services.event_recognizer import extract_event_info_with_llm  # pylint: disable=import-error
 
 
 

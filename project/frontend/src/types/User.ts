@@ -15,6 +15,8 @@ export interface User {
     interest_text?: string | null;
     suggested_event_ids?: number[] | null;
     theme_preference: string;  // 'light' or 'dark'
+    language_preference: string; 
+    
 }
 
 // A login request requires email and password
@@ -31,6 +33,7 @@ export interface RegisterRequest {
     last_name: string;
     interest_keys: string[];
     interest_text?: string;
+    language_preference?: string; 
 }
 
 // A user update request may include any of the user fields, all optional
@@ -43,6 +46,7 @@ export interface UpdateUserRequest {
     interest_keys?: string[];
     interest_text?: string;
     theme_preference?: string;  // 'light' or 'dark'
+    language_preference?: string; 
 }
 
 // Response from the backend upon successful authentication

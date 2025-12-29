@@ -14,7 +14,7 @@ import {
 import { MailOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { POSSIBLE_INTEREST_KEYWORDS } from "../../config";
+import { POSSIBLE_LANGUAGE_OPTIONS, POSSIBLE_INTEREST_KEYWORDS } from "../../config";
 import "../css/AuthPages.css";
 
 /*
@@ -37,6 +37,7 @@ interface RegisterFormValues {
   last_name: string;
   interest_keys: string[];
   interest_text?: string;
+  language_preference?: string;
 }
 
 export default function Register() {
@@ -66,6 +67,7 @@ export default function Register() {
         last_name: values.last_name,
         interest_keys: values.interest_keys,
         interest_text: values.interest_text || "",
+        language_preference: values.language_preference || "English",
       });
 
       messageApi.success("Welcome aboard! You are now being redirected ...");
@@ -148,10 +150,10 @@ export default function Register() {
                 <Input.Password prefix={<LockOutlined />} placeholder="Confirm Password" />
               </Form.Item>
 
-              <Divider>Your Interests</Divider>
+              <Divider>Your Interests and Preferred Event Language</Divider>
 
               <Text type="secondary" className="auth-interests-hint">
-                Select your interests to receive personalized event recommendations. You can change
+                Select your interests and preferred event language to receive personalized event recommendations. You can change
                 these later in Settings.
               </Text>
 
@@ -178,6 +180,23 @@ export default function Register() {
                 <Input.TextArea
                   rows={3}
                   placeholder="Describe any additional interests not covered above..."
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="language_preference"
+                label="Preferred Event Language"
+                rules={[
+                  { required: true, message: "Please select your preferred event language" },
+                ]}
+              >
+                <Select
+                  placeholder="Select your preferred event language"
+                  options={POSSIBLE_LANGUAGE_OPTIONS.map((language) => ({
+                    label: language,
+                    value: language,
+                  }))}
+                  allowClear
                 />
               </Form.Item>
 

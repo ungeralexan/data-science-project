@@ -7,7 +7,7 @@ import { MailOutlined, LockOutlined, UserOutlined, ExclamationCircleOutlined, Bu
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
-import { POSSIBLE_INTEREST_KEYWORDS } from '../../config';
+import { POSSIBLE_INTEREST_KEYWORDS, POSSIBLE_LANGUAGE_OPTIONS } from '../../config';
 import '../css/Settings.css';
 
 /*
@@ -34,15 +34,13 @@ interface ProfileFormValues {
 interface InterestsFormValues {
     interest_keys: string[];
     interest_text: string;
+    language_preference?: string;
 }
 
 interface PasswordFormValues {
     password: string;
     confirmPassword: string;
 }
-
-const INTEREST_KEYWORDS = POSSIBLE_INTEREST_KEYWORDS;
-
 
 // ----- Component -----
 
@@ -122,11 +120,13 @@ function SettingsContent() {
             await updateUser({
                 interest_keys: values.interest_keys || [],
                 interest_text: values.interest_text || '',
+                language_preference: values.language_preference || "",
             });
 
             if (user) {
                 user.interest_keys = values.interest_keys || [];
                 user.interest_text = values.interest_text || '';
+                user.language_preference = values.language_preference || "";
             }
 
             messageApi.success('Interests updated successfully!');
@@ -256,7 +256,7 @@ function SettingsContent() {
                 </Card>
 
                 {/* Interests Card */}
-                <Card title="Interests">
+                <Card title="Interests & Language">
                     <Form
                         form={interestsForm}
                         layout="vertical"
@@ -265,6 +265,7 @@ function SettingsContent() {
                         initialValues={{
                             interest_keys: user?.interest_keys || [],
                             interest_text: user?.interest_text || '',
+                            language_preference: user?.language_preference || '',
                         }}
                     >
                         <Form.Item
@@ -275,7 +276,7 @@ function SettingsContent() {
                             <Select
                                 mode="multiple"
                                 placeholder="Select your interests"
-                                options={INTEREST_KEYWORDS.map(keyword => ({ 
+                                options={POSSIBLE_INTEREST_KEYWORDS.map(keyword => ({ 
                                     label: keyword, 
                                     value: keyword 
                                 }))}
@@ -294,6 +295,21 @@ function SettingsContent() {
                             />
                         </Form.Item>
 
+                        <Form.Item
+                            name="language_preference"
+                            label="Preferred Event Language"
+                            extra="Select your preferred event language"
+                        >
+                            <Select
+                                placeholder="Select your preferred event language"
+                                options={POSSIBLE_LANGUAGE_OPTIONS.map(language => ({ 
+                                    label: language, 
+                                    value: language 
+                                }))}
+                                allowClear
+                            />
+                        </Form.Item>
+
                         <Form.Item>
                             <Button 
                                 type="primary" 
@@ -305,7 +321,7 @@ function SettingsContent() {
                                     ? `Please wait ${recommendationCooldownRemaining}s` 
                                     : isRecommendationLoading 
                                         ? 'Generating Recommendations...'
-                                        : 'Update Interests'}
+                                        : 'Update Interests & Preferred Event Language'}
                             </Button>
                         </Form.Item>
                     </Form>

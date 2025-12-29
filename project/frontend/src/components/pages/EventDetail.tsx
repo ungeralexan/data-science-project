@@ -1,7 +1,7 @@
 // src/pages/EventDetail.tsx
 import { useParams, useNavigate } from "react-router-dom";
 import { Typography, Button, Tag } from "antd";
-import { UserOutlined, TeamOutlined, CheckCircleOutlined, EnvironmentOutlined, HomeOutlined } from "@ant-design/icons";
+import { UserOutlined, TeamOutlined, CheckCircleOutlined, EnvironmentOutlined, HomeOutlined, FlagOutlined } from "@ant-design/icons";
 
 import { useEvents } from "../../hooks/useEvents";
 import EventImage from "../EventImage";
@@ -259,6 +259,16 @@ export default function EventDetail() {
               <Text strong>Speaker:</Text>
               {event.speaker ? (
                 <span>{event.speaker}</span>
+              ) : (
+                <Text type="secondary">No information available</Text>
+              )}
+            </div>
+
+            <div className="event-detail-meta-row">
+              <FlagOutlined className="event-detail-icon event-detail-icon--language" />
+              <Text strong>Language:</Text>
+              {event.language ? (
+                <span>{event.language}</span>
               ) : (
                 <Text type="secondary">No information available</Text>
               )}

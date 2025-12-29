@@ -16,6 +16,7 @@ from config import (  # pylint: disable=import-error
     JWT_ALGORITHM,
     ACCESS_TOKEN_EXPIRE_DAYS,
     PASSWORD_RESET_EXPIRE_HOURS,
+    DEFAULT_PREFERENCE_LANGUAGE,
 )
 
 from .models import UserResponse
@@ -136,6 +137,7 @@ def user_orm_to_response(user: UserORM) -> UserResponse:
         interest_text=user.interest_text,
         suggested_event_ids=user.suggested_event_ids,
         theme_preference=user.theme_preference or DEFAULT_THEME,
+        language_preference=user.language_preference or DEFAULT_PREFERENCE_LANGUAGE,
     )
 
 
@@ -159,14 +161,3 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         # Detach the user from the session to use it outside
         db.expunge(user)
         return user
-
-
-#async def get_optional_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> Optional[UserORM]:
-#    """Get the current user if authenticated, otherwise return None."""
-#    if credentials is None:
-#        return None
-    
-#    try:
-#        return await get_current_user(credentials)
-#    except HTTPException:
-#        return None

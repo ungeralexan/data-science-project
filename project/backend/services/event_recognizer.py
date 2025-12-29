@@ -23,6 +23,7 @@ EVENT_SCHEMA  = {
         "Country": {"type": "STRING", "nullable": True},
         "Room": {"type": "STRING", "nullable": True},
         "Floor": {"type": "STRING", "nullable": True},
+        "Language": {"type": "STRING", "nullable": True},
         "Speaker": {"type": "STRING", "nullable": True},
         "Organizer": {"type": "STRING", "nullable": True},
         "Registration_Needed": {"type": "BOOLEAN", "nullable": True},
@@ -36,7 +37,7 @@ EVENT_SCHEMA  = {
     "required": [
         "Title", "Start_Date", "End_Date", "Start_Time", "End_Time",
         "Description", "Location", "Street", "House_Number", "Zip_Code", 
-        "City", "Country", "Room", "Floor", "Speaker", "Organizer", 
+        "City", "Country", "Room", "Floor", "Language", "Speaker", "Organizer", 
         "Registration_Needed", "URL", "Registration_URL", "Meeting_URL", 
         "Image_Key", "Event_Type", "Main_Event_Temp_Key",
     ],
@@ -88,12 +89,12 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     
     I) DEFINITION OF AN EVENT:
 
-    An event is a scheduled occurrence. It is NOT a invitation to participate in a study, survey, or non-event activity.
-
-    There are main events and sub events. Main events are the primary events, while sub events are part of a larger event series. (e.g., 
+    I.1) An event is a scheduled occurrence. It is NOT a invitation to participate in a study, survey, or non-event activity.
+    I.2) There are main events and sub events. Main events are the primary events, while sub events are part of a larger event series. (e.g., 
     individual talks in a lecture series, workshops in a conference, sessions in a multi-day event).
-    There cannot be a sub event without a main event! 
-    
+    I.3) There cannot be a sub event without a main event!
+    I.4) If an email mentions multiple weekdays for an event without specific dates, this might indicate a recurring event. In that case, treat each day as a single main event or sub event if part of a main event (e.g., a weekly seminar) and add the weekday in the event title.
+
     II) General RULES:
 
     II.1. Translate any non English text into English, except for names (e.g. building names, street names, institution names)!
@@ -159,6 +160,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Country (String or null): The country name.
     - Room (String or null): The room name or number if specified.
     - Floor (String or null): The floor number if specified.
+    - Language (String or null): The primary language of the event (e.g., "English", "German", etc.) if specified. If not specified, set to null. Make sure to use language names in English and only insert actual language names and not made up/fake languages, abbreviations or codes. 
     - Speaker (String or null): The speaker of the event if available.
     - Organizer (String or null): The organizer of the event if available.
     - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false.

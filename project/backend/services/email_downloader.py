@@ -227,6 +227,7 @@ def download_latest_emails(limit: int = 10) -> None:
         if ("rundmail" in body.lower()) or ("wiwinews" in body.lower()):
             
             # ---- fetch URL content for this email ----
+            print("")
             print(f"[download_latest_emails] Processing email {i}: extracting URLs...")
             url_contents = fetch_urls_for_email(body)
             url_content_block = format_url_content_block(url_contents)
@@ -280,7 +281,5 @@ def download_latest_emails(limit: int = 10) -> None:
         all_path_files.write(combined_string)
 
     # ---- print status ----
-    print(
-        f"[{datetime.now().isoformat(timespec='seconds')}] "
-        f"Saved concatenated email file: {all_path}"
-    )
+    print("")
+    print(f"Saved concatenated email file: {all_path}")

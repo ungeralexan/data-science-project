@@ -12,7 +12,7 @@ from data.database.database_events import SessionLocal, UserORM, UserLikeORM, Ma
 from services.email_service import send_password_reset_email  # pylint: disable=import-error
 from services.event_recommender import run_single_user_recommendations  # pylint: disable=import-error
 
-from config import DEFAULT_THEME # pylint: disable=import-error
+from config import DEFAULT_THEME, DEFAULT_PREFERENCE_LANGUAGE # pylint: disable=import-error
 
 from .models import (
     UserCreate,
@@ -72,6 +72,7 @@ async def register(user_data: UserCreate):
                 interest_keys=user_data.interest_keys,
                 interest_text=user_data.interest_text or "",
                 theme_preference=user_data.theme_preference or DEFAULT_THEME,
+                language_preference=user_data.language_preference or DEFAULT_PREFERENCE_LANGUAGE,
             )
 
             db.add(new_user)
@@ -189,6 +190,8 @@ async def update_me(user_update: UserUpdate, current_user: UserORM = Depends(get
             user.interest_text = user_update.interest_text
         if user_update.theme_preference is not None:
             user.theme_preference = user_update.theme_preference
+        if user_update.language_preference is not None:
+            user.language_preference = user_update.language_preference
         
         db.commit()
         db.refresh(user)

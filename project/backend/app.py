@@ -64,6 +64,7 @@ class Event(BaseModel):
     room: Optional[str] = None
     floor: Optional[str] = None
     description: Optional[str] = None
+    language: Optional[str] = None
     speaker: Optional[str] = None
     organizer: Optional[str] = None
     registration_needed: Optional[bool] = None
@@ -111,6 +112,7 @@ def main_event_orm_to_pydantic(event: MainEventORM) -> Event:
         room = event.room,
         floor = event.floor,
         description = event.description,
+        language = event.language,
         speaker = event.speaker,
         organizer = event.organizer,
         registration_needed = event.registration_needed,
@@ -146,6 +148,7 @@ def sub_event_orm_to_pydantic(event: SubEventORM) -> Event:
         room = event.room,
         floor = event.floor,
         description = event.description,
+        language = event.language,
         speaker = event.speaker,
         organizer = event.organizer,
         registration_needed = event.registration_needed,

@@ -63,8 +63,6 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
         cleanup_cross_table_duplicates(db)
         db.close()
 
-    return 
-
     # 3) Archive past events in database first
     print("________________________________________________________________________________________________")
     print("")
@@ -151,6 +149,12 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
         run_event_recommendations(db)
         db.close()
 
+    print("##############################################################################################")
+    print("")
+    print("[pipeline] EMAIL TO DB PIPELINE completed!")
+    print("")
+    print("##############################################################################################")
+
 
 def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_events_raw: List[dict]) -> None:
     """
@@ -172,12 +176,14 @@ def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_ev
     print(f"[pipeline] There are {len(existing_main_events)} existing main_events and {len(existing_sub_events)} existing sub_events.")
 
     # 1) Ask LLM which main_events are new (compares against BOTH main_events AND sub_events)
+    print("")
+    print("[pipeline] Checking for new main_events via LLM...")
+
     try:
-        print("[pipeline] Checking for new main_events via LLM...")
         new_main_events_raw = filter_new_main_events(main_events_raw, existing_main_events, existing_sub_events)
         print(f"[pipeline] {len(new_main_events_raw)} main_events considered new by LLM.")
     except Exception as e: # pylint: disable=broad-except
-        print(f"[pipeline] Error in main_event dedup: {e}")
+        print(f"[pipeline] Error while checking for new main_events via LLM: {e}")
         print("[pipeline] Proceeding by assuming all main_events are new.")
 
         new_main_events_raw = main_events_raw
@@ -185,26 +191,37 @@ def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_ev
     # 2) Ask LLM which sub_events are new, also check for misclassified main_events
     main_events_to_delete: List[str] = []
     
+    print("")
+    print("[pipeline] Checking for new sub_events via LLM...")
+
     try:
-        print("[pipeline] Checking for new sub_events via LLM...")
         new_sub_events_raw, main_events_to_delete = filter_new_sub_events_with_correction(sub_events_raw, existing_sub_events, existing_main_events)
         print(f"[pipeline] {len(new_sub_events_raw)} sub_events considered new by LLM.")
     except Exception as e: # pylint: disable=broad-except
-        print(f"[pipeline] Error in sub_event dedup: {e}")
+        print(f"[pipeline] Error while checking for new sub_events via LLM: {e}")
         print("[pipeline] Proceeding by assuming all sub_events are new.")
 
         new_sub_events_raw = sub_events_raw
 
     # 2.1) Delete misclassified main_events (events that were wrongly classified as main_events but are actually sub_events)
+    print("")
+
     if main_events_to_delete:
         print(f"[pipeline] Deleting {len(main_events_to_delete)} misclassified main_events...")
+
         for main_event_id in main_events_to_delete:
             main_event = db.query(MainEventORM).filter(MainEventORM.id == main_event_id).first()
+
             if main_event:
                 print(f"[pipeline] Deleting misclassified main_event: '{main_event.title}' (ID: {main_event_id})")
+
                 db.delete(main_event)
+
         db.commit()
+        
         print(f"[pipeline] Deleted {len(main_events_to_delete)} misclassified main_events.")
+    else:
+        print("[pipeline] No misclassified main_events to delete.")
 
     # 3) Insert main_events first (we need their IDs for sub_events)
     # Build a mapping from temp_key to DB id for linking sub_events
@@ -237,6 +254,7 @@ def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_ev
             country = event.get("Country"),
             room = event.get("Room"),
             floor = event.get("Floor"),
+            language = event.get("Language"),
             speaker = event.get("Speaker"),
             organizer = event.get("Organizer"),
             registration_needed = event.get("Registration_Needed"),
@@ -260,6 +278,7 @@ def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_ev
         inserted_main_count += 1
 
     db.commit()
+
     print(f"[pipeline] Inserted {inserted_main_count} new main_events into DB.")
 
     # 4) Insert sub_events and link to main_events
@@ -296,6 +315,7 @@ def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_ev
             country = event.get("Country"),
             room = event.get("Room"),
             floor = event.get("Floor"),
+            language = event.get("Language"),
             speaker = event.get("Speaker"),
             organizer = event.get("Organizer"),
             registration_needed = event.get("Registration_Needed"),
@@ -360,4 +380,5 @@ def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_ev
                     break
 
     db.commit()
+
     print("[pipeline] Updated main_events with sub_event_ids.")

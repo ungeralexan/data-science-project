@@ -16,6 +16,7 @@ export type Event = {
   room?: string;
   floor?: string;
   description?: string;
+  language?: string;
   speaker?: string;
   organizer?: string;
   registration_needed?: boolean;

@@ -21,6 +21,7 @@ const params = parameters as typeof parameters & {
 export const API_BASE_URL: string = params.API_BASE_URL;
 export const WS_PORT: number = params.WS_PORT;
 export const POSSIBLE_INTEREST_KEYWORDS: string[] = params.POSSIBLE_INTEREST_KEYWORDS;
+export const POSSIBLE_LANGUAGE_OPTIONS: string[] = params.POSSIBLE_LANGUAGE_OPTIONS;
 export const LOCAL: boolean = params.LOCAL;
 
 // Storage keys for localStorage

@@ -1,17 +1,15 @@
 
 import os
-import re
 import json
-from datetime import datetime
 from typing import List
+from email.policy import default
+import warnings
 
 import imaplib
 import email
 import ssl
-import requests
-from email.policy import default
-import warnings
 from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+from services.email_downloader.url_downloader import fetch_urls_for_email, format_url_content_block  # pylint: disable=import-error
 from config import IMAP_HOST, IMAP_PORT, EMAIL_TEMP_DIR  # pylint: disable=import-error
 
 #I disable this warning because it doesn't affect our use case
@@ -27,142 +25,11 @@ with open("secrets.json", "r", encoding="utf-8") as f:
 USER = secrets["USER_ZDV"]       # ZDV Login
 PASSWORD = secrets["USER_PASSWORD"]  # ZDV password
 
-# -------- URL Extraction and Content Fetching Settings --------
-
-# Timeout for URL requests (seconds)
-URL_REQUEST_TIMEOUT = 10
-# Maximum number of URLs to fetch per email
-MAX_URLS_PER_EMAIL = 3
-# Maximum content length per URL (characters)
-MAX_CONTENT_LENGTH = 10000
-
-# URL patterns to skip (social media, unsubscribe links, etc.)
-SKIP_URL_PATTERNS = [
-    'unsubscribe', 'mailto:', 'tel:', 'javascript:',
-    'facebook.com', 'twitter.com', 'linkedin.com', 'instagram.com',
-    'youtube.com', 'google.com/maps', 'maps.google',
-    '.pdf', '.jpg', '.jpeg', '.png', '.gif', '.svg', "ilias", "ilias3"
-]
-
-
-# -------- URL Extraction Functions --------
-
-def extract_urls_from_text(text: str) -> list[str]:
-    """
-    Extract unique URLs from text using regex.
-    Returns a list of unique URLs found.
-    """
-    # Regex pattern for URLs
-    url_pattern = r'https?://[^\s<>"\')\]}>]+'
-    
-    urls = re.findall(url_pattern, text)
-    
-    # Clean up URLs 
-    cleaned_urls = []
-
-    for url in urls:
-        # Remove trailing punctuation
-        url = url.rstrip('.,;:!?')
-
-        # Remove URL fragments
-        if url and url not in cleaned_urls:
-            cleaned_urls.append(url)
-    
-    return cleaned_urls
-
-
-def fetch_url_content(url: str) -> str | None:
-    """
-    Fetch and extract main text content from a URL.
-    Returns the extracted text content or None if failed.
-    """
-    try:
-
-        # Set a user-agent to mimic a browser
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
-
-        # Make HTTP GET request
-        response = requests.get(url, headers=headers, timeout=URL_REQUEST_TIMEOUT)
-        response.raise_for_status()
-        
-        # Parse HTML content
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Remove script and style elements
-        for element in soup(['script', 'style', 'nav', 'footer', 'header']):
-            element.decompose()
-        
-        # Get text content
-        text = soup.get_text(separator=' ', strip=True)
-        
-        # Limit content length
-        if len(text) > MAX_CONTENT_LENGTH:
-            text = text[:MAX_CONTENT_LENGTH] + "..."
-        
-        return text
-    
-    except requests.RequestException as e:
-        print(f"[download_latest_emails] Failed to fetch URL: {url}: {e}")
-        return None
-    except Exception as e:  # pylint: disable=broad-except
-        print(f"[download_latest_emails] Error processing URL: {url}: {e}")
-        return None
-
-
-def fetch_urls_for_email(email_body: str) -> dict[str, str]:
-    """
-    Extract URLs from an email body and fetch their content.
-    Returns a dict mapping URL to its content.
-    """
-    urls = extract_urls_from_text(email_body)
-    url_contents = {}
-    urls_fetched = 0
-    
-    for url in urls:
-        # Stop if we've fetched enough URLs for this email
-        if urls_fetched >= MAX_URLS_PER_EMAIL:
-            break
-        
-        # Skip common non-event URLs
-        if any(pattern in url.lower() for pattern in SKIP_URL_PATTERNS):
-            continue
-        
-        print(f"[download_latest_emails] Fetching content from URL: {url}")
-        content = fetch_url_content(url)
-        
-        if content and len(content) > 100:  # Only include if meaningful content
-            url_contents[url] = content
-            urls_fetched += 1
-    
-    return url_contents
-
-
-def format_url_content_block(url_contents: dict[str, str]) -> str:
-    """
-    Format URL contents into a text block to be appended to an email.
-    """
-    if not url_contents:
-        return ""
-    
-    lines = ["\n--- URL CONTENT FROM THIS EMAIL ---\n"]
-    
-    for url, content in url_contents.items():
-        lines.append(f"URL: {url}")
-        lines.append(f"Content: {content}")
-        lines.append("")
-    
-    return "\n".join(lines)
-
 # -------- Email download function --------
 def download_latest_emails(limit: int = 10) -> None:
     """
-    Download the latest `limit` emails, save each as a separate .txt file,
-    and also return ONE big string with all emails concatenated.
-    
-    For each email, URLs are extracted and their content is fetched,
-    then included directly after the email body for LLM context.
+    Download the latest `limit` emails from the IMAP server, filter for "Rundmail" or "WiWiNews" emails,
+    extract their plain text bodies (and URL contents), and save them as a combined all_emails.txt file.
     """
 
     # ---- connect and login ----

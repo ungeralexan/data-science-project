@@ -4,7 +4,7 @@ from typing import List, Dict, Any
 from google import genai
 
 from config import EMAIL_TEMP_DIR, EMAIL_PIPELINE_DEFAULT_LIMIT  # pylint: disable=import-error
-from services.email_downloader import download_latest_emails  # pylint: disable=import-error
+from services.email_downloader.email_downloader import download_latest_emails  # pylint: disable=import-error
 from services.event_recognizer import extract_event_info_with_llm  # pylint: disable=import-error
 
 

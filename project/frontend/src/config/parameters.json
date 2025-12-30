@@ -40,6 +40,7 @@
         "Social",
         "Sports",
         "Study Groups",
+        "Teaching",
         "Travel"
     ],
     "POSSIBLE_LANGUAGE_OPTIONS": [
@@ -52,7 +53,27 @@
         "Russian",
         "Italian",
         "Portuguese",
-        "Arabic"
+        "Arabic",
+        "Dutch",
+        "Swedish",
+        "Turkish",
+        "Korean",
+        "Hindi",
+        "Greek",
+        "Polish",
+        "Czech",
+        "Danish",
+        "Finnish",
+        "Norwegian",
+        "Hungarian",
+        "Romanian",
+        "Bulgarian",
+        "Ukrainian",
+        "Hebrew",
+        "Vietnamese",
+        "Indonesian",
+        "Thai",
+        "Malay"
     ],
     "STORAGE_KEYS": {
         "AUTH_TOKEN": "auth_token",

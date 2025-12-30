@@ -7,8 +7,9 @@ All settings and parameters (except secrets) are defined here.
 DEFAULT_THEME = "light"
 DEFAULT_PREFERENCE_LANGUAGE = "English"
 
-# ----- Database Configuration -----
+# ----- Paths Configuration -----
 DATABASE_URL = "sqlite:///./data/database/tuevent_database.db"
+LOG_PATH = "./data/logs/"
 
 # ----- JWT Authentication Configuration -----
 JWT_SECRET_KEY = "RANDOMKEYFORJWTSECRETCHANGEINPRODUCTION"
@@ -34,7 +35,7 @@ CORS_ORIGINS = [
 # ----- Scheduler Configuration -----
 SCHEDULER_TIMEZONE = "Europe/Berlin"
 EMAIL_PIPELINE_CRON_HOURS = "*/6"  # Run every 6 hours
-EMAIL_PIPELINE_DEFAULT_LIMIT = 30  # Process up to 30 emails per run
+EMAIL_PIPELINE_DEFAULT_LIMIT = 15  # Process up to 15 emails per run
 
 
 # ----- SMTP Email Configuration -----
@@ -49,8 +50,8 @@ IMAP_PORT = 993
 EMAIL_TEMP_DIR = "data/temp_emails"
 
 # ----- LLM Configuration -----
-#RECOGNITION_LLM_MODEL = "gemini-3-flash-preview" #Model used for event recognition and extraction
-RECOGNITION_LLM_MODEL = "gemini-2.5-flash" #Model used for event recognition and extraction
+RECOGNITION_LLM_MODEL = "gemini-3-flash-preview" #Model used for event recognition and extraction
+#RECOGNITION_LLM_MODEL = "gemini-2.5-flash" #Model used for event recognition and extraction
 DUPLICATION_LLM_MODEL = "gemini-2.5-flash" #Model used for event duplication detection
 RECOMMENDATION_LLM_MODEL = "gpt-oss-120b:free"
 

@@ -194,4 +194,5 @@ class UserGoingORM(Base):
 
 # Function to initialize the database and create tables.
 def init_db() -> None:
+    print("Initializing database and creating tables...")
     Base.metadata.create_all(bind=engine) # Create all tables in the database based on the ORM models defined.

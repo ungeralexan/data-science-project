@@ -432,34 +432,41 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     // ------- Recommendation Functions -------
 
-    // Start the cooldown timer
+    // Start the cooldown timer and save expiry to localStorage to persist across page reloads
     const startCooldownTimer = useCallback((targetExpiryMs?: number) => {
         const now = Date.now();
         const target = targetExpiryMs ?? now + TIMEOUTS.RECOMMENDATION_COOLDOWN_MS;
         const remainingSeconds = Math.max(0, Math.ceil((target - now) / 1000));
 
-        // Persist target expiry so a page refresh does not reset cooldown
+        // Store expiry time in localStorage
         localStorage.setItem(RECO_COOLDOWN_KEY, String(target));
         setRecommendationCooldownRemaining(remainingSeconds);
 
+        // If remaining time is zero or less, clear cooldown
         if (remainingSeconds <= 0) {
             localStorage.removeItem(RECO_COOLDOWN_KEY);
             return;
         }
 
+        // Clear any existing interval
         if (cooldownIntervalRef.current) {
             clearInterval(cooldownIntervalRef.current);
         }
 
+        // Set up interval to update remaining time every second
         cooldownIntervalRef.current = setInterval(() => {
+
+            // Calculate seconds left
             const secondsLeft = Math.max(0, Math.ceil((target - Date.now()) / 1000));
             setRecommendationCooldownRemaining(secondsLeft);
 
+            // If cooldown has expired, clear interval and localStorage
             if (secondsLeft <= 0) {
                 if (cooldownIntervalRef.current) {
                     clearInterval(cooldownIntervalRef.current);
                     cooldownIntervalRef.current = null;
                 }
+
                 localStorage.removeItem(RECO_COOLDOWN_KEY);
             }
         }, 1000);
@@ -468,9 +475,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // Restore recommendation cooldown from localStorage on mount
     useEffect(() => {
         const storedExpiry = localStorage.getItem(RECO_COOLDOWN_KEY);
+
         if (!storedExpiry) return;
 
         const parsed = Number.parseInt(storedExpiry, 10);
+
         if (Number.isNaN(parsed)) {
             localStorage.removeItem(RECO_COOLDOWN_KEY);
             return;
@@ -481,6 +490,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         } else {
             localStorage.removeItem(RECO_COOLDOWN_KEY);
         }
+
     }, [startCooldownTimer]);
 
     // Cleanup cooldown timer on unmount

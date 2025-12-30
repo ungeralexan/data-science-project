@@ -3,12 +3,14 @@ from typing import List, Dict
 from pathlib import Path
 import logging
 
+import pandas as pd
+
 from sqlalchemy.orm import Session
 
 from data.database.database_events import SessionLocal, MainEventORM, SubEventORM  # pylint: disable=import-error
 from config import EMAIL_TEMP_DIR, EMAIL_PIPELINE_DEFAULT_LIMIT  # pylint: disable=import-error
 
-from services.email_downloader import download_latest_emails   # pylint: disable=import-error
+from services.email_downloader.email_downloader import download_latest_emails   # pylint: disable=import-error
 from services.event_duplicator import filter_new_main_events, filter_new_sub_events_with_correction  # pylint: disable=import-error
 from services.event_recognizer import extract_event_info_with_llm  # pylint: disable=import-error
 
@@ -323,6 +325,7 @@ def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_ev
             registration_url = event.get("Registration_URL"),
             meeting_url = event.get("Meeting_URL"),
             image_key = event.get("Image_Key"),
+            main_event_temp_key = event.get("Main_Event_Temp_Key"),
             main_event_id = main_event_id,
         )
 

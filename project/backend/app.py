@@ -1,3 +1,5 @@
+import datetime
+import sys
 from typing import Optional, List
 import json
 from pydantic import BaseModel
@@ -18,6 +20,7 @@ from config import (  # pylint: disable=import-error
     SCHEDULER_TIMEZONE,
     EMAIL_PIPELINE_CRON_HOURS,
     EMAIL_PIPELINE_DEFAULT_LIMIT,
+    LOG_PATH,
 )
 
 # This file sets up the FastAPI application, including CORS settings,
@@ -38,6 +41,38 @@ app.add_middleware(
     allow_methods=["*"], # Allow all HTTP methods
     allow_headers=["*"], # Allow all headers
 )
+
+#-----  -----
+class Tee:
+    """
+    Tee class to duplicate stdout/stderr to both console and a log file.
+    """
+    def __init__(self, *streams):
+        self.streams = streams
+
+    def write(self, data):
+        """
+        Write data to all streams.
+        """
+        for s in self.streams:
+            s.write(data)
+            s.flush()
+
+    def flush(self):
+        """
+        Flush all streams.
+        """
+        for s in self.streams:
+            s.flush()
+
+# Setup logging: duplicate stdout and stderr to log file with timestamped name
+datetime = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
+# Create log file and redirect stdout/stderr
+log_file = open(LOG_PATH + "terminal_log_" + datetime + ".log", "w", encoding="utf-8")
+
+sys.stdout = Tee(sys.stdout, log_file)
+sys.stderr = Tee(sys.stderr, log_file)
 
 # ----- Include routers -----
 # Needed to include auth routes
@@ -182,6 +217,7 @@ async def startup_event():
         print(f"Error during initial pipeline run: {e}")
 
     #3) Schedule periodic email downloads and processing
+    print("Scheduling periodic email to DB pipeline...")
     scheduler.add_job(
         run_email_to_db_pipeline,
         trigger = CronTrigger(hour=EMAIL_PIPELINE_CRON_HOURS),  # every 6 hours
@@ -191,8 +227,8 @@ async def startup_event():
     )
 
     #4) Start the scheduler
-    #scheduler.start()
-    print("Scheduler started, email download job scheduled.")
+    scheduler.start()
+    print(f"Scheduler started, email download job scheduled for every {EMAIL_PIPELINE_CRON_HOURS} hours.")
 
 # ----- Shutdown tasks -----
 @app.on_event("shutdown")

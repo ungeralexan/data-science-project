@@ -22,8 +22,8 @@ from openpyxl.utils import get_column_letter
 
 from google import genai
 
-from config import EMAIL_TEMP_DIR, EMAIL_PIPELINE_DEFAULT_LIMIT, RECOGNITION_LLM_MODEL  # type: ignore
-from services.email_downloader import download_latest_emails  # type: ignore
+from config import EMAIL_TEMP_DIR, EMAIL_PIPELINE_DEFAULT_LIMIT, RECOGNITION_LLM_MODEL  # pylint: disable=import-error
+from services.email_downloader.email_downloader import download_latest_emails  # pylint: disable=import-error
 
 
 # Strictly local, gitignored (contains private content)

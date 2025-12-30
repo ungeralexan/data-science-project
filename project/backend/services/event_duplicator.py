@@ -28,8 +28,9 @@ SUBEVENT_CORRECTION_SCHEMA = {
         "properties": {
             "is_new": {"type": "BOOLEAN", "nullable": False},
             "matches_main_event_id": {"type": "STRING", "nullable": True},
+            "new_main_event_temp_key": {"type": "STRING", "nullable": True},
         },
-        "required": ["is_new"],
+        "required": ["is_new", "matches_main_event_id", "new_main_event_temp_key"],
     },
 }
 
@@ -242,10 +243,18 @@ def filter_new_sub_events_with_correction(
 
     system_instruction = """
     You are an assistant that checks if any candidate sub_events match existing main_events.
+
+    I) DEFINITION OF AN EVENT:
+
+    I.1) An event is a scheduled occurrence.
+    I.2) There are main events and sub events. Main events are the primary events, while sub events are part of a larger event series. (e.g., 
+    individual talks in a lecture series, workshops in a conference, sessions in a multi-day event).
+    I.3) There cannot be a sub event without a main event!
     
     This is a SELF-CORRECTION check. Sometimes in the past, an event may have been incorrectly
-    classified as a main_event when it should have been a sub_event. If a candidate sub_event
-    clearly refers to the SAME real-world event as an existing main_event, this indicates
+    classified as a main_event when it should have been a sub_event of another main_event. 
+    
+    If a candidate sub_event clearly refers to the SAME real-world event as an existing main_event, this indicates
     the main_event was misclassified and should be replaced.
 
     Consider two events to match if they clearly refer to the SAME real-world event,
@@ -260,16 +269,19 @@ def filter_new_sub_events_with_correction(
       - existing_main_events: a JSON array of main_events already stored
 
     For EACH candidate in order:
-      - If it matches NO existing main_event: return {"is_new": true, "matches_main_event_id": null}
-      - If it matches an existing main_event: return {"is_new": false, "matches_main_event_id": "<the id of the matching main_event>"}
+      - If it matches NO existing main_event: return {"is_new": true, "matches_main_event_id": null, "new_main_event_temp_key": null}
+      - If it matches an existing main_event: return {"is_new": false, "matches_main_event_id": "<the id of the matching main_event>", "new_main_event_temp_key": "<the main_event_temp_key of the main_event it should belong to>"}
+
+        As a sub_event always needs a main_event that it belongs to, you MUST provide a new_main_event_temp_key for the sub_event to belong to.
+        If you cannot find another suitable main_event for it to belong to, just set new_main_event_temp_key to null.
 
     Return ONLY a JSON ARRAY of objects, same length as `candidate_sub_events`.
 
     Example:
       [
-        {"is_new": true, "matches_main_event_id": null},
-        {"is_new": false, "matches_main_event_id": "abc123"},
-        {"is_new": true, "matches_main_event_id": null}
+        {"is_new": true, "matches_main_event_id": null, "new_main_event_temp_key": null},
+        {"is_new": false, "matches_main_event_id": "abc123", "new_main_event_temp_key": "def456"},
+        {"is_new": true, "matches_main_event_id": null, "new_main_event_temp_key": null}
       ]
 
     Do NOT add any extra keys, text or explanations.
@@ -297,7 +309,12 @@ def filter_new_sub_events_with_correction(
             # This sub_event matches an existing main_event - this is a correction case
             print(f"[filter_new_sub_events_with_correction] Sub_event {candidate.get('Title')} "
                   f"matches existing main_event ID {matched_main_id} - will correct classification.")
+            
             main_events_to_delete.append(matched_main_id)
+
+            # Update the candidate to link to the new main_event_temp_key
+            candidate["Main_Event_Temp_Key"] = decision.get("new_main_event_temp_key")
+
             # Add this sub_event to be inserted (it will replace the misclassified main_event)
             final_new_sub_events.append(candidate)
         elif decision.get("is_new", True):

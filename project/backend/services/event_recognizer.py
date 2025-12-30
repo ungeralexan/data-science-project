@@ -1,5 +1,7 @@
 import json
+import re
 from google import genai
+from google.genai import types
 
 from config import IMAGE_KEYS, IMAGE_KEY_DESCRIPTIONS, RECOGNITION_LLM_MODEL  # pylint: disable=import-error
 
@@ -49,12 +51,57 @@ SCHEMA_MULTI = {
     "items": EVENT_SCHEMA,
 }
 
+# -------- LOG Printing Helper Functions --------
+
+def normalize_thought(text: str) -> str:
+
+    t = text.replace("\r\n", "\n").replace("\r", "\n")     # normalize newlines
+    t = t.strip()     # trim leading/trailing whitespace/newlines
+    t = re.sub(r"\n\s*\n+", "\n" * 2, t) # Collapses blank lines: \n\s*\n ..
+    t = "\n".join(line.rstrip() for line in t.split("\n"))     # Removes trailing spaces per line
+
+    return t
+
+def format_gemini_thought(md: str) -> str:
+    """
+    Convert Gemini thought summaries like:
+      **Title**
+      <blank>
+      Body...
+    into:
+      Title: Body...
+    with clean spacing.
+    """
+    t = md.replace("\r\n", "\n").replace("\r", "\n").strip()
+
+    # Split into segments that start with **Title**
+    # Captures titles and their following text until next **Title** or end.
+    pattern = re.compile(r"\*\*(.+?)\*\*\s*\n+(.*?)(?=\n+\*\*.+?\*\*|\Z)", re.DOTALL)
+
+    parts = []
+    for title, body in pattern.findall(t):
+        title = title.strip()
+        body = body.strip()
+
+        # Collapse whitespace/newlines inside body to single spaces
+        body = re.sub(r"\s+", " ", body)
+
+        parts.append(f"{title}: {body}")
+
+    # If nothing matched (unexpected format), just collapse whitespace and return
+    if not parts:
+        return re.sub(r"\s+", " ", t)
+
+    # Separate formatted sections with a blank line (like your desired output)
+    return "\n\n".join(parts)
+
+def indent_block(text: str, prefix: str = "  ") -> str:
+    return "\n".join(prefix + line if line else prefix.rstrip() for line in text.split("\n"))
+
 #-------- LLM Event Extraction Function --------
 def extract_event_info_with_llm(email_text: str) -> dict:
     """
-    Uses Gemini to extract multiple events from a text containing multiple emails.
-    The email text already includes URL content fetched during email download.
-    Returns a list of dicts (one per event).
+    Use a Gemini LLM to extract structured event information from the provided email text.
     """
     
     # Generate image key strings for the prompt
@@ -63,7 +110,7 @@ def extract_event_info_with_llm(email_text: str) -> dict:
         f"- {key}: {desc if desc else '(no description provided)'}"
         for key, desc in IMAGE_KEY_DESCRIPTIONS.items()
     )
-    
+
     # System instructions
     system_instruction = f"""
 
@@ -74,12 +121,12 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     The text format is as follows:
 
     Each email starts with a line like "--------------- EMAIL: X Start ---------------"
-    followed by lines with "Subject: ..." and "From: ...", then a blank line, then the email body text.
-    
+    followed by lines with "Subject: ..." and "From: ...", then a blank line, then the email body text.    
+
     IMPORTANT: Each email may also include a section "--- URL CONTENT FROM THIS EMAIL ---" which contains
     text content extracted from URLs found in that email. This webpage content provides additional context
     about events mentioned in that specific email.
-    
+
     The email ends with a line like "--------------- EMAIL: X End ---------------".
     
     Some emails describe one event, some describe multiple events, and some are not events at all.
@@ -93,7 +140,6 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     I.2) There are main events and sub events. Main events are the primary events, while sub events are part of a larger event series. (e.g., 
     individual talks in a lecture series, workshops in a conference, sessions in a multi-day event).
     I.3) There cannot be a sub event without a main event!
-    I.4) If an email mentions multiple weekdays for an event without specific dates, this might indicate a recurring event. In that case, treat each day as a single main event or sub event if part of a main event (e.g., a weekly seminar) and add the weekday in the event title.
 
     II) General RULES:
 
@@ -161,8 +207,8 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Room (String or null): The room name or number if specified.
     - Floor (String or null): The floor number if specified.
     - Language (String or null): The primary language of the event (e.g., "English", "German", etc.) if specified. If not specified, set to null. Make sure to use language names in English and only insert actual language names and not made up/fake languages, abbreviations or codes. 
-    - Speaker (String or null): The speaker of the event if available.
-    - Organizer (String or null): The organizer of the event if available.
+    - Speaker (String or null): The speaker (person giving the talk, speech, etc.) of the event if available.
+    - Organizer (String or null): The organizer (person organizing the event) if available.
     - Registration_Needed (Boolean or null): Whether registration is needed for the event as true or false.
     - URL (String or null): A URL for general information about the event if available. 
     - Registration_URL (String or null): A URL where users can register for the event if available.
@@ -198,22 +244,66 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     # Create Gemini client
     client = genai.Client(api_key=secrets["GEMINI_API_KEY"])
 
-    # Make the LLM call to generate content with the specified schema
-    resp = client.models.generate_content(
+    answer_parts = []
+
+    stream = client.models.generate_content_stream(
         model=RECOGNITION_LLM_MODEL,
         contents=contents,
-        config={
-            "response_mime_type": "application/json",
-            "response_schema": SCHEMA_MULTI,
-        },
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+            response_schema=SCHEMA_MULTI,
+            thinking_config=types.ThinkingConfig(
+                include_thoughts=True,
+            ),
+            #tools=[{"url_context": {}}],
+        ),
     )
+    
+    last_thought = None
+
+    print(RECOGNITION_LLM_MODEL + " starts thinking ...")
+    print("")
+
+    for chunk in stream:
+
+        # Some chunks may not contain candidates
+        if not getattr(chunk, "candidates", None):
+            continue
+
+        # Process each part
+        for part in chunk.candidates[0].content.parts:
+
+            # Skip parts with no text
+            if not getattr(part, "text", None):
+                continue
+
+            # Printing thoughts
+            if getattr(part, "thought", False):
+                raw = part.text
+
+                # Normalize the thought text
+                normalized_thought = format_gemini_thought(raw)
+
+                 # Skip duplicate thoughts and empty thoughts
+                if not normalized_thought or normalized_thought == last_thought:
+                    continue
+
+                last_thought = normalized_thought
+
+                # Indent and print the thought block
+                print(indent_block(normalized_thought, prefix="    "))  # 4-space indent
+                print("")
+
+            # Collect answer parts
+            else:
+                # Actual answer (JSON text) arrives here
+                answer_parts.append(part.text)
 
     # Parse and return the JSON response in the format of a list of dicts (Exp: [{"Title": "...", "Start_Date": "...", ...}, {...}, ...])
     try:
-        parts = resp.candidates[0].content.parts
-        text = "".join(getattr(part, "text", "") for part in parts)
+        final_json_str = "".join(answer_parts)
 
-        return json.loads(text)
+        return json.loads(final_json_str)
     except json.JSONDecodeError as e:
         print("[event_recognizer] Failed to parse LLM JSON:", e)
         return None

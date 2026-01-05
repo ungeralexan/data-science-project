@@ -159,7 +159,22 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     II.8. Do NOT summarize the whole email in the title.
     II.9. When URL content is provided for an email, use it to extract additional details about events.
     II.10. If the URL content provides more specific information than the email body, prefer the URL content.
-    
+    II.11. DO NOT guess or invent missing information.
+    II.12. If there are multiple plausible values for a field (especially dates/times), prefer the value that is explicitly labeled as the event date/time. 
+    II.13. Treat dates embedded inside URLs (e.g., blog permalinks) as low-confidence unless the surrounding text explicitly labels them as the event date.
+    II.14. Date/Time selection heuristic:
+    - Prefer date/time values that appear near event marker keywords such as: "am", "on", "Datum", "date", "Uhrzeit", "time", "Beginn", "start", "von", "bis", "Ort", "location", "Treffpunkt".
+    - Deprioritize dates that appear near words like: "Deadline", "Anmeldefrist", "Bewerbungsfrist", "apply by", "registration deadline", unless explicitly stated as the event date.
+    - If the email and the URL content disagree on the event date/time, prefer the URL content ONLY if it is clearly an event page for the same event and explicitly states the event date/time.
+    II.15. Location validity rule:
+    If the location text indicates that the location will be announced later (e.g., "will be announced", "to be announced", "upon registration confirmation", "Ort wird bekanntgegeben"), then set Location/Street/House_Number/Zip_Code/City/Country/Room/Floor to "Location TBA".
+    II.17. Role disambiguation:
+    - Speaker: only assign when the text clearly indicates a person is presenting (e.g., "Vortrag von", "talk by", "speaker", "lecture by", "mit dabei", "keynote"). Do NOT use signature names as Speaker unless explicitly described as presenting.
+    - Organizer: the hosting institution/team/department responsible for the event (often from "From:" line, signature block organization, or "organisiert von/hosted by").
+    - If a person is only listed as a contact ("Kontakt", "for questions", email signature), do NOT put them in Speaker; keep them out of Speaker and optionally mention them in Description if useful.
+
+
+
     III) DESCRIPTION QUALITY RULES:
 
     The Description must be written as if it will be shown in a calendar entry to an end user.

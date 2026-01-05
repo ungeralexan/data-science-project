@@ -331,6 +331,58 @@ IMAGE_KEY_DESCRIPTIONS = {
         "Do not use for: festivals elsewhere (use festival). "
         "If overlapping: prefer festival_tuebingen when the location/branding is clearly Tübingen."
     ),
+
+     # --- Academic / Student Support (event formats) ---
+     "hackathon": (
+        "Use for: hackathons, datathons, makeathons, and coding challenges with a fixed time window (e.g., 24h or weekend events). "
+        "Do not use for: regular workshops or training sessions without a competitive or sprint-based format (use workshop or training). "
+        "If overlapping: prefer hackathon when the event involves building something in a limited time, often in teams."
+    ),
+    "exam_prep": (
+        "Use for: exam preparation and revision events (Klausurvorbereitung, Repetitorium, tutor-led review sessions). "
+        "Do not use for: general study skills workshops not tied to a specific exam period (use study_skills). "
+        "If overlapping: prefer exam_prep when the explicit goal is preparing for exams or assessments."
+    ),
+    "mental_health": (
+        "Use for: mental health and wellbeing events (stress management, loneliness groups, resilience workshops, counseling group sessions). "
+        "Do not use for: general sports or fitness activities (use sports_course). "
+        "If overlapping: prefer mental_health when psychological wellbeing or emotional support is the core focus."
+    ),
+    "study_skills": (
+        "Use for: study skills and learning strategy events (time management, learning techniques, exam planning, effective studying). "
+        "Do not use for: subject-specific exam revision (use exam_prep). "
+        "If overlapping: prefer study_skills when the focus is on how to study rather than what to study."
+    ),
+    "writing_workshop": (
+        "Use for: academic writing events (scientific writing, thesis writing, paper structure, citations, Schreibwerkstatt). "
+        "Do not use for: general workshops unrelated to writing (use workshop). "
+        "If overlapping: prefer writing_workshop when writing texts or academic papers is the central activity."
+    ),
+    "thesis_info": (
+        "Use for: thesis-related information events (Bachelor/Master thesis requirements, topic finding, supervision process). "
+        "Do not use for: hands-on thesis writing sessions (use writing_workshop). "
+        "If overlapping: prefer thesis_info when the focus is on formal rules, planning, or orientation around theses."
+    ),
+    "research_methods": (
+        "Use for: research methods events (qualitative/quantitative methods, statistics for research, empirical methods workshops). "
+        "Do not use for: subject-specific research talks without methods training (use colloquium or lecture_talk). "
+        "If overlapping: prefer research_methods when learning research methodology is the primary goal."
+    ),
+    "panel_discussion": (
+        "Use for: panel discussions with multiple speakers and a moderated discussion format (Podiumsdiskussion). "
+        "Do not use for: debates with explicit pro/contra framing (use debate). "
+        "If overlapping: prefer panel_discussion when several speakers discuss a topic from different perspectives."
+    ),
+    "alumni_event": (
+        "Use for: alumni-focused events (alumni talks, alumni networking evenings, alumni readings or career talks by former students). "
+        "Do not use for: general career talks without alumni framing (use company_talk or lecture_talk). "
+        "If overlapping: prefer alumni_event when alumni identity is explicitly highlighted."
+    ),
+    "meetup": (
+        "Use for: informal meetups and recurring gatherings (topic-based meetups, Stammtisch, casual get-togethers). "
+        "Do not use for: formal lectures or structured workshops (use lecture_talk or workshop). "
+        "If overlapping: prefer meetup when the event is informal and focused on community interaction."
+    )
 }
 
 # Preserved flat list for callers that only need the keys.

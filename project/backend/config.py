@@ -17,7 +17,6 @@ JWT_ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_DAYS = 7
 PASSWORD_RESET_EXPIRE_HOURS = 1
 
-
 # ----- CORS Configuration -----
 # Allowed origins for CORS requests (from frontend)
 CORS_ORIGINS = [
@@ -35,7 +34,7 @@ CORS_ORIGINS = [
 # ----- Scheduler Configuration -----
 SCHEDULER_TIMEZONE = "Europe/Berlin"
 EMAIL_PIPELINE_CRON_HOURS = "*/6"  # Run every 6 hours
-EMAIL_PIPELINE_DEFAULT_LIMIT = 15  # Process up to 15 emails per run
+EMAIL_PIPELINE_DEFAULT_LIMIT = 45  # Process up to X emails per run
 
 
 # ----- SMTP Email Configuration -----

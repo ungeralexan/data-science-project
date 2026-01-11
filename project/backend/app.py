@@ -1,4 +1,5 @@
 import datetime
+import os
 import sys
 from typing import Optional, List
 import json
@@ -69,6 +70,7 @@ class Tee:
 datetime = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
 # Create log file and redirect stdout/stderr
+os.makedirs(LOG_PATH, exist_ok=True) 
 log_file = open(LOG_PATH + "terminal_log_" + datetime + ".log", "w", encoding="utf-8")
 
 sys.stdout = Tee(sys.stdout, log_file)

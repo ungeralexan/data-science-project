@@ -41,7 +41,6 @@ from .utils import (
 #   
 #   It uses SQLAlchemy for database interactions and JWT for token handling.
 #   
-#
 
 
 # Create router with prefix

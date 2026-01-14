@@ -43,7 +43,7 @@ app.add_middleware(
     allow_headers=["*"], # Allow all headers
 )
 
-#-----  -----
+#----- Logging -----
 class Tee:
     """
     Tee class to duplicate stdout/stderr to both console and a log file.

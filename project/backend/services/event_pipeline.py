@@ -3,7 +3,7 @@ from typing import List, Dict
 from pathlib import Path
 import logging
 
-import pandas as pd
+from datetime import datetime
 
 from sqlalchemy.orm import Session
 
@@ -48,7 +48,7 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
     # 1) Remove internal duplicates from existing database tables
     print("________________________________________________________________________________________________")
     print("")
-    print("[pipeline] Removing internal duplicates from DB [event_cleaner.py]...")
+    print(f"[pipeline - {datetime.now().strftime('%H:%M:%S')}] Removing internal duplicates from DB [event_cleaner.py]...")
     print("")
 
     with SessionLocal() as db:
@@ -58,7 +58,7 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
     # 2) Remove cross-table duplicates (sub_events that duplicate main_events)
     print("________________________________________________________________________________________________")
     print("")
-    print("[pipeline] Removing cross-table duplicates from DB [event_cleaner.py]...")
+    print(f"[pipeline - {datetime.now().strftime('%H:%M:%S')}] Removing cross-table duplicates from DB [event_cleaner.py]...")
     print("")
 
     with SessionLocal() as db:
@@ -68,7 +68,7 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
     # 3) Archive past events in database first
     print("________________________________________________________________________________________________")
     print("")
-    print("[pipeline] Archiving past events in database [event_cleaner.py]...")
+    print(f"[pipeline - {datetime.now().strftime('%H:%M:%S')}] Archiving past events in database [event_cleaner.py]...")
     print("")
 
     with SessionLocal() as db:
@@ -78,7 +78,7 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
     # 4) Cleanup orphan sub_events (sub_events whose main_event doesn't exist)
     print("________________________________________________________________________________________________")
     print("")
-    print("[pipeline] Cleaning up orphan sub_events [event_cleaner.py]...")
+    print(f"[pipeline - {datetime.now().strftime('%H:%M:%S')}] Cleaning up orphan sub_events [event_cleaner.py]...")
     print("")
 
     with SessionLocal() as db:
@@ -88,7 +88,7 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
     # 5) Downloads latest emails
     print("________________________________________________________________________________________________")
     print("")
-    print("[pipeline] Downloading latest emails [email_downloader.py]...")
+    print(f"[pipeline - {datetime.now().strftime('%H:%M:%S')}] Downloading latest emails [email_downloader.py]...")
     print("")
 
     download_latest_emails(limit=limit)
@@ -104,7 +104,7 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
     # 6) Extracts events via LLM
     print("________________________________________________________________________________________________")
     print("")
-    print("[pipeline] Extracting events via LLM [event_recognizer.py]...")
+    print(f"[pipeline - {datetime.now().strftime('%H:%M:%S')}] Extracting events via LLM [event_recognizer.py]...")
     print("")
 
     try:
@@ -112,12 +112,13 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
         print(f"[pipeline] LLM returned {len(events_raw)} events.")
     except Exception as e: # pylint: disable=broad-except
         print(f"[pipeline] Error during event extraction: {e}")
+        print("[pipeline] The LLM call to extract events from emails failed! Stopping pipeline!")
         return
 
     # 7) Separate main_events and sub_events, then filter out past events
     print("________________________________________________________________________________________________")
     print("")
-    print("[pipeline] Separating and filtering events to only include future events [event_cleaner.py]...")
+    print(f"[pipeline - {datetime.now().strftime('%H:%M:%S')}] Separating and filtering events to only include future events [event_cleaner.py]...")
     print("")
 
     main_events_raw = [e for e in events_raw if e.get("Event_Type") == "main_event"]
@@ -135,7 +136,7 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
     # 8) Opens DB session and insert non-duplicates
     print("________________________________________________________________________________________________")
     print("")
-    print("[pipeline] Starting duplicate check [event_duplicator.py]...")
+    print(f"[pipeline - {datetime.now().strftime('%H:%M:%S')}] Starting duplicate check [event_duplicator.py]...")
     print("")
     with SessionLocal() as db:
         insert_non_duplicate_events(db, main_events_raw_filtered, sub_events_raw_filtered)
@@ -144,7 +145,7 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
     # 9) Generate event recommendations for users based on their interests
     print("________________________________________________________________________________________________")
     print("")
-    print("[pipeline] Generating event recommendations for users [event_recommender.py]...")
+    print(f"[pipeline - {datetime.now().strftime('%H:%M:%S')}] Generating event recommendations for users [event_recommender.py]...")
     print("")
 
     with SessionLocal() as db:
@@ -153,7 +154,7 @@ def run_email_to_db_pipeline(limit: int = EMAIL_PIPELINE_DEFAULT_LIMIT, outdir: 
 
     print("##############################################################################################")
     print("")
-    print("[pipeline] EMAIL TO DB PIPELINE completed!")
+    print(f"[pipeline - {datetime.now().strftime('%H:%M:%S')}] EMAIL TO DB PIPELINE completed!")
     print("")
     print("##############################################################################################")
 
@@ -186,9 +187,9 @@ def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_ev
         print(f"[pipeline] {len(new_main_events_raw)} main_events considered new by LLM.")
     except Exception as e: # pylint: disable=broad-except
         print(f"[pipeline] Error while checking for new main_events via LLM: {e}")
-        print("[pipeline] Proceeding by assuming all main_events are new.")
+        print("[pipeline] The LLM call for main_events failed, stopping insertion to avoid duplicates.")
 
-        new_main_events_raw = main_events_raw
+        return
 
     # 2) Ask LLM which sub_events are new, also check for misclassified main_events
     main_events_to_delete: List[str] = []
@@ -201,9 +202,9 @@ def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_ev
         print(f"[pipeline] {len(new_sub_events_raw)} sub_events considered new by LLM.")
     except Exception as e: # pylint: disable=broad-except
         print(f"[pipeline] Error while checking for new sub_events via LLM: {e}")
-        print("[pipeline] Proceeding by assuming all sub_events are new.")
+        print("[pipeline] The LLM call for sub_events failed, stopping insertion to avoid duplicates.")
 
-        new_sub_events_raw = sub_events_raw
+        return
 
     # 2.1) Delete misclassified main_events (events that were wrongly classified as main_events but are actually sub_events)
     print("")

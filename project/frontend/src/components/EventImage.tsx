@@ -79,16 +79,6 @@ const eventImageMap: Record<string, string> = {
 	panel_discussion: "panel_discussion",
 	alumni_event: "alumni_event",
 	meetup: "meetup",
-	hackathon: "hackathon",
-	exam_prep: "exam_prep",
-	mental_health: "mental_health",
-	study_skills: "study_skills",
-	writing_workshop: "writing_workshop",
-	thesis_info: "thesis_info",
-	research_methods: "research_methods",
-	panel_discussion: "panel_discussion",
-	alumni_event: "alumni_event",
-	meetup: "meetup"
 };
 
 const defaultImage =

@@ -150,7 +150,7 @@ export default function Register() {
                 <Input.Password prefix={<LockOutlined />} placeholder="Confirm Password" />
               </Form.Item>
 
-              <Divider>Your Interests and Preferred Event Language</Divider>
+              <Divider>Interests and Preferred Language</Divider>
 
               <Text type="secondary" className="auth-interests-hint">
                 Select your interests and preferred event language to receive personalized event recommendations. You can change

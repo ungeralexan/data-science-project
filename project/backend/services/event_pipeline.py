@@ -179,12 +179,20 @@ def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_ev
     print(f"[pipeline] There are {len(existing_main_events)} existing main_events and {len(existing_sub_events)} existing sub_events.")
 
     # 1) Ask LLM which main_events are new (compares against BOTH main_events AND sub_events)
+    # Also get temp_key mapping for duplicate main_events to link new subevents to existing main_events
     print("")
     print("[pipeline] Checking for new main_events via LLM...")
 
+    duplicate_temp_key_mapping: Dict[str, str] = {}  # new_temp_key -> existing_temp_key
+
     try:
-        new_main_events_raw = filter_new_main_events(main_events_raw, existing_main_events, existing_sub_events)
+        new_main_events_raw, duplicate_temp_key_mapping = filter_new_main_events(main_events_raw, existing_main_events, existing_sub_events)
         print(f"[pipeline] {len(new_main_events_raw)} main_events considered new by LLM.")
+        
+        # Log duplicate temp_key mappings
+        if duplicate_temp_key_mapping:
+            print(f"[pipeline] Found {len(duplicate_temp_key_mapping)} temp_key mappings for duplicate main_events.")
+    
     except Exception as e: # pylint: disable=broad-except
         print(f"[pipeline] Error while checking for new main_events via LLM: {e}")
         print("[pipeline] The LLM call for main_events failed, stopping insertion to avoid duplicates.")
@@ -287,6 +295,36 @@ def insert_non_duplicate_events(db: Session, main_events_raw: List[dict], sub_ev
     # 4) Insert sub_events and link to main_events
     inserted_sub_count = 0
     main_event_sub_ids: Dict[int, list] = {}  # Track which sub_events belong to which main_event
+
+    # Build temp_key to main_id mapping from existing main_events in DB
+    # This allows linking new sub_events to existing main_events
+    print("[pipeline] Building temp_key to main_event_id mapping from existing main_events in DB...")
+    existing_main_events_for_mapping = db.query(MainEventORM).filter(MainEventORM.archived_event == False).all()
+
+    for me in existing_main_events_for_mapping:
+        if me.main_event_temp_key:
+            temp_key_to_main_id[me.main_event_temp_key] = me.id
+
+    # Apply the duplicate temp_key mapping to remap new subevent temp_keys to existing main_event temp_keys
+    # This handles the case where a new subevent's main_event was found to be a duplicate of an existing main_event
+    # but with a different temp_key
+    if duplicate_temp_key_mapping:
+
+        print(f"[pipeline] Applying {len(duplicate_temp_key_mapping)} temp_key remappings for new subevents...")
+        
+        # Remap temp_keys in new_sub_events_raw
+        for event in new_sub_events_raw:
+
+            sub_temp_key = event.get("Main_Event_Temp_Key")
+            
+            # If this temp_key is in the duplicate mapping, remap it
+            if sub_temp_key and sub_temp_key in duplicate_temp_key_mapping:
+
+                # Get the new temp_key to use
+                new_temp_key = duplicate_temp_key_mapping[sub_temp_key]
+                
+                print(f"[pipeline] Remapping subevent '{event.get('Title')}' from temp_key '{sub_temp_key}' to '{new_temp_key}'")
+                event["Main_Event_Temp_Key"] = new_temp_key
 
     for event in new_sub_events_raw:
 

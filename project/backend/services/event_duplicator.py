@@ -19,6 +19,19 @@ BATCH_SCHEMA = {
     },
 }
 
+# Schema for main event duplicate checking that also returns existing event info for mapping
+MAIN_EVENT_BATCH_SCHEMA = {
+    "type": "ARRAY",
+    "items": {
+        "type": "OBJECT",
+        "properties": {
+            "is_new": {"type": "BOOLEAN", "nullable": False},
+            "matching_existing_event_id": {"type": "STRING", "nullable": True},
+        },
+        "required": ["is_new", "matching_existing_event_id"],
+    },
+}
+
 # Define the expected schema for the LLM response for sub_event self-correction
 # Returns info about whether a sub_event matches an existing main_event (misclassification)
 SUBEVENT_CORRECTION_SCHEMA = {
@@ -45,12 +58,14 @@ def get_event_summary(existing_event, include_event_type: bool = False) -> Dict[
         "Location": existing_event.location,
         "Description": (existing_event.description or "")[:500],
     }
+
     if include_event_type:
         # Determine if it's a main_event or sub_event based on the ORM class
         if isinstance(existing_event, MainEventORM):
             summary["event_type"] = "main_event"
         else:
             summary["event_type"] = "sub_event"
+
     return summary
 
 
@@ -177,22 +192,132 @@ def filter_new_main_events(
     candidates: List[dict], 
     existing_main_events: List[MainEventORM],
     existing_sub_events: List[SubEventORM]
-) -> List[dict]:
+) -> Tuple[List[dict], Dict[str, str]]:
     """
     Uses a single LLM call to decide which candidate main_events are new.
     
     IMPORTANT: Compares candidate main_events against BOTH existing main_events AND sub_events.
     This is to catch cases where the LLM incorrectly classified an existing sub_event as a main_event.
     
-    Returns only the candidates that are considered new (not duplicates of any existing event).
+    Returns:
+        - List of candidates that are considered new (not duplicates of any existing event)
+        - Dict mapping new event temp_keys to existing event temp_keys (for duplicate events)
+          This allows new subevents to be linked to existing main events even when temp_keys differ.
     """
+    temp_key_mapping: Dict[str, str] = {}  # new_temp_key -> existing_temp_key
+    
+    if not candidates:
+        return [], {}
 
     # Combine both main_events and sub_events for comparison
     all_existing_events = list(existing_main_events) + list(existing_sub_events)
 
-    new_events = filter_new_events(candidates, all_existing_events, "main_event")
+    # If DB is empty, all candidates are new
+    if not all_existing_events:
+        return candidates, {}
+
+    # Prepare a simplified summary of existing events for the LLM
+    # Include main_event_temp_key for main_events so we can build the mapping
+    existing_summary = []
+
+    for e in all_existing_events:
+        summary = get_event_summary(e, include_event_type=True)
+
+        # Add main_event_temp_key for main_events
+        if isinstance(e, MainEventORM) and e.main_event_temp_key:
+            summary["main_event_temp_key"] = e.main_event_temp_key
+
+        existing_summary.append(summary)
+
+    system_instruction = """
+    You are an assistant that checks which candidate event(s) are already present
+    in a list of existing event(s).
+
+    Consider two events to be duplicates if they clearly refer to the SAME real-world event,
+    even if there are small wording differences. Use information like:
+        - Title similarity (ignoring capitalization and minor wording differences)
+        - Date and time
+        - Location
+        - Description
+
+    Some events may span multiple days (e.g. a conference). In that case, a duplicate is one
+    that overlaps at the same date(s)/time(s), not just vaguely similar.
+
+    You will receive:
+        - candidate_events: a JSON array of candidate events
+        - existing_events: a JSON array of events already stored
+
+    For EACH candidate in order, decide if it is NEW or already present among existing events.
+
+    Return ONLY a JSON ARRAY of objects, same length as `candidate_events`.
+    Each object must have:
+        - "is_new": Boolean - true if the candidate is new, false if it matches an existing event
+        - "matching_existing_event_id": String or null - if is_new is false, provide the "id" of 
+          the matching existing event; if is_new is true, set to null
+
+    Example:
+        [
+            {"is_new": true, "matching_existing_event_id": null},
+            {"is_new": false, "matching_existing_event_id": "abc123"},
+            {"is_new": true, "matching_existing_event_id": null}
+        ]
+
+    Do NOT add any extra keys, text or explanations.
+    """
+
+    decisions = call_llm_decisions(candidates, existing_summary, system_instruction, MAIN_EVENT_BATCH_SCHEMA)
+
+    # If LLM call failed, process stops and no candidates are treated as new
+    if not decisions:
+        print("[filter_new_main_events] LLM call failed, stopping pipeline ...")
+        return [], {}
+
+    if not isinstance(decisions, list) or len(decisions) != len(candidates):
+        print(
+            f"[filter_new_main_events] LLM output length mismatch or wrong format. "
+            f"Expected {len(candidates)}, got {len(decisions)}."
+            f"Stopping pipeline ..."
+        )
+
+        return [], {}
+
+    # Build a lookup from existing event ID to its temp_key
+    existing_id_to_temp_key: Dict[str, str] = {}
+
+    for e in existing_main_events:
+        if e.main_event_temp_key:
+            existing_id_to_temp_key[str(e.id)] = e.main_event_temp_key
+
+    # Keep only the candidates marked as new, and build temp_key mapping for duplicates
+    new_events: List[dict] = []
     
-    return new_events
+    # Process decisions
+    for current_candidate, decision in zip(candidates, decisions):
+
+        # If new, keep it
+        if bool(decision.get("is_new")):
+            new_events.append(current_candidate)
+
+        # If duplicate, build temp_key mapping
+        else:
+            # This candidate is a duplicate - build the temp_key mapping
+            matching_id = decision.get("matching_existing_event_id")
+            candidate_temp_key = current_candidate.get("Main_Event_Temp_Key")
+            
+            if matching_id and candidate_temp_key:
+
+                # Find the existing temp_key for the matching event
+                existing_temp_key = existing_id_to_temp_key.get(str(matching_id))
+
+                # Only add to mapping if temp_keys differ
+                if existing_temp_key and existing_temp_key != candidate_temp_key:
+
+                    temp_key_mapping[candidate_temp_key] = existing_temp_key
+
+                    print(f"[filter_new_main_events] Mapping temp_key '{candidate_temp_key}' -> '{existing_temp_key}' "
+                          f"(candidate '{current_candidate.get('Title')}' matches existing event ID {matching_id})")
+
+    return new_events, temp_key_mapping
 
 
 def filter_new_sub_events_with_correction(

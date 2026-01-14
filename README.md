@@ -494,6 +494,9 @@ The email pipeline automatically runs every 6 hours (configurable) and performs 
 │  │ • Compares new main_events against existing main+sub events      │   │
 │  │ • Compares new sub_events against existing sub+main events       │   │
 │  │ • Self-correction: detects misclassified events                  │   │
+│  │ • Captures temp_key remaps when a new main_event matches an      │   │
+│  │   existing one, so sub_events can be re-linked even if temp keys │   │
+│  │   differ                                                         │   │
 │  │ • Only inserts genuinely new events (Based on LLM decision)      │   │
 │  └──────────────────────────────────────────────────────────────────┘   │
 │                                   ↓                                     │

@@ -18,9 +18,9 @@ import App from './App';
     BrowserRouter is a router implementation that uses the HTML5 history API 
     (pushState, replaceState and the popstate event) to keep the UI in sync with the URL.
   
-  ConfigProvider:
-    ConfigProvider is a component from Ant Design that provides a way to configure
-    global settings for all Ant Design components used within the application.
+  AuthProvider:
+    AuthProvider is a context provider that manages authentication state and 
+    provides authentication-related functions to the rest of the application.
 */
 createRoot(document.getElementById('root')!).render(
   <StrictMode> 

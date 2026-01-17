@@ -35,7 +35,6 @@ tuevent solves the problem of information overload for university students by:
 - **Using LLMs (Gemini/OpenRouter)** to parse, categorize, and de-duplicate events
 - **Providing personalized recommendations** based on user interests and language preferences
 - **Offering a modern UI** with list/calendar views, search, filtering, and social features (likes, going)
-
 ---
 
 ## Tech Stack
@@ -74,6 +73,8 @@ tuevent solves the problem of information overload for university students by:
 ---
 
 ## Project Structure
+
+![Architecture diagram](docs/tuevent_architecture.png)
 
 ```
 data-science-project/
@@ -656,3 +657,4 @@ Maurice Schmetzer
 Veja Sovaite
 
 Alexander Unger
+

@@ -1,5 +1,9 @@
 import type { Event } from "../types/Event";
 
+/*
+  Utility functions for searching and filtering events based on a query string.
+*/
+
 function normalize(s: string): string {
   return s.toLowerCase().replace(/\s+/g, " ").trim();
 }

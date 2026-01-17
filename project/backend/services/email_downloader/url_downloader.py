@@ -2,6 +2,11 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
+#
+#   This file defines functions to extract URLs from email bodies
+#   and fetch their content for further processing.
+#
+
 # -------- URL Extraction and Content Fetching Settings --------
 
 # Timeout for URL requests (seconds)
@@ -159,6 +164,6 @@ def fetch_url_content(url: str) -> str | None:
     except requests.RequestException as e:
         print(f"[fetch_url_content] Failed to fetch URL: {url}: {e}")
         return None
-    except Exception as e:
+    except Exception as e: #pylint: disable=broad-except
         print(f"[fetch_url_content] Error processing URL: {url}: {e}")
         return None

@@ -1,35 +1,236 @@
 # LLM Extraction Testing Framework (Email → Events / Categories)
 
+
 ## 1. Objective
 
-The goal of this project is to design and implement a **robust testing framework** to evaluate whether a Large Language Model (LLM) correctly:
+This project designs and implements a **robust, reproducible testing framework** to verify that our event-extraction pipeline—powered by a Large Language Model (LLM)—works reliably on real university mailing-list emails.
 
-1. Detects whether an email contains relevant events.
-2. Extracts structured event information accurately.
-3. Assigns the **most important categories** correctly (not overly granular ones).
-4. Produces stable and reproducible results across runs and models.
+The system’s purpose is operational: it **automatically populates a student-facing website** with up-to-date and correctly structured event information (e.g., talks, workshops, deadlines-as-announcements). For students, correctness is critical because the website is used to make time-sensitive decisions (attendance planning, registration, room finding, travel time). Incorrect or missing details (wrong date/time, wrong location, invented speaker, or missing registration link) directly reduce trust and can cause students to miss events or show up at the wrong time/place.
 
-Because manual inspection of large email corpora does not scale, the framework relies on:
-- A **small, high-quality gold dataset**.
-- Automated evaluation metrics.
-- Optional **LLM-as-a-judge** evaluation to handle semantic ambiguity.
+The testing framework evaluates whether the LLM pipeline correctly:
+
+1. **Detects relevance**: determines whether an email contains one or more events that should appear on the website (and correctly identifies non-event emails as such).
+2. **Extracts structured information**: converts unstructured email text (and optionally linked URL content) into a consistent event schema (title, date/time, location, URL, organizer, etc.).
+3. **Supports auditability**: keeps extraction outputs traceable back to the source email so errors can be debugged and systematically reduced over time. (This “provenance” requirement became a key lesson from the baseline offline benchmark.) 
+
+### Why an explicit testing framework is necessary
+
+LLM-based extraction is powerful but can fail in predictable ways:
+- **Hallucinations** (invented details not supported by the email),
+- **Format mistakes** (wrong year/day/month, timezone confusion),
+- **Omissions** (missing location or registration requirement despite being present),
+- **Over-triggering** (extracting “events” from administrative notices).
+
+Because manual inspection of large email corpora does not scale, the framework is designed around:
+
+- A **small, high-quality gold dataset** (manually labeled subset) to provide ground truth.
+- **Automated evaluation metrics** to measure performance consistently across runs.
+- Optional **LLM-as-a-judge** scoring for cases where strict string matching is insufficient (e.g., paraphrased titles, semantically equivalent locations), while still keeping evaluation outputs structured and auditable.
+
+### Practical constraints reflected in the design
+
+The framework is built to remain usable under two real constraints already observed in the initial offline benchmark:
+
+- **Limited LLM-call budget**: evaluation should minimize repeated calls by producing “frozen” artifacts that can be re-scored locally without re-running extraction.
+- **Privacy constraints**: university emails must not be committed publicly; evaluation data containing raw email text remains local and gitignored. 
+
 
 ---
 
 ## 2. High-Level Approach
 
-### 2.1 End-to-End Data Flow
+### 2.1 End-to-End Data Flow (Reproducible Pipeline)
 
-1. Download ~200 raw emails.
-2. Pre-filter emails likely to contain events.
-3. Select ~25 representative emails as a **gold set**.
-4. Define a reduced taxonomy of **important evaluation categories**.
-5. Manually label the gold set (ground truth).
-6. Run one or more extraction LLMs on the gold set.
-7. Evaluate predictions against gold labels.
-8. Export results as:
-   - JSON (machine-readable)
-   - Excel/CSV (human-readable)
+This framework follows a **fixed two-layer dataset strategy** designed to balance realism, manual effort, and reproducibility.
+
+- **Layer A (Broad sample)**: we download a moderate number of real emails (**initially 150**) to capture realistic variation (newsletters, single-event announcements, administrative messages).
+- **Layer B (Gold set)**: from this pool, we select a smaller, representative subset (**~20 emails**) and manually label it to create a high-quality ground truth for evaluation.
+
+This separation ensures that the evaluation is both realistic (based on real inbox data) and controllable (small enough to label carefully and reuse across experiments).
+
+The pipeline is executed as follows:
+
+1. **Download raw emails (150 emails)**
+   - Emails are downloaded automatically from the source mailbox.
+   - Each email is stored as a standalone artifact containing raw text and metadata.
+   - An index file is generated to enable deterministic filtering, sampling, and reuse.
+
+2. **Pre-filter emails to event candidates**
+   - A rule-based pre-filter is applied to the raw email pool to identify emails likely to contain events.
+   - This step reduces noise by removing clearly irrelevant emails before manual inspection.
+   - The output is a reduced candidate set from which the gold set is selected.
+
+3. **Select the gold set (~20 emails)**
+   - From the candidate set, a fixed subset of approximately 25 emails is selected.
+   - The selection is deliberately diverse:
+     - single-event announcements,
+     - multi-event newsletters,
+     - borderline or ambiguous cases,
+     - non-event emails (negative examples).
+   - Once selected, the gold set is frozen and reused unchanged across all experiments.
+
+4. **Define important evaluation categories**
+   - A reduced category taxonomy is defined specifically for evaluation.
+   - Categories are chosen to reflect meaningful distinctions for students using the website, while remaining stable and easy to label.
+   - This taxonomy is independent of any fine-grained production categories.
+
+5. **Manually label the gold set (ground truth creation)**
+   - Each gold email is manually annotated with:
+     - whether it contains relevant event(s),
+     - the extracted structured event fields (title, date, time, location, URL),
+     - the assigned evaluation category.
+   - This labeled dataset serves as the authoritative reference for evaluation.
+
+6. **Run extraction model(s)**
+   - The event-extraction pipeline (LLM-based) is run on the frozen gold set.
+   - All model outputs are stored as strict JSON using a fixed schema.
+   - Multiple extraction models or configurations may be run on the same gold set for comparison.
+
+7. **Evaluate predictions against gold labels**
+   - Predictions are compared against the gold annotations.
+   - Deterministic matching is used wherever possible (e.g., dates, URLs).
+   - An LLM-as-a-judge is used only when semantic comparison is required (e.g., paraphrased titles or equivalent locations).
+   - Detection, extraction, and category-level metrics are computed.
+
+8. **Export evaluation results**
+   - Results are exported in two formats:
+     - **JSON** for automated analysis, regression testing, and reproducibility.
+     - **Excel/CSV** for manual inspection, debugging, and presentation.
+
+---
+
+### 2.2 Download Strategy: Batched and Idempotent by Design
+
+Emails are downloaded **in batches**, and the download process is explicitly designed to be **idempotent**.
+
+This is not an optional design choice—it is required to ensure reproducibility and dataset stability.
+
+**What we do:**
+- Emails are downloaded in multiple batches until the target size (150 emails) is reached.
+- Each email is written to disk exactly once.
+- Re-running the download script does not duplicate or overwrite existing emails.
+
+**Why batching is used:**
+- It avoids failures due to rate limits or temporary connection issues.
+- It allows the download process to be paused and resumed safely.
+- It simplifies debugging by isolating problems to specific batches.
+
+**Why idempotency is enforced:**
+- The raw dataset must remain stable across experiments.
+- Evaluation results must be attributable to model changes, not data drift.
+- Gold set selection depends on a fixed underlying raw pool.
+
+---
+
+### 2.3 Email Storage Format (Fixed Design Choice)
+
+Each downloaded email is stored as **one file per email**, keyed by a stable identifier.
+
+- Primary identifier: `message_id` (if available).
+- Fallback identifier: deterministic hash of `(sender, subject, date_received, body_snippet)`.
+
+**Storage layout:**
+- `data/raw_emails_150/<email_id>.json`
+  - full metadata (sender, subject, date_received, message_id)
+  - raw email body text (and optional HTML)
+- `data/raw_emails_150/index.json`
+  - list of all email IDs with minimal metadata for filtering and sampling
+
+This structure is fixed and intentional.
+
+**Why this design is used:**
+- Pre-filtering and gold set selection operate on the index without re-downloading emails.
+- Each prediction and evaluation result can be traced back to a specific source email.
+- Dataset versions can be compared cleanly across runs.
+
+---
+
+### 2.4 Fixed Parameterization (Initial Setup)
+
+For the first stable evaluation setup, the following parameters are fixed:
+
+- Raw email pool size: **150 emails**
+- Gold set size: **~20 emails**
+
+These values are chosen to:
+- allow fast iteration during development,
+- keep manual labeling effort reasonable,
+- provide sufficient diversity to expose common failure modes.
+
+Once the framework is stable, the raw pool can be expanded (e.g., to 200+ emails) and the gold set enlarged without changing the evaluation logic.
+
+## 2.5 Implementation Starts Here: Batched, Idempotent Email Download
+
+Before we finalize categories and gold-labeling, we will first implement the **data acquisition layer** in a way that is:
+
+- **Batched** (so we can stop/resume safely and avoid IMAP instability),
+- **Idempotent** (re-running does not duplicate emails),
+- **Traceable** (each downloaded email has a stable identifier and metadata),
+- **Evaluation-ready** (the storage format supports later filtering, sampling, and gold-set freezing).
+
+This section specifies exactly what we will build next and how it integrates with the existing baseline code.
+
+---
+
+### 2.5.1 Baseline (What We Already Have)
+
+We currently have a working baseline function `download_latest_emails(limit=...)` that:
+
+- connects via IMAP,
+- fetches the latest emails,
+- extracts plain text (falls back to HTML),
+- filters by keywords (Rundmail / WiWiNews),
+- optionally fetches URL content and appends it,
+- writes per-email `.txt` and a combined `all_emails.txt`.
+
+This is useful for quick manual tests, but it is not ideal for evaluation because:
+- files are overwritten / re-created each run,
+- emails are not stored with stable IDs,
+- combined format is hard to index and filter deterministically,
+- batching/resuming is not supported.
+
+Therefore, we implement a new downloader **alongside** the baseline (we do not remove the baseline).
+
+---
+
+### 2.5.2 What We Will Implement Now
+
+We will implement a new script that downloads emails in batches until a target is reached (e.g., 150), and stores them as:
+
+- **one JSON file per email**
+- plus a single **index file** describing the dataset
+
+#### Target storage structure (fixed)
+
+- `evaluation/data/raw_emails_105/emails/<email_id>.json`
+- `evaluation/data/raw_emails_105/index.json`
+
+Each email JSON contains:
+- `email_id` (stable key; message-id preferred),
+- `message_id`, `imap_uid`,
+- `subject`, `from`, `date`,
+- `body_text`,
+- optional `url_contents` and `url_content_block` (if we decide to store URL expansions now),
+- optional `filter_reason` (why it was included).
+
+This dataset becomes the foundation for:
+- candidate pre-filtering,
+- gold set selection,
+- extraction runs,
+- evaluation and auditing.
+
+---
+
+### 2.5.3 Batch Strategy (What We Will Do)
+
+We will download **newest-first**, in repeated batches, until we collect the target number of **kept** emails.
+
+- Default target: **150 kept emails**
+- Default batch size: **20 fetched emails per batch**
+- We *keep* only emails that pass the filter (Rundmail/WiWiNews), consistent with baseline.
+- We skip emails already downloaded (idempotency) using the stable `email_id`.
+
+
 
 ---
 
@@ -61,18 +262,7 @@ The reduced category set used **only for evaluation**:
 
 ---
 
-## 5. Mapping Production Categories to Evaluation Categories
 
-Fine-grained production categories are mapped into the evaluation taxonomy.
-
-Example mappings:
-- `lecture`, `seminar`, `ai`, `machine_learning` → Academic Talk / Lecture  
-- `careerfair`, `company_talk` → Career / Recruiting  
-- `meetup`, `party`, `networking` → Social / Networking  
-
-This preserves production detail while ensuring stable evaluation.
-
----
 
 ## 6. Gold Set Design
 

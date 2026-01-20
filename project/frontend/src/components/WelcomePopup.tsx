@@ -4,6 +4,12 @@ import { useAuth } from "../hooks/useAuth";
 import { STORAGE_KEYS } from "../config";
 import "./css/WelcomePopup.css";
 
+/*
+  This file defines a WelcomePopup component that displays a modal popup to welcome new users
+  to the application. The popup encourages users to create an account or sign in, while also
+  allowing them to explore the app without an account.
+*/
+
 type Props = {
   storageKey?: string;
 };

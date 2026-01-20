@@ -53,6 +53,6 @@ export interface UpdateUserRequest {
 // It includes the access token and the user data
 export interface AuthResponse {
     access_token: string;
-    token_type: string;
+    token_type: string; // typically "Bearer"
     user: User;
 }

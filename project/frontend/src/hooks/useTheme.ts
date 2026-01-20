@@ -20,9 +20,11 @@ export interface ThemeContextType {
 
 export function useTheme(): ThemeContextType {
     const context = useContext(AuthContext);
+    
     if (context === undefined) {
         throw new Error('useTheme must be used within an AuthProvider');
     }
+
     return {
         theme: context.theme,
         toggleTheme: context.toggleTheme,

@@ -15,12 +15,17 @@ const THEME_KEY = STORAGE_KEYS.THEME;
 
     Included Functions:
 
-    - fetchCurrentUser: Validates the token and fetches user info on app startup.
-    - login: Authenticates the user and stores the token and user info.
+    - login: Authenticates a user and stores the token and user info.
     - register: Registers a new user and stores the token and user info.
-    - logout: Clears the authentication state.
-    - updateUser: Updates user profile information.
-    - deleteAccount: Deletes the user account.
+    - logout: Clears the authentication token and user info.
+    - updateUser: Updates the user's profile information.
+    - deleteAccount: Deletes the user's account.
+    - toggleLike: Toggles the like status for an event.
+    - isEventLiked: Checks if an event is liked by the current user.
+    - toggleGoing: Toggles the going status for an event.
+    - isEventGoing: Checks if an event is marked as going by the current user.
+    - toggleTheme: Switches between light and dark themes.
+    - triggerRecommendations: Requests event recommendations from the backend.
 
     The AuthProvider wraps the application and provides authentication context
     to all child components, allowing them to access user authentication state
@@ -127,6 +132,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
                     },
+
                     body: JSON.stringify({ theme_preference: newTheme }),
                 });
             } catch (error) {
@@ -158,13 +164,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const fetchGoingEvents = async (authToken: string) => {
         try {
             const response = await fetch(`${API_BASE_URL}/api/auth/going-events`, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${authToken}` },
+                method: "GET",
+                headers: { Authorization: `Bearer ${authToken}` },
             });
+
             if (response.ok) {
-            const ids: Array<string | number> = await response.json();
-            setGoingEventIds(ids.map(String));
+                const ids: Array<string | number> = await response.json();
+                
+                setGoingEventIds(ids.map(String));
             }
+
         } catch (e) {
             console.error("Error fetching going events:", e);
         }
@@ -395,23 +404,30 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return likedEventIds.includes(eventId);
     };
 
+    // Toggle going status for an event
     const toggleGoing = async (
         eventId: string,
         eventType: "main_event" | "sub_event" = "main_event"
         ): Promise<{ going_count: number; isGoing: boolean }> => {
+        
+        // Ensure user is authenticated
         if (!token) throw new Error("Not authenticated");
 
+        // Determine if the event is currently marked as going
         const currentlyGoing = goingEventIds.includes(eventId);
 
+        // Set the appropriate endpoint based on current going status
         const endpoint = currentlyGoing
             ? `${API_BASE_URL}/api/events/${eventType}/${eventId}/ungoing`
             : `${API_BASE_URL}/api/events/${eventType}/${eventId}/going`;
 
+        // Make the API request to toggle going status
         const response = await fetch(endpoint, {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
         });
 
+        // Handle non-OK responses
         if (!response.ok) {
             const error = await response.json();
             throw new Error(error.detail || "Failed to toggle going");
@@ -420,6 +436,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const data = await response.json();
         const newIsGoing = !currentlyGoing;
 
+        // Update local goingEventIds state
         setGoingEventIds((prev) =>
             newIsGoing ? [...prev, eventId] : prev.filter((id) => id !== eventId)
         );

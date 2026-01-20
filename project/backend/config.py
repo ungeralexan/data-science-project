@@ -123,18 +123,13 @@ IMAGE_KEY_DESCRIPTIONS = {
     ),
     "research_fair": (
         "Use for: research fairs/showcases with multiple projects, posters, booths, or presentations in parallel. "
-        "Do not use for: competition-style science fairs or demo fairs framed as a science fair (use science_fair). "
+        "Do not use for: competition-style science fairs or demo fairs. "
         "If overlapping: prefer research_fair when the format is a multi-project poster/booth showcase."
     ),
     "science": (
-        "Use for: general STEM/science-themed events not better matched by colloquium, research_fair, or science_fair. "
-        "Do not use for: formal research seminars (use colloquium) or fair/showcase formats (use research_fair or science_fair). "
+        "Use for: general STEM/science-themed events not better matched by colloquium or research_fair. "
+        "Do not use for: formal research seminars (use colloquium) or fair/showcase formats (use research_fair). "
         "If overlapping: use science only when no more specific science-related key fits."
-    ),
-    "science_fair": (
-        "Use for: science fairs with demos/exhibits and ‘fair’ framing (often student projects, sometimes competition). "
-        "Do not use for: professional poster sessions or research showcases (use research_fair). "
-        "If overlapping: prefer science_fair when the event is explicitly called a science fair."
     ),
 
     # --- Career / Business (topic or format) ---
@@ -381,7 +376,15 @@ IMAGE_KEY_DESCRIPTIONS = {
         "Use for: informal meetups and recurring gatherings (topic-based meetups, Stammtisch, casual get-togethers). "
         "Do not use for: formal lectures or structured workshops (use lecture_talk or workshop). "
         "If overlapping: prefer meetup when the event is informal and focused on community interaction."
-    )
+    ),
+    "remembrance": (
+        "Use for: remembrance and memorial events (commemorations, vigils, memorial services). "
+        "Do not use for: general celebrations or parties (use party). "
+        "If overlapping: prefer remembrance when the event is explicitly about honoring or remembering individuals or events."),
+    "scholarship": (
+        "Use for: scholarship information sessions (application tips, available scholarships, funding opportunities). "
+        "Do not use for: general info sessions unrelated to scholarships (use info_session). "
+        "If overlapping: prefer scholarship when the focus is explicitly on scholarships and funding.")
 }
 
 # Preserved flat list for callers that only need the keys.

@@ -170,6 +170,22 @@ export default function EventDetail() {
   // Use formatted address if available, otherwise fall back to location field
   const displayAddress = formattedAddress || event.location;
 
+  // Determine if event is online-only (no physical address to display)
+  const isOnlineEvent = () => {
+    const locationLower = event.location?.toLowerCase().trim();
+    if (!locationLower) return false;
+    
+    // If location contains "online" (e.g., "Online", "Online via Zoom", "Join Online")
+    // treat as online-only regardless of address fields
+    if (locationLower.includes("online")) return true;
+    
+    // Also check for platform-only locations (e.g., "Zoom", "Teams", "WebEx")
+    const onlinePlatforms = ["zoom", "teams", "webex", "google meet", "microsoft teams"];
+    if (onlinePlatforms.some(platform => locationLower.includes(platform))) return true;
+    
+    return false;
+  };
+
   // Render the detailed view of the event
   return (
     <div className="event-detail">
@@ -211,38 +227,43 @@ export default function EventDetail() {
               )}
             </div>
 
-            <div className="event-detail-meta-row">
-              <EnvironmentOutlined className="event-detail-icon event-detail-icon--location" />
-              <Text strong>Address:</Text>
-              {displayAddress ? (
+            {/* Hide address and room rows entirely for online-only events */}
+            {!isOnlineEvent() && (
+              <>
+                <div className="event-detail-meta-row">
+                  <EnvironmentOutlined className="event-detail-icon event-detail-icon--location" />
+                  <Text strong>Address:</Text>
+                  {displayAddress ? (
 
-                // If googleMapsUrl exists, render the address as a clickable link
-                googleMapsUrl ? (
-                  <a 
-                    href={googleMapsUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="event-detail-location-link"
-                  >
-                    {displayAddress}
-                  </a>
-                ) : (
-                  <span>{displayAddress}</span>
-                )
-              ) : (
-                <Text type="secondary">No information available</Text>
-              )}
-            </div>
+                    // If googleMapsUrl exists, render the address as a clickable link
+                    googleMapsUrl ? (
+                      <a 
+                        href={googleMapsUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="event-detail-location-link"
+                      >
+                        {displayAddress}
+                      </a>
+                    ) : (
+                      <span>{displayAddress}</span>
+                    )
+                  ) : (
+                    <Text type="secondary">No information available</Text>
+                  )}
+                </div>
 
-            <div className="event-detail-meta-row">
-              <HomeOutlined className="event-detail-icon event-detail-icon--room" />
-              <Text strong>Room:</Text>
-              {roomFloor ? (
-                <span>{roomFloor}</span>
-              ) : (
-                <Text type="secondary">No information available</Text>
-              )}
-            </div>
+                <div className="event-detail-meta-row">
+                  <HomeOutlined className="event-detail-icon event-detail-icon--room" />
+                  <Text strong>Room:</Text>
+                  {roomFloor ? (
+                    <span>{roomFloor}</span>
+                  ) : (
+                    <Text type="secondary">No information available</Text>
+                  )}
+                </div>
+              </>
+            )}
 
             <div className="event-detail-meta-row">
               <TeamOutlined className="event-detail-icon event-detail-icon--organizer" />

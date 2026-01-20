@@ -2,7 +2,7 @@ import React from "react";
 
 // Load every stock image so we can resolve png/jpg/avif variants regardless of the file extension.
 const imageModules = import.meta.glob(
-	"../assets/stock_images/*.{png,jpg,jpeg,avif}",
+	"../assets/stock_images/*.{png,jpg,jpeg,avif,webp}",
 	{ eager: true, as: "url" }
 ) as Record<string, string>;
 
@@ -55,10 +55,10 @@ const eventImageMap: Record<string, string> = {
 	party: "party",
   resume_workshop: "resume_workshop",
 	reading: "reading",
+	remembrance: "remembrance",
 	research_fair: "research_fair",
 	science: "science",
-	science_fair: "science_fair",
-	science_png: "science",
+	scholarship: "scholarship",
 	sports_course: "sports_course",
 	startup: "startup",
 	student_organization: "student_organization",

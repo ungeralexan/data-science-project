@@ -213,14 +213,14 @@ def extract_event_info_with_llm(email_text: str) -> dict:
     - Start_Time (String or null): The start time of the event. There can only be one start time! If the text contains "c.t." or "s.t.", then interpret "c.t." to start 15 minutes after the hour and "s.t." to start exactly on the hour.
     - End_Time (String or null): The end time of the event. There can only be one end time! If the text contains "c.t." or "s.t.", then interpret "c.t." to end 15 minutes before the hour and "s.t." to end exactly on the hour.
     - Description (String or null): A concise, event-focused description suitable for a calendar entry.  Summarize the purpose, content, and intended audience of the event.  Do NOT describe the email  or administrative availability.
-    - Location (String or null): The full location/address of the event as a single string. If the event is remote or online, specify that.
-    - Street (String or null): The street name only (without house number).
-    - House_Number (String or null): The building/house number.
-    - Zip_Code (String or null): The postal/zip code.
-    - City (String or null): The city name.
-    - Country (String or null): The country name.
-    - Room (String or null): The room name or number if specified.
-    - Floor (String or null): The floor number if specified.
+    - Location (String or null): A short description of where the event takes place. For ONLINE-ONLY events, set this to exactly "Online". For HYBRID events (both physical and online), set this to "Hybrid" or include both (e.g., "Hybrid: Room 123 & Online"). For IN-PERSON events, use the venue/building name (not the full street address).
+    - Street (String or null): The street name only (without house number). IMPORTANT: For ONLINE-ONLY events, this MUST be null. Only populate for events with a physical location.
+    - House_Number (String or null): The building/house number. IMPORTANT: For ONLINE-ONLY events, this MUST be null.
+    - Zip_Code (String or null): The postal/zip code. IMPORTANT: For ONLINE-ONLY events, this MUST be null.
+    - City (String or null): The city name. IMPORTANT: For ONLINE-ONLY events, this MUST be null.
+    - Country (String or null): The country name. IMPORTANT: For ONLINE-ONLY events, this MUST be null.
+    - Room (String or null): The room name or number if specified. IMPORTANT: For ONLINE-ONLY events, this MUST be null.
+    - Floor (String or null): The floor number if specified. IMPORTANT: For ONLINE-ONLY events, this MUST be null.
     - Language (String or null): The primary language of the event (e.g., "English", "German", etc.) if specified. If not specified, set to null. Make sure to use language names in English and only insert actual language names and not made up/fake languages, abbreviations or codes. 
     - Speaker (String or null): The speaker (person giving the talk, speech, etc.) of the event if available.
     - Organizer (String or null): The organizer (person organizing the event) if available.

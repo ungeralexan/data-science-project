@@ -1,12 +1,9 @@
 <mxfile host="65bd71144e">
     <diagram id="e6uGeI5KjjNStgKo4UXj" name="Architecture">
-        <mxGraphModel dx="7170" dy="3895" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="10000" pageHeight="10000" math="0" shadow="0">
+        <mxGraphModel dx="986" dy="643" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="10000" pageHeight="10000" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="910" y="580" width="3380" height="4350" as="geometry"/>
-                </mxCell>
                 <mxCell id="VD0QvIAlLhySGKYsR5RV-1" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;dashed=1;strokeWidth=3;strokeColor=#6c8ebf;fillStyle=auto;glass=0;fillOpacity=35;" parent="1" vertex="1">
                     <mxGeometry x="1720" y="4120" width="780" height="450" as="geometry"/>
                 </mxCell>
@@ -1437,7 +1434,7 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="_KcAda0IiG5mncdmTl4c-1" value="" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#000000;shadow=0;dashed=0;shape=mxgraph.ios7.icons.reload;" parent="1" vertex="1">
-                    <mxGeometry x="1856" y="3860" width="24" height="27" as="geometry"/>
+                    <mxGeometry x="1865" y="3850" width="24" height="27" as="geometry"/>
                 </mxCell>
                 <mxCell id="WDzHG0Vug_Jmv8HVu-M8-20" value="sub_events" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fillColor=default;rounded=1;shadow=0;swimlaneLine=1;" parent="1" vertex="1">
                     <mxGeometry x="3820" y="3659.5" width="180" height="870" as="geometry">

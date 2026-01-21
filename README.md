@@ -49,8 +49,7 @@ tuevent solves the problem of information overload for university students by:
 | **APScheduler** | Scheduled task execution for email pipeline |
 | **Google Gemini API** | LLM for event extraction and duplicate detection |
 | **OpenRouter API** | LLM for event recommendations |
-| **bcrypt** | Password hashing |
-| **PyJWT** | JSON Web Token authentication |
+| **JWT** | JSON Web Token authentication |
 | **IMAP** | Email retrieval from university mail server |
 | **SMTP (Gmail)** | Sending password reset emails |
 
@@ -58,7 +57,7 @@ tuevent solves the problem of information overload for university students by:
 | Technology | Purpose |
 |------------|---------|
 | **React 19** | UI framework |
-| **TypeScript** | Type-safe JavaScript |
+| **TypeScript** | Core programming language (Type-safe JavaScript) |
 | **Vite** | Build tool and dev server |
 | **Ant Design** | UI component library |
 | **React Router** | Client-side routing |

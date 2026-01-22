@@ -77,70 +77,139 @@ tuevent solves the problem of information overload for university students by:
 
 ```
 data-science-project/
-├── docker-compose.yml              # Docker orchestration
-├── docs/                           # Documentation folder
-│   └── JWT.md                      # JWT authentication documentation
-├── project/
-│   │
-│   ├── backend/
-│   │   ├── Dockerfile              # Backend container configuration
-│   │   ├── app.py                  # FastAPI application entry point
-│   │   ├── config.py               # Centralized configuration
-│   │   ├── requirements.txt        # Python dependencies
-│   │   ├── secrets.json            # API keys and credentials (DO NOT COMMIT)
-│   │   ├── auth/                   # Authentication module
-│   │   │   ├── models.py           # Pydantic models for auth
-│   │   │   ├── routes.py           # Auth API endpoints
-│   │   │   └── utils.py            # JWT and password utilities
-│   │   ├── data/
-│   │   │   ├── database/
-│   │   │   │   └── database_events.py  # SQLAlchemy ORM models
-│   │   │   ├── logs/               # Terminal logs
-│   │   │   └── temp_emails/        # Downloaded email content
-│   │   └── services/
-│   │       ├── email_service.py        # SMTP email sending
-│   │       ├── event_duplicator.py     # LLM-based duplicate detection
-│   │       ├── event_pipeline.py       # Main email-to-database pipeline
-│   │       ├── event_recognizer.py     # LLM event extraction
-│   │       ├── event_recommender.py    # User recommendation engine
-│   │       ├── email_downloader/
-│   │       │   ├── email_downloader.py # IMAP email fetching
-│   │       │   └── url_downloader.py   # URL content extraction
-│   │       └── event_cleaner/
-│   │           ├── archive_past_events.py      # Archive old events
-│   │           ├── cleanup_orphan_subevents.py # Remove orphan sub-events
-│   │           └── remove_internal_duplicates.py # LLM duplicate removal
-│   └── frontend/
-│       ├── Dockerfile              # Frontend container configuration
-│       ├── package.json            # Node.js dependencies
-│       ├── vite.config.ts          # Vite configuration
-│       └── src/
-│           ├── App.tsx             # Main application component
-│           ├── main.tsx            # React entry point
-│           ├── components/
-│           │   ├── EventCalendar.tsx   # Calendar view component
-│           │   ├── EventList.tsx       # List view component
-│           │   ├── EventImage.tsx      # Event image display
-│           │   ├── NavBar.tsx          # Navigation bar
-│           │   ├── ProtectedRoute.tsx  # Auth-protected routes
-│           │   ├── WelcomePopup.tsx    # First-time user popup
-│           │   ├── css/                # CSS files of all components
-│           │   ├── buttons/            # Button components (Like Button, Register Button, Login Button, etc.)
-│           │   └── pages/              # Page components (Events, Event Detail, Settings, Login, etc.)
-│           ├── config/
-│           │   ├── index.ts            # Configuration exports
-│           │   └── parameters.json     # Frontend settings
-│           ├── context/
-│           │   └── AuthContext.tsx     # Authentication state management
-│           ├── hooks/
-│           │   ├── useAuth.ts          # Auth hook
-│           │   ├── useEvents.ts        # WebSocket events hook
-│           │   └── useTheme.ts         # Theme hook
-│           ├── types/
-│           │   ├── Event.ts            # Event type definition
-│           │   └── User.ts             # User type definitions
-│           └── utils/
-│               └── search.ts           # Search utility functions
+├── README.md                                               # Project overview, setup, and documentation links
+├── docker-compose.yml                                      # Compose services for frontend and backend
+├── docs/                                                   
+│   ├── How_To_Get_Tuevent_Running_in_VSCode_Thumbnail.png  # Thumbnail for VS Code setup video
+│   ├── How_To_Get_Tuevent_Running_in_VSCode_Video.mp4      # VS Code setup walkthrough
+│   ├── JWT.md                                              # JWT authentication documentation
+│   ├── tuevent_architecture.drawio                         # Editable architecture diagram
+│   └── tuevent_architecture.png                            # Rendered architecture diagram
+├── project/                                                
+│   ├── __init__.py                                         
+│   ├── backend/                                            
+│   │   ├── Dockerfile                                      # Backend container definition
+│   │   ├── app.py                                          # FastAPI app entrypoint and routes wiring
+│   │   ├── config.py                                       # Central configuration values and constants
+│   │   ├── requirements.txt                                # Backend Python dependencies
+│   │   ├── secrets.json                                    # Local secrets template (never commit real keys)
+│   │   ├── auth/                                           
+│   │   │   ├── models.py                                   # Pydantic schemas for auth flows
+│   │   │   ├── routes.py                                   # Auth endpoints (register/login/profile/reset)
+│   │   │   └── utils.py                                    # JWT, password hashing, and auth helpers
+│   │   ├── data/                                           
+│   │   │   ├── database/                                   # SQLite databases and ORM models
+│   │   │   │   ├── database_events.py                      # SQLAlchemy ORM models
+│   │   │   │   ├── tuevent_database.db                     # Primary SQLite database (Created on first run)
+│   │   │   ├── logs/                                       # Backend log output
+│   │   │   └── temp_emails/                                # Cached raw email bodies
+│   │   └── services/                         
+│   │       ├── email_service.py                            # SMTP password reset email sender
+│   │       ├── event_duplicator.py                         # LLM-based duplicate detection logic
+│   │       ├── event_pipeline.py                           # Orchestrates email → extraction → DB insertion
+│   │       ├── event_recognizer.py                         # LLM prompts to extract structured events
+│   │       ├── event_recommender.py                        # LLM-driven personalized recommendations
+│   │       ├── email_downloader/             
+│   │       │   ├── email_downloader.py                     # IMAP downloader for university inbox
+│   │       │   └── url_downloader.py                       # Fetches content behind newsletter links
+│   │       └── event_cleaner/                
+│   │           ├── archive_past_events.py                  # Moves past events to archive
+│   │           ├── cleanup_orphan_subevents.py             # Removes subevents without parents
+│   │           └── remove_internal_duplicates.py           # Deduplicates stored events
+│   └── frontend/                             
+│       ├── Dockerfile                                      # Frontend container definition
+│       ├── eslint.config.js                                # ESLint configuration
+│       ├── index.html                                      # HTML entry point for Vite
+│       ├── package-lock.json                               # Locked npm dependency graph
+│       ├── package.json                                    # Frontend package metadata and scripts
+│       ├── tsconfig.app.json                               # TS config for app source
+│       ├── tsconfig.json                                   # Base TS config
+│       ├── tsconfig.node.json                              # TS config for tooling/node
+│       ├── vite.config.ts                                  # Vite build and dev server config
+│       └── src/                              
+│           ├── App.tsx                                     # Root app component and routing shell
+│           ├── assets/                                     # Static assets
+│           │   ├── image_labels/                           # Labels for image assets
+│           │   └── stock_images/                           
+│           │       └── original_quality/                   # Full-resolution stock images
+│           ├── components/                   
+│           │   ├── EventCalendar.tsx                       # Calendar view for events
+│           │   ├── EventImage.tsx                          # Event image renderer with fallbacks
+│           │   ├── EventList.tsx                           # List view of events
+│           │   ├── NavBar.tsx                              # Top navigation bar
+│           │   ├── ProtectedRoute.tsx                      # Route guard for authenticated pages
+│           │   ├── ScrollToTop.tsx                         # Scroll reset on route change
+│           │   ├── WelcomePopup.tsx                        # First-time visitor popup
+│           │   ├── buttons/                  
+│           │   │   ├── CalendarDownloadButton.tsx          # ICS download trigger
+│           │   │   ├── EventSortButton.tsx                 # Sort options toggle
+│           │   │   ├── EventWebsiteButton.tsx              # Link out to event website
+│           │   │   ├── GoingButton.tsx                     # Mark attendance toggle
+│           │   │   ├── GoingFilterButton.tsx               # Filter list by going status
+│           │   │   ├── LikeButton.tsx                      # Like toggle for events
+│           │   │   ├── LikedFilterButton.tsx               # Filter list by liked events
+│           │   │   ├── MeetingButton.tsx                   # Meeting link/action button
+│           │   │   ├── RegistrationButton.tsx              # Registration CTA
+│           │   │   ├── ShareButton.tsx                     # Share menu trigger
+│           │   │   └── ViewToggleButton.tsx                # Switch list/calendar views
+│           │   ├── css/                      
+│           │   │   ├── AntDesignOverrides.css              # Custom overrides for Ant Design
+│           │   │   ├── App.css                             # Global app styling
+│           │   │   ├── AuthPages.css                       # Auth page styling
+│           │   │   ├── ColorPalette.css                    # Theme palette tokens
+│           │   │   ├── EventCalendar.css                   # Calendar view styles
+│           │   │   ├── EventDetail.css                     # Event detail page styles
+│           │   │   ├── EventList.css                       # Event list view styles
+│           │   │   ├── Events.css                          # Events page layout
+│           │   │   ├── GoingButton.css                     # Going button styles
+│           │   │   ├── LikeButton.css                      # Like button styles
+│           │   │   ├── NavBar.css                          # Nav bar styles
+│           │   │   ├── ProtectedRoute.css                  # Protected route styles
+│           │   │   ├── Settings.css                        # Settings page styles
+│           │   │   ├── ShareButton.css                     # Share button styles
+│           │   │   └── WelcomePopup.css                    # Welcome popup styles
+│           │   └── pages/                    
+│           │       ├── EventDetail.tsx                     # Event detail page
+│           │       ├── Events.tsx                          # Main events listing page
+│           │       ├── ForgotPassword.tsx                  # Password reset request page
+│           │       ├── Login.tsx                           # Login page
+│           │       ├── Register.tsx                        # Registration page
+│           │       └── ResetPassword.tsx                   # Password reset form page
+│           ├── config/                       
+│           │   ├── index.ts                                # Config export barrel
+│           │   └── parameters.json                         # Frontend runtime parameters
+│           ├── context/                      
+│           │   └── AuthContext.tsx                         # Auth state and helpers
+│           ├── hooks/                        
+│           │   ├── useAuth.ts                              # Auth-related hook
+│           │   ├── useEvents.ts                            # WebSocket events hook
+│           │   └── useTheme.ts                             # Theme toggle hook
+│           ├── index.css                                   # Global CSS entry
+│           ├── main.tsx                                    # Vite/React bootstrap
+│           ├── types/                       
+│           │   ├── Event.ts                                # Event type definitions
+│           │   └── User.ts                                 # User type definitions
+│           └── utils/                        
+│               └── search.ts                               # Search/filter helpers
+└── test_evaluation/                                        
+   └── used_openai-gpt5_2/                                 
+      ├── files/                                          
+      │   ├── batch_email_downloader.py                     # Batch email download runner
+      │   ├── run_download.py                               # Entry to download a batch
+      │   ├── run_extract_batch_existing_service.py         # Extraction runner on existing data
+      │   └── select_gold_set.py                            # Selects gold-standard set
+      ├── outcomes/                         
+      │   ├── batch1_evaluation.md                          # Batch 1 evaluation notes
+      │   ├── batch2_evaluation.md                          # Batch 2 evaluation notes
+      │   ├── batch3_evaluation.md                          # Batch 3 evaluation notes
+      │   ├── batch4_evaluation.md                          # Batch 4 evaluation notes
+      │   ├── batch5_evaluation.md                          # Batch 5 evaluation notes
+      │   └── batch_summary.md                              # Summary across batches
+      ├── procedure/                       
+      │   ├── procedure_llm_test.md                         # LLM test procedure
+      │   └── system_prompt.md                              # Prompt used during evaluation
+      └── selected_mails/                   
+         └── selection_report.xlsx                          # Spreadsheet of selected emails
 ```
 
 ### File Descriptions
@@ -296,6 +365,7 @@ docker-compose up --build
 ### Running Locally (Development)
 
 - **VS Code dev container (recommended):** Open the folder in the container; dependencies install automatically via the postCreate command. Use the `Start Application` launch config to start backend and frontend together (ports 8000 and 5173).
+
 - **Backend (manual run):**
 
 ```bash
@@ -544,7 +614,7 @@ The system includes 50+ image categories including:
 
 ### Extraction Quality Validation (Reproducible Evaluation)
 
-To ensure that the LLM-based event extraction is reliable for a student-facing website, we implemented and executed an ** evaluation workflow** that validates extraction outputs on real university newsletter emails while respecting privacy and API budget constraints.
+To ensure that the LLM-based event extraction is reliable for a student-facing website, we implemented and executed an **evaluation workflow** that validates extraction outputs on real university newsletter emails while respecting privacy and API budget constraints.
 
 ### What was validated
 

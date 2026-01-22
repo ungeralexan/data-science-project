@@ -52,7 +52,7 @@ EMAIL_TEMP_DIR = "data/temp_emails"
 RECOGNITION_LLM_MODEL = "gemini-3-flash-preview" #Model used for event recognition and extraction
 #RECOGNITION_LLM_MODEL = "gemini-2.5-flash" #Model used for event recognition and extraction
 DUPLICATION_LLM_MODEL = "gemini-2.5-flash" #Model used for event duplication detection
-RECOMMENDATION_LLM_MODEL = "gpt-oss-120b:free"
+RECOMMENDATION_LLM_MODEL = "gpt-oss-120b" #Model used for event recommendation
 
 # Image keys for event categorization, with optional descriptions (can be empty).
 IMAGE_KEY_DESCRIPTIONS = {

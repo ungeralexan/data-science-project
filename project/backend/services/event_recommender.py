@@ -172,8 +172,6 @@ def recommend_events_with_llm(
                 {"role": "system", "content": system_instruction},
                 {"role": "user", "content": user_prompt},
             ],
-            # You *can* try to enforce JSON with response_format, but it's optional:
-            response_format={"type": "json_object"},
             extra_body={"reasoning": {"enabled": True}},
         )
 

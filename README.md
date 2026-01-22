@@ -539,6 +539,69 @@ The system includes 50+ image categories including:
 - **Social**: `party`, `festival`, `meetup`, `cultural_exchange`
 - **Sports**: `sports_course`, `tournament`, `hike_trip`
 
+
+
+
+### Extraction Quality Validation (Reproducible Evaluation)
+
+To ensure that the LLM-based event extraction is reliable for a student-facing website, we implemented and executed an ** evaluation workflow** that validates extraction outputs on real university newsletter emails while respecting privacy and API budget constraints.
+
+### What was validated
+
+The evaluation focuses on the most operationally critical fields for students:
+
+- **Title quality** (recognizable, calendar-suitable; not a full-sentence summary)
+- **Start/End Date & Time** (most important failure mode; unknown → `null`, no guessing)
+- **Location correctness**, including “Location TBA” handling and online/hybrid behavior
+- **Registration logic** (`Registration_Needed` consistency with `Registration_URL`)
+- **Meeting link placement** (Zoom/Teams/etc. must go to `Meeting_URL`)
+- **URL separation** (`URL` vs `Registration_URL` vs `Meeting_URL` must be distinct)
+- **Speaker vs Organizer disambiguation**
+- **Multi-event correctness** (do not merge distinct events; enforce valid main/sub-event linking)
+
+This aligns the evaluation with real end-user risk: wrong times or wrong logistics directly reduce trust and usability.
+
+### Evaluation design (efficient + auditable)
+
+Because LLM calls are rate-limited and email content is sensitive, evaluation is executed in three reproducible stages:
+
+1. **Freeze a stable raw dataset (batched + idempotent)**
+   - 150 “kept” emails are downloaded from IMAP and stored with stable IDs.
+   - Stored as per-email JSON + a dataset manifest (`index.json`).
+
+2. **Run extraction batch-wise using the existing production extractor**
+   - The dataset is processed in 5 batches of 30 emails.
+   - Each batch run produces frozen artifacts (input-to-LLM + raw output + filtered output for evaluation).
+
+3. **Construct a gold set and judge it**
+   - A **25-email gold set** is selected (5 emails per batch) using a stratified strategy that includes:
+     - multi-event cases, registration-heavy cases, online/hybrid cases, location-risk cases, and borderline/negative cases.
+   - The gold set is packaged into a compact “judge packet” (one email text + one prediction JSON per item).
+   - Final judging is performed manually in ChatGPT using a binary, field-level rubric (Correct/Incorrect), with brief justification for incorrect fields.
+
+### Outcome summary (high-level)
+
+Overall, extraction performance is **strong on the dominant production class**: clean, single-event announcements with explicit date/time/location and clear registration instructions. These are the emails most important for day-to-day student usage.
+
+Observed issues were concentrated in a smaller subset of structurally complex emails, especially:
+- newsletters or series/overview emails that contain multiple distinct sessions, and
+- messages that mix deadlines, program periods, optional info sessions, and multiple links.
+
+In these cases, “what counts as the event” is sometimes ambiguous even for humans; evaluation treats this as a known hard class and documents it explicitly.
+
+### Reproducibility and privacy
+
+- Raw email content and intermediate artifacts remain local and are not intended for public commits.
+- The evaluation workflow produces deterministic, auditable artifacts (manifest + per-email files + per-batch prediction outputs + frozen gold-set package), enabling repeatable comparisons across future prompt/model revisions without re-downloading or re-labeling the full dataset.
+
+### Where the evaluation artifacts live (local)
+
+Evaluation scripts and artifacts are stored under:
+
+- `test_evaluation/used_openai-gpt5_2/files`
+
+
+
 ---
 
 ## Frontend Features

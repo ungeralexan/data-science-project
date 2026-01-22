@@ -314,6 +314,8 @@ npm install
 npm run dev -- --host 0.0.0.0 --port 5173
 ```
 
+**VSCode Tutorial:**
+
 [![VSCode Tutorial](https://raw.githubusercontent.com/ungeralexan/data-science-project/refs/heads/main/docs/How_To_Get_Tuevent_Running_in_VSCode_Thumbnail.png)](https://www.youtube.com/watch?v=dsuIFUn4dfw)
 ---
 

@@ -321,7 +321,7 @@ function SettingsContent() {
                                     ? `Please wait ${recommendationCooldownRemaining}s` 
                                     : isRecommendationLoading 
                                         ? 'Generating Recommendations...'
-                                        : 'Update Interests & Preferred Event Language'}
+                                        : 'Update Interests & Event Language'}
                             </Button>
                         </Form.Item>
                     </Form>

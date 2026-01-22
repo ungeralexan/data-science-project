@@ -295,32 +295,23 @@ docker-compose up --build
 
 ### Running Locally (Development)
 
-#### Backend
+- **VS Code dev container (recommended):** Open the folder in the container; dependencies install automatically via the postCreate command. Use the `Start Application` launch config to start backend and frontend together (ports 8000 and 5173).
+- **Backend (manual run):**
 
 ```bash
 cd project/backend
-
-# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-
-# Run the server
 uvicorn app:app --reload --host 0.0.0.0 --port 8000
 ```
 
-#### Frontend
+- **Frontend (manual run):**
 
 ```bash
 cd project/frontend
-
-# Install dependencies
 npm install
-
-# Start development server
-npm run dev
+npm run dev -- --host 0.0.0.0 --port 5173
 ```
 
 ---

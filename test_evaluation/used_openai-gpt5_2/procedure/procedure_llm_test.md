@@ -2,7 +2,7 @@
 
 ## 1. Objective
 
-This project designs and implements a **robust, reproducible testing framework** to verify that our event-extraction pipeline—powered by a Large Language Model (LLM)—works reliably on real university mailing-list emails.
+This project designs and implements a **robust testing framework** to verify that our event-extraction pipeline—powered by a Large Language Model (LLM)—works reliably on real university mailing-list emails.
 
 The system’s purpose is operational: it **automatically populates a student-facing website** with up-to-date and correctly structured event information (e.g., talks, workshops, deadlines-as-announcements). For students, correctness is critical because the website is used to make time-sensitive decisions (attendance planning, registration, room finding, travel time). Incorrect or missing details (wrong date/time, wrong location, invented speaker, or missing registration link) directly reduce trust and can cause students to miss events or show up at the wrong time/place.
 
@@ -43,7 +43,7 @@ The framework is built to remain usable under two real constraints observed duri
 This framework follows a fixed two-layer dataset strategy that balances realism, manual effort, and reproducibility.
 
 - **Layer A (Broad sample dataset)**: we download **150 relevant emails** from the mailbox (filtered to the target mailing formats, e.g., Rundmail/WiWiNews) to capture realistic variation (newsletters, single-event announcements, administrative messages).
-- **Layer B (Gold set)**: from this dataset, we select a smaller representative subset (**~20 emails**) and manually label it to create a high-quality ground truth for evaluation.
+- **Layer B (Gold set)**: from this dataset, we select a smaller representative subset (**~25 emails**) and manually label it to create a high-quality ground truth for evaluation.
 
 The pipeline is executed as follows:
 
@@ -57,32 +57,21 @@ The pipeline is executed as follows:
    - This reduces noise before manual selection of the gold set.
    - The output is a candidate subset used for gold-set sampling.
 
-3. **Select the gold set (~20 emails)**
-   - From the candidate subset, ~20 emails are selected to cover:
+3. **Select the gold set (~25 emails)**
+   - From the candidate subset, ~25 emails are selected to cover:
      - single-event announcements,
      - multi-event newsletters,
      - borderline or ambiguous cases,
      - negative examples (non-event emails).
    - The gold set is frozen so repeated experiments remain comparable.
 
-4. **Define important evaluation categories**
-   - A reduced category taxonomy is defined specifically for evaluation.
-   - Categories reflect meaningful distinctions for students using the website and are kept stable to reduce subjectivity.
+4. **Define student-critical evaluation fields** (Title, Date/Time, Location, Registration, URLs, Roles, Multi-event handling)
 
-5. **Create ground truth labels**
-   - Each gold email is manually annotated with:
-     - whether it contains relevant event(s),
-     - structured event fields (title, date, time, location, URL),
-     - evaluation category.
+5. **Run extraction on the dataset (batch-wise)**
 
-6. **Run extraction model(s)**
-   - The LLM-based extraction pipeline is run on the frozen gold set.
-   - Outputs are stored as strict JSON following a fixed schema.
+6. **Construct a gold set (25 emails) using stratified sampling**
 
-7. **Evaluate predictions against gold**
-   - Predictions are compared against gold labels using deterministic matching where possible.
-   - An LLM-as-a-judge is used only when semantic comparison is required (e.g., paraphrased titles or equivalent locations).
-   - Detection, extraction, and category metrics are computed.
+7. **Manually judge predictions on the gold set using a binary rubric (Correct/Incorrect) per field**
 
 8. **Export evaluation artifacts**
    - Results are exported as:
@@ -599,3 +588,17 @@ This evaluation phase achieved its main objectives:
 - It validated the usefulness of the testing framework itself: the workflow produced actionable insights without requiring large-scale manual inspection.
 
 ---
+
+
+## 7. Limitations and improvement plan
+
+Key improvement opportunities that have been detected entail
+
+1. **Series recurrence representation**
+- Prefare seperate sessions over a continous date range unless explictly stated as continous
+
+2. **Program periods vs scheduable events**
+- Do not treat deadlines or program durations as events unless a scheduled session exists (date + time)
+
+3. Location restraint
+- Do not infer city/ country from contact blocks; only use what appears in the event location line 

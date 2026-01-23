@@ -123,6 +123,10 @@ def call_llm_for_internal_duplicates(events_list: list, table_name: str) -> list
         },
     )
     
+    if response.text is None:
+        print(f"[event_cleaner] Warning: LLM returned empty response for {table_name} duplicate detection")
+        return []
+    
     return json.loads(response.text)
 
 def delete_internal_duplicates(db: Session, llm_results, considered_events, event_type: str) -> tuple[int, int]:
@@ -347,6 +351,10 @@ def call_llm_for_cross_table_duplicates(main_events: list, sub_events: list) -> 
             "response_schema": CROSS_TABLE_DUPLICATE_SCHEMA,
         },
     )
+    
+    if response.text is None:
+        print("[event_cleaner] Warning: LLM returned empty response for cross-table duplicate detection")
+        return []
     
     return json.loads(response.text)
 

@@ -8,48 +8,48 @@ from config import IMAGE_KEYS, IMAGE_KEY_DESCRIPTIONS, RECOGNITION_LLM_MODEL  # 
 # -------- LLM Event Extraction Settings --------
 
 # Schema for a single event object
-EVENT_SCHEMA  = {
-    "type": "OBJECT",
-    "properties": {
-        "Title": {"type": "STRING", "nullable": True},
-        "Start_Date": {"type": "STRING", "nullable": True},
-        "End_Date": {"type": "STRING", "nullable": True},
-        "Start_Time": {"type": "STRING", "nullable": True},
-        "End_Time": {"type": "STRING", "nullable": True},
-        "Description": {"type": "STRING", "nullable": True},
-        "Location": {"type": "STRING", "nullable": True},
-        "Street": {"type": "STRING", "nullable": True},
-        "House_Number": {"type": "STRING", "nullable": True},
-        "Zip_Code": {"type": "STRING", "nullable": True},
-        "City": {"type": "STRING", "nullable": True},
-        "Country": {"type": "STRING", "nullable": True},
-        "Room": {"type": "STRING", "nullable": True},
-        "Floor": {"type": "STRING", "nullable": True},
-        "Language": {"type": "STRING", "nullable": True},
-        "Speaker": {"type": "STRING", "nullable": True},
-        "Organizer": {"type": "STRING", "nullable": True},
-        "Registration_Needed": {"type": "BOOLEAN", "nullable": True},
-        "URL": {"type": "STRING", "nullable": True},
-        "Registration_URL": {"type": "STRING", "nullable": True},
-        "Meeting_URL": {"type": "STRING", "nullable": True},
-        "Image_Key": {"type": "STRING", "nullable": True},
-        "Event_Type": {"type": "STRING", "nullable": False},  # "main_event" or "sub_event"
-        "Main_Event_Temp_Key": {"type": "STRING", "nullable": False},  # Temporary key to link sub_events to main_event
+EVENT_SCHEMA = types.Schema(
+    type=types.Type.OBJECT,
+    properties={
+        "Title": types.Schema(type=types.Type.STRING, nullable=True),
+        "Start_Date": types.Schema(type=types.Type.STRING, nullable=True),
+        "End_Date": types.Schema(type=types.Type.STRING, nullable=True),
+        "Start_Time": types.Schema(type=types.Type.STRING, nullable=True),
+        "End_Time": types.Schema(type=types.Type.STRING, nullable=True),
+        "Description": types.Schema(type=types.Type.STRING, nullable=True),
+        "Location": types.Schema(type=types.Type.STRING, nullable=True),
+        "Street": types.Schema(type=types.Type.STRING, nullable=True),
+        "House_Number": types.Schema(type=types.Type.STRING, nullable=True),
+        "Zip_Code": types.Schema(type=types.Type.STRING, nullable=True),
+        "City": types.Schema(type=types.Type.STRING, nullable=True),
+        "Country": types.Schema(type=types.Type.STRING, nullable=True),
+        "Room": types.Schema(type=types.Type.STRING, nullable=True),
+        "Floor": types.Schema(type=types.Type.STRING, nullable=True),
+        "Language": types.Schema(type=types.Type.STRING, nullable=True),
+        "Speaker": types.Schema(type=types.Type.STRING, nullable=True),
+        "Organizer": types.Schema(type=types.Type.STRING, nullable=True),
+        "Registration_Needed": types.Schema(type=types.Type.BOOLEAN, nullable=True),
+        "URL": types.Schema(type=types.Type.STRING, nullable=True),
+        "Registration_URL": types.Schema(type=types.Type.STRING, nullable=True),
+        "Meeting_URL": types.Schema(type=types.Type.STRING, nullable=True),
+        "Image_Key": types.Schema(type=types.Type.STRING, nullable=True),
+        "Event_Type": types.Schema(type=types.Type.STRING, nullable=False),  # "main_event" or "sub_event"
+        "Main_Event_Temp_Key": types.Schema(type=types.Type.STRING, nullable=False),  # Temporary key to link sub_events to main_event
     },
-    "required": [
+    required=[
         "Title", "Start_Date", "End_Date", "Start_Time", "End_Time",
         "Description", "Location", "Street", "House_Number", "Zip_Code", 
         "City", "Country", "Room", "Floor", "Language", "Speaker", "Organizer", 
         "Registration_Needed", "URL", "Registration_URL", "Meeting_URL", 
         "Image_Key", "Event_Type", "Main_Event_Temp_Key",
     ],
-}
+)
 
 # Schema for multiple event objects (array of EVENT_SCHEMA)
-SCHEMA_MULTI = {
-    "type": "ARRAY",
-    "items": EVENT_SCHEMA,
-}
+SCHEMA_MULTI = types.Schema(
+    type=types.Type.ARRAY,
+    items=EVENT_SCHEMA,
+)
 
 # -------- LOG Printing Helper Functions --------
 
@@ -270,7 +270,6 @@ def extract_event_info_with_llm(email_text: str) -> dict:
             thinking_config=types.ThinkingConfig(
                 include_thoughts=True,
             ),
-            #tools=[{"url_context": {}}],
         ),
     )
     

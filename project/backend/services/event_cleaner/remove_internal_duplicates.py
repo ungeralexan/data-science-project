@@ -7,28 +7,36 @@ from data.database.database_events import MainEventORM, SubEventORM # pylint: di
 from config import RECOGNITION_LLM_MODEL  # pylint: disable=import-error
 
 # Schema for internal duplicate detection - returns list of duplicate group indices
-INTERNAL_DUPLICATE_SCHEMA = {
-    "type": "ARRAY",
-    "items": {
-        "type": "OBJECT",
-        "properties": {
-            "duplicate_group": {"type": "INTEGER", "nullable": True},
+from google.genai import types
+
+INTERNAL_DUPLICATE_SCHEMA = types.Schema(
+    type=types.Type.ARRAY,
+    items=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "duplicate_group": types.Schema(
+                type=types.Type.INTEGER,
+                nullable=True,
+            ),
         },
-        "required": ["duplicate_group"],
-    },
-}
+        required=["duplicate_group"],
+    ),
+)
 
 # Schema for cross-table duplicate detection - returns which main_event each sub_event duplicates
-CROSS_TABLE_DUPLICATE_SCHEMA = {
-    "type": "ARRAY",
-    "items": {
-        "type": "OBJECT",
-        "properties": {
-            "is_duplicate_of_sub_event_index": {"type": "INTEGER", "nullable": True},
+CROSS_TABLE_DUPLICATE_SCHEMA = types.Schema(
+    type=types.Type.ARRAY,
+    items=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "is_duplicate_of_sub_event_index": types.Schema(
+                type=types.Type.INTEGER,
+                nullable=True,
+            ),
         },
-        "required": ["is_duplicate_of_sub_event_index"],
-    },
-}
+        required=["is_duplicate_of_sub_event_index"],
+    ),
+)
 
 def get_event_summary_wo_main_event_id(event) -> str:
     """Create a summary string for an event for duplicate detection."""
@@ -123,11 +131,30 @@ def call_llm_for_internal_duplicates(events_list: list, table_name: str) -> list
         },
     )
     
-    if response.text is None:
+    # Try to get text from response.text first, then fallback to extracting from candidates
+    response_text = response.text
+    
+    if response_text is None and hasattr(response, 'candidates') and response.candidates:
+        # Try to extract text directly from candidates
+        parts = response.candidates[0].content.parts if response.candidates[0].content else []
+        response_text = "".join(getattr(part, "text", "") for part in parts)
+        if response_text:
+            print(f"[event_cleaner] Extracted text from candidates for {table_name}")
+    
+    if not response_text:
+        # Log additional details to understand why the response is empty
+        if hasattr(response, 'prompt_feedback') and response.prompt_feedback:
+            print(f"[event_cleaner] Prompt feedback: {response.prompt_feedback}")
+        if hasattr(response, 'candidates') and response.candidates:
+            for candidate in response.candidates:
+                if hasattr(candidate, 'finish_reason'):
+                    print(f"[event_cleaner] Candidate finish reason: {candidate.finish_reason}")
+                if hasattr(candidate, 'safety_ratings'):
+                    print(f"[event_cleaner] Safety ratings: {candidate.safety_ratings}")
         print(f"[event_cleaner] Warning: LLM returned empty response for {table_name} duplicate detection")
         return []
     
-    return json.loads(response.text)
+    return json.loads(response_text)
 
 def delete_internal_duplicates(db: Session, llm_results, considered_events, event_type: str) -> tuple[int, int]:
     """
@@ -352,11 +379,32 @@ def call_llm_for_cross_table_duplicates(main_events: list, sub_events: list) -> 
         },
     )
     
-    if response.text is None:
+    # Try to get text from response.text first, then fallback to extracting from candidates
+    response_text = response.text
+    
+    if response_text is None and hasattr(response, 'candidates') and response.candidates:
+        # Try to extract text directly from candidates
+        parts = response.candidates[0].content.parts if response.candidates[0].content else []
+        response_text = "".join(getattr(part, "text", "") for part in parts)
+        
+        if response_text:
+            print("[event_cleaner] Extracted text from candidates for cross-table duplicates")
+    
+    if not response_text:
+        # Log additional details to understand why the response is empty
+        if hasattr(response, 'prompt_feedback') and response.prompt_feedback:
+            print(f"[event_cleaner] Prompt feedback: {response.prompt_feedback}")
+        if hasattr(response, 'candidates') and response.candidates:
+            for candidate in response.candidates:
+                if hasattr(candidate, 'finish_reason'):
+                    print(f"[event_cleaner] Candidate finish reason: {candidate.finish_reason}")
+                if hasattr(candidate, 'safety_ratings'):
+                    print(f"[event_cleaner] Safety ratings: {candidate.safety_ratings}")
+
         print("[event_cleaner] Warning: LLM returned empty response for cross-table duplicate detection")
         return []
     
-    return json.loads(response.text)
+    return json.loads(response_text)
 
 
 def cleanup_cross_table_duplicates(db: Session) -> int:

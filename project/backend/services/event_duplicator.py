@@ -2,50 +2,51 @@ import json
 from typing import List, Tuple, Dict, Any
 
 from google import genai
+from google.genai import types
 
 from data.database.database_events import MainEventORM, SubEventORM  # pylint: disable=import-error
 from config import DUPLICATION_LLM_MODEL  # pylint: disable=import-error
 
 # Define the expected schema for the LLM response for simple duplicate checking
 # It should be a list of objects with a single boolean field "is_new"
-BATCH_SCHEMA = {
-    "type": "ARRAY",
-    "items": {
-        "type": "OBJECT",
-        "properties": {
-            "is_new": {"type": "BOOLEAN", "nullable": False},
+BATCH_SCHEMA = types.Schema(
+    type=types.Type.ARRAY,
+    items=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "is_new": types.Schema(type=types.Type.BOOLEAN, nullable=False),
         },
-        "required": ["is_new"],
-    },
-}
+        required=["is_new"],
+    ),
+)
 
 # Schema for main event duplicate checking that also returns existing event info for mapping
-MAIN_EVENT_BATCH_SCHEMA = {
-    "type": "ARRAY",
-    "items": {
-        "type": "OBJECT",
-        "properties": {
-            "is_new": {"type": "BOOLEAN", "nullable": False},
-            "matching_existing_event_id": {"type": "STRING", "nullable": True},
+MAIN_EVENT_BATCH_SCHEMA = types.Schema(
+    type=types.Type.ARRAY,
+    items=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "is_new": types.Schema(type=types.Type.BOOLEAN, nullable=False),
+            "matching_existing_event_id": types.Schema(type=types.Type.STRING, nullable=True),
         },
-        "required": ["is_new", "matching_existing_event_id"],
-    },
-}
+        required=["is_new", "matching_existing_event_id"],
+    ),
+)
 
 # Define the expected schema for the LLM response for sub_event self-correction
 # Returns info about whether a sub_event matches an existing main_event (misclassification)
-SUBEVENT_CORRECTION_SCHEMA = {
-    "type": "ARRAY",
-    "items": {
-        "type": "OBJECT",
-        "properties": {
-            "is_new": {"type": "BOOLEAN", "nullable": False},
-            "matches_main_event_id": {"type": "STRING", "nullable": True},
-            "new_main_event_temp_key": {"type": "STRING", "nullable": True},
+SUBEVENT_CORRECTION_SCHEMA = types.Schema(
+    type=types.Type.ARRAY,
+    items=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "is_new": types.Schema(type=types.Type.BOOLEAN, nullable=False),
+            "matches_main_event_id": types.Schema(type=types.Type.STRING, nullable=True),
+            "new_main_event_temp_key": types.Schema(type=types.Type.STRING, nullable=True),
         },
-        "required": ["is_new", "matches_main_event_id", "new_main_event_temp_key"],
-    },
-}
+        required=["is_new", "matches_main_event_id", "new_main_event_temp_key"],
+    ),
+)
 
 
 def get_event_summary(existing_event, include_event_type: bool = False) -> Dict[str, Any]:

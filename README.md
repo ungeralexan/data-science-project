@@ -6,7 +6,7 @@ The productionized application is available via https://tuevent.de/
 
 ## Video Introduction
 
-[![Introduction Video](https://raw.githubusercontent.com/ungeralexan/data-science-project/refs/heads/main/docs/Introduction_Video_Thumbnail.png)](https://www.youtube.com/watch?v=NynK4kjuZIg)
+[![Introduction Video](https://raw.githubusercontent.com/ungeralexan/data-science-project/refs/heads/main/docs/Introduction_Video_Thumbnail.png)](https://www.youtube.com/watch?v=YY0K7ee9buw)
 
 ---
 
